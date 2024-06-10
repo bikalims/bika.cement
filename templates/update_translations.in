@@ -1,0 +1,83 @@
+#!/bin/bash
+
+BASE=${buildout:directory}
+I18N=$BASE/bin/i18ndude
+SRC=$BASE/src/bika/cement
+SRC_BIKA=$BASE/src/bika/cement
+LOCALES=$SRC/locales
+EXCLUDE="build *.html"
+
+function die() {
+    echo "ERROR: $1"
+}
+
+# Check if we have i18n in place
+if test ! -x $I18N; then
+    echo "You must install i18ndude in your buildout: https://pypi.python.org/pypi/i18ndude"
+    echo "See https://github.com/collective/collective.developermanual/blob/master/source/i18n/localization.txt"
+    die "i18ndude not installed"
+fi
+
+# Check Transifex Installed
+function has_tx() {
+  TX=$(which tx)
+  if test ! -x $TX || test -z $TX; then
+     return -1
+  else
+      return 0
+  fi
+}
+
+# Transifex Pull Function
+function tx_pull() {
+    if has_tx; then
+        cd $LOCALES
+        echo "Transifex Pull"
+        tx pull -a -f
+    else
+        die "Please install the Transifex Client first: $ pip install transifex-client"
+    fi
+    cd $BASE
+}
+
+# Transifex Push Function
+function tx_push() {
+    if has_tx; then
+        cd $LOCALES
+        echo "Transifex Push"
+        tx push -s -t --skip
+    else
+        die "Please install the Transifex Client first: $ pip install transifex-client"
+    fi
+    cd $BASE
+}
+
+# Clean all generated .mo files
+find $LOCALES -name "*.mo" -delete
+
+# Pull Transifex
+tx_pull
+
+# Generate the bika.cement Domain
+echo "Processing domain: bika.cement"
+# Flush the english (transifex source language) po files
+# If we don't do this, new bika.cement-manual.pot translations won't be synced.
+echo -n "" > $LOCALES/en/LC_MESSAGES/bika.cement.po
+# Re-scan the source code for new strings and create a temporary bika.cement-bika.pot
+$I18N rebuild-pot --pot $LOCALES/bika.cement-bika.pot --exclude "$EXCLUDE" --create bika.cement $SRC_BIKA
+# Re-scan the source code for new strings and create a temporary bika.cement-tmp.pot
+$I18N rebuild-pot --pot $LOCALES/bika.cement-tmp.pot --exclude "$EXCLUDE" --create bika.cement $SRC
+# Merge the manual translations of bika.cement-bika.pot into the temporary bika.cement-tmp.pot
+$I18N merge --pot $LOCALES/bika.cement-tmp.pot --merge $LOCALES/bika.cement-bika.pot
+rm $LOCALES/bika.cement-bika.pot
+# Merge the manual translations of bika.cement-manual.pot into the temporary bika.cement-tmp.pot
+$I18N merge --pot $LOCALES/bika.cement-tmp.pot --merge $LOCALES/bika.cement-manual.pot
+# Overwrite the existing bika.cement.pot
+mv $LOCALES/bika.cement-tmp.pot $LOCALES/bika.cement.pot
+# Synchronize all .po files with the new bika.cement.pot
+$I18N sync --pot $LOCALES/bika.cement.pot $LOCALES/*/LC_MESSAGES/bika.cement.po
+echo "Processing domain: bika.cement [DONE]"
+echo ""
+
+# Push Transifex
+tx_push
