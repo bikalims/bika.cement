@@ -2,26 +2,11 @@
    If you want to learn more about writing documentation, please check out: http://docs.plone.org/about/documentation_styleguide.html
    This text does not appear on pypi or github. It is a comment.
 
-.. image:: https://travis-ci.org/collective/bika.cement.svg?branch=master
-    :target: https://travis-ci.org/collective/bika.cement
+.. image:: https://img.shields.io/github/issues-pr/bikalims/bika.cement.svg?style=flat-square
+    :target: https://github.com/bikalims/bika.cement/pulls
 
-.. image:: https://coveralls.io/repos/github/collective/bika.cement/badge.svg?branch=master
-    :target: https://coveralls.io/github/collective/bika.cement?branch=master
-    :alt: Coveralls
-
-.. image:: https://img.shields.io/pypi/v/bika.cement.svg
-    :target: https://pypi.python.org/pypi/bika.cement/
-    :alt: Latest Version
-
-.. image:: https://img.shields.io/pypi/status/bika.cement.svg
-    :target: https://pypi.python.org/pypi/bika.cement
-    :alt: Egg Status
-
-.. image:: https://img.shields.io/pypi/pyversions/bika.cement.svg?style=plastic   :alt: Supported - Python Versions
-
-.. image:: https://img.shields.io/pypi/l/bika.cement.svg
-    :target: https://pypi.python.org/pypi/bika.cement/
-    :alt: License
+.. image:: https://img.shields.io/github/contributors/bikalims/bika.cement.svg?style=flat-square
+    :target: https://github.com/bikalims/bika.cement/blob/master/CONTRIBUTORS.rst
 
 
 ===========
