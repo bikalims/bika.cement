@@ -296,13 +296,11 @@
             <table class="table table-sm table-condensed">
               <colgroup>
                 <!-- Category -->
-                <col style="width: 15%;">
+                <col style="width: 25%;">
                 <!-- Analyst -->
-                <col style="width: 13%;">
-                <!-- Verifier -->
-                <col style="width: 13%;">
+                <col style="width: 14%;">
                 <!-- Date -->
-                <col style="width: 13%;">
+                <col style="width: 15%;">
                 <!-- Result -->
                 <col style="width: 13%">
                 <!-- Unit -->
@@ -319,9 +317,6 @@
                   </th>
                   <th class="text-left method">
                     <span i18n:translate="">Analyst</span>
-                  </th>
-                  <th class="text-left method">
-                    <span i18n:translate="">Verifier</span>
                   </th>
                   <th class="text-left capture-date">
                     <span i18n:translate="">Date</span>
@@ -361,14 +356,6 @@
                       </span>
                       <span tal:condition="not: analysis/Method">
                         <span class="font-normal">-</span> 
-                      </span>
-                    </td>
-                    <td class="text-left" tal:define="verifier python:view.get_verifier_by_analysis(analysis)">
-                      <span tal:condition="verifier">
-                        <span class="font-normal" tal:content="verifier/verifier"></span>
-                      </span>
-                      <span tal:condition="not: verifier">
-                        <span class="font-normal">-</span>
                       </span>
                     </td>
                     <td class="text-left">
