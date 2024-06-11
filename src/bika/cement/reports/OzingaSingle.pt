@@ -166,7 +166,7 @@
                   </td>
                   <td colspan="2" class="label" i18n:translate="">Cast Date</td>
                    <td colspan="2" class="field">
-                      <div tal:content="python:view.to_localized_date(model.CastDate or view.timestamp)"/>
+                      <div tal:content="python:view.get_day_month_year_format(model.CastDate or view.timestamp)"/>
                   </td>
                 </tr>
                 <!-- Contact Name(s) -->
@@ -176,7 +176,7 @@
                   </td>
                   <td colspan="2" class="label" i18n:translate="">Date Sampled </td>
                   <td colspan="2" class="field">
-                      <div tal:content="python:view.to_localized_date(model.DateSampled or view.timestamp)"/>
+                      <div tal:content="python:view.get_day_month_year_format(model.DateSampled or view.timestamp)"/>
                   </td>
                 </tr>
                 <!-- Email Address -->
@@ -186,7 +186,7 @@
                   </td>
                   <td colspan="2" class="label"  i18n:translate="">Date Received</td>
                   <td colspan="2" class="field">
-                      <div tal:content="python:view.to_localized_date(model.DateReceived or view.timestamp)"/>
+                      <div tal:content="python:view.get_day_month_year_format(model.DateReceived or view.timestamp)"/>
                   </td>
                 </tr>
                 <tr>
@@ -215,7 +215,7 @@
                       <div tal:content="model/SampleType/title|nothing"/>
                   </td>
                   <td colspan="2" class="label" i18n:translate="">Date Published</td>
-                  <td colspan="2" tal:content="python:view.to_localized_date(model.DatePublished or view.timestamp)"></td>
+                  <td colspan="2" tal:content="python:view.get_day_month_year_format(model.DatePublished or view.timestamp)"></td>
                 </tr>
                 <tr>
                   <td colspan="2" class="label">Specification</td>
@@ -372,7 +372,7 @@
                       </span>
                     </td>
                     <td class="text-left">
-                      <span class="capture-date" tal:content="python:view.get_formatted_date(analysis)"></span>
+                      <span class="capture-date" tal:content="python:view.get_result_capture_date(analysis)"></span>
                     </td>
                     <td class="text-right">
                       <span class="result" tal:content="structure python:model.get_formatted_result(analysis)">23</span>
