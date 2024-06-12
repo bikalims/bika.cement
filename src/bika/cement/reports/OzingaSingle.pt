@@ -222,7 +222,7 @@
                 <tr>
                   <td colspan="2" class="field">Specification</td>
                   <td colspan="2" class="sample-info">
-                      <div tal:content="spec/contextual_title|nothing"/>
+                      <div tal:content="spec/title|nothing"/>
                   </td>
                   <td colspan="2" class="field" i18n:translate="">Published by</td>
                   <td colspan="2" class="label">
