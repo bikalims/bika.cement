@@ -409,7 +409,7 @@
       <div class="" tal:condition="has_ri">
         <h2 class="notes-header">Notes</h2>
         <tal:ri repeat="ri ris">
-          <h2 tal:condition="ri/richtext|nothing" class="notes-header" tal:content="string:${ri/title}:" ></h2>
+          <h2 tal:condition="ri/richtext|nothing" class="notes-header" tal:content="string:${ri/title}" ></h2>
           <div tal:content="structure ri/richtext|nothing"></div>
         </tal:ri>
       </div>
@@ -421,7 +421,7 @@
     <div class="row section-resultsinterpretation no-gutters"
          tal:define="methods python: view.get_sample_methods(model);">
       <div class="" tal:condition="methods">
-        <h2 class="notes-header">Applicable Test Methods:</h2>
+        <h2 class="notes-header">Applicable Test Methods</h2>
         <tal:method_info repeat="method methods">
             <div tal:content="structure method"></div>
         </tal:method_info>
