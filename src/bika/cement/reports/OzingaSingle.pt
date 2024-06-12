@@ -74,7 +74,6 @@
     .report .notes-header {
         font-size: 110%;
         font-weight: bold;
-        text-decoration: underline;
     }
     .report .sample-info {
         font-size: 110%;
@@ -405,8 +404,9 @@
          tal:define="ris python:model.get_resultsinterpretation();
                      has_ri python:any(map(lambda r: r.get('richtext'), ris));">
       <div class="" tal:condition="has_ri">
+        <h2 class="notes-header">Notes</h2>
         <tal:ri repeat="ri ris">
-          <h2 tal:condition="ri/richtext|nothing" class="notes-header" tal:content="string:${ri/title} Notes:" >Notes:</h2>
+          <h2 tal:condition="ri/richtext|nothing" class="notes-header" tal:content="string:${ri/title}:" ></h2>
           <div tal:content="structure ri/richtext|nothing"></div>
         </tal:ri>
       </div>
