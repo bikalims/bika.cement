@@ -76,7 +76,7 @@
         font-weight: bold;
     }
     .report .sample-info {
-        font-size: 110%;
+        font-size: 120%;
         font-weight: bold;
     }
      .report .barcode-hri { margin-top: -0.25em; font-size: 8pt; }
@@ -135,7 +135,7 @@
       <!-- Header Table -->
         <div class="col-6 text-left">
           <!-- Header Left -->
-          <h1 style="width:120%" name='coa_num' tal:content="python: 'Certificate of Analysis  {}'.format(coa_num)"></h1>
+          <h1 style="width:90%" name='coa_num' tal:content="python: 'Certificate of Analysis  {}'.format(coa_num)"></h1>
         </div>
         <div class="col-6 text-right">
             <!-- Header Right -->
@@ -183,7 +183,7 @@
                 </tr>
                 <!-- Email Address -->
                 <tr>
-                  <td colspan="4" class="label">
+                  <td colspan="4" class="field">
                       <div tal:content="contact/EmailAddress"/>
                   </td>
                   <td colspan="2" class="field"  i18n:translate="">Date Received</td>
