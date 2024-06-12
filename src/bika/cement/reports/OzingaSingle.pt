@@ -100,9 +100,6 @@
      .report .section-footer #footer-contacts {
        margin-top: 3mm;
      }
-      .no-borders {
-        border-collapse: collapse;
-     }
       .no-borders td, .no-borders th {
         border: none !important;
      }
