@@ -100,6 +100,13 @@
      .report .section-footer #footer-contacts {
        margin-top: 3mm;
      }
+      .no-borders {
+        border-collapse: collapse;
+     }
+      .no-borders td, .no-borders th {
+        border: none !important;
+     }
+
 
      <tal:block condition="python:content_width and content_height">
      <tal:block condition="python:all([content_width, content_height])"
@@ -150,7 +157,7 @@
                       publication_specification model/PublicationSpecification;
                       spec python:publication_specification or specification;">
 
-    <div class="row section-info no-gutters">
+    <div class="row section-info no-gutters no-borders">
       <div class="w-100">
         <!-- Client Info -->
         <table class="table table-sm table-condensed">
