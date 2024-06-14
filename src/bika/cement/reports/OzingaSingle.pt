@@ -154,107 +154,98 @@
                       spec python:publication_specification or specification;">
 
     <div class="row section-info no-gutters no-borders">
-      <div class="w-100">
         <!-- Client Info -->
-        <table class="table table-sm table-condensed">
-          <tr>
-            <td style="border:none;" class="align-top pr-2">
-              <!-- Left Table -->
-              <table class="table table-sm table-condensed">
-                <!-- Client Name(s) -->
-                <tr>
-                  <td colspan="4" class="label">
-                      <div tal:content="client/Name"/>
-                  </td>
-                  <td colspan="2" class="field" i18n:translate="">Cast Date</td>
-                   <td colspan="2" class="label">
-                      <div tal:content="python:view.get_day_month_year_format(model.CastDate or view.timestamp)"/>
-                  </td>
-                </tr>
-                <!-- Contact Name(s) -->
-                <tr>
-                  <td colspan="4" class="label">
-                      <div tal:content="contact/Fullname"/>
-                  </td>
-                  <td colspan="2" class="field" i18n:translate="">Date Sampled </td>
-                  <td colspan="2" class="label">
-                      <div tal:content="python:view.get_day_month_year_format(model.DateSampled or view.timestamp)"/>
-                  </td>
-                </tr>
-                <!-- Email Address -->
-                <tr>
-                  <td colspan="4" class="field">
-                      <div tal:content="contact/EmailAddress"/>
-                  </td>
-                  <td colspan="2" class="field"  i18n:translate="">Date Received</td>
-                  <td colspan="2" class="label">
-                      <div tal:content="python:view.get_day_month_year_format(model.DateReceived or view.timestamp)"/>
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan="4"></td>
-                  <td colspan="1" class="field"  i18n:translate="">Date Analysed</td>
-                  <td colspan="1" class="field" i18n:translate="">From</td>
-                  <td colspan="2" class="label">
-                      <div tal:content="python:view.get_date_analysed(model)[0] or view.timestamp"/>
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan="2" class="field">Client Sample ID </td>
-                  <td colspan="2" class="sample-info">
-                      <div tal:content="model/ClientSampleID"/>
-                  </td>
-                  <td colspan="1" class="field"  i18n:translate=""></td>
+      <table class="table table-sm table-condensed">
+        <!-- Client Name(s) -->
+        <tr>
+          <td colspan="4" class="label">
+              <div tal:content="client/Name"/>
+          </td>
+          <td colspan="2" class="field" i18n:translate="">Cast Date</td>
+           <td colspan="2" class="label">
+              <div tal:content="python:view.get_day_month_year_format(model.CastDate or view.timestamp)"/>
+          </td>
+        </tr>
+        <!-- Contact Name(s) -->
+        <tr>
+          <td colspan="4" class="label">
+              <div tal:content="contact/Fullname"/>
+          </td>
+          <td colspan="2" class="field" i18n:translate="">Date Sampled </td>
+          <td colspan="2" class="label">
+              <div tal:content="python:view.get_day_month_year_format(model.DateSampled or view.timestamp)"/>
+          </td>
+        </tr>
+        <!-- Email Address -->
+        <tr>
+          <td colspan="4" class="field">
+              <div tal:content="contact/EmailAddress"/>
+          </td>
+          <td colspan="2" class="field"  i18n:translate="">Date Received</td>
+          <td colspan="2" class="label">
+              <div tal:content="python:view.get_day_month_year_format(model.DateReceived or view.timestamp)"/>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="4"></td>
+          <td colspan="2" class="field"  i18n:translate="">Date Analysed</td>
+          <td colspan="2" class="field" i18n:translate=""></td>
+        </tr>
 
-                  <td colspan="1" class="field"  i18n:translate="">To</td>
-                  <td colspan="2" class="label">
-                      <div tal:content="python:view.get_date_analysed(model)[1] or view.timestamp"/>
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan="2" class="field">Sample Type</td>
-                  <td colspan="2" class="sample-info">
-                      <div tal:content="model/SampleType/title|nothing"/>
-                  </td>
-                  <td colspan="2" class="field" i18n:translate="">Date Published</td>
-                  <td colspan="2" class="label" tal:content="python:view.get_day_month_year_format(model.DatePublished or view.timestamp)"></td>
-                </tr>
-                <tr>
-                  <td colspan="2" class="field">Specification</td>
-                  <td colspan="2" class="sample-info">
-                      <div tal:content="spec/title|nothing"/>
-                  </td>
-                  <td colspan="2" class="field" i18n:translate="">Published by</td>
-                  <td colspan="2" class="label">
-                    <span tal:content="reporter/fullname|reporter/username"/>
-                    <tal:email tal:condition="reporter/email|nothing"
-                               tal:define="email reporter/email|nothing">
-                      (<a tal:content="email"
-                          tal:attributes="href string:mailto:${email}"></a>)
-                    </tal:email>
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan="2" class="field">Sample ID </td>
-                  <td colspan="2" class="field">
-                      <div tal:content="model/getId"/>
-                  </td>
-                  <td colspan="4"></td>
-                </tr>
-                <tr>
-                  <td colspan="2" class="field">Batch ID </td>
-                  <td colspan="2" class="field">
-                      <div tal:condition="batch">
-                        <div tal:content="batch/getId"/>
-                      </div>
-                  </td>
-                  <td colspan="4"></td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-        </table>
-      </div>
+        <tr>
+          <td colspan="2" class="field">Client Sample ID </td>
+          <td colspan="2" class="sample-info">
+              <div tal:content="model/ClientSampleID"/>
+          </td>
+          <td colspan="2" class="field text-right"  i18n:translate="">From</td>
+          <td colspan="2" class="label">
+              <div tal:content="python:view.get_date_analysed(model)[0] or view.timestamp"/>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" class="field">Sample Type</td>
+          <td colspan="2" class="sample-info">
+              <div tal:content="model/SampleType/title|nothing"/>
+          </td>
+          <td colspan="2" class="field text-right"  i18n:translate="">To</td>
+          <td colspan="2" class="label">
+              <div tal:content="python:view.get_date_analysed(model)[1] or view.timestamp"/>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" class="field">Specification</td>
+          <td colspan="2" class="sample-info">
+              <div tal:content="spec/title|nothing"/>
+          </td>
+          <td colspan="2" class="field" i18n:translate="">Date Published</td>
+          <td colspan="2" class="label" tal:content="python:view.get_day_month_year_format(model.DatePublished or view.timestamp)"></td>
+
+        </tr>
+        <tr>
+          <td colspan="2" class="field">Sample ID </td>
+          <td colspan="2" class="field">
+              <div tal:content="model/getId"/>
+          </td>
+          <td colspan="2" class="field" i18n:translate="">Published by</td>
+          <td colspan="2" class="label">
+            <span tal:content="reporter/fullname|reporter/username"/>
+            <tal:email tal:condition="reporter/email|nothing"
+                       tal:define="email reporter/email|nothing">
+              (<a tal:content="email"
+                  tal:attributes="href string:mailto:${email}"></a>)
+            </tal:email>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" class="field">Batch ID </td>
+          <td colspan="2" class="field">
+              <div tal:condition="batch">
+                <div tal:content="batch/getId"/>
+              </div>
+          </td>
+          <td colspan="4"></td>
+        </tr>
+      </table>
       <div class="clearfix"></div>
     </div>
   </tal:render>
