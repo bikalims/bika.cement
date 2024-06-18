@@ -242,8 +242,8 @@
           <td colspan="2" class="field">
             <tal:email tal:condition="reporter/email|nothing"
                        tal:define="email reporter/email|nothing">
-              (<a tal:content="email"
-                  tal:attributes="href string:mailto:${email}"></a>)
+              <a tal:content="email"
+                  tal:attributes="href string:mailto:${email}"></a>
             </tal:email>
           </td>
         </tr>
