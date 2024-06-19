@@ -14,6 +14,7 @@
   <!--<includeDependencies package="." />-->
 
   <include package=".browser" />
+  <include package=".extenders" />
 
   <include file="permissions.zcml" />
 
@@ -41,5 +42,6 @@
       />
 
   <!-- -*- extra stuff goes here -*- -->
+  <plone:static directory="reports" type="senaite.impress.reports"/>
 
 </configure>

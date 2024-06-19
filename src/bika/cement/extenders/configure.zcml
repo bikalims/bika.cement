@@ -1,0 +1,11 @@
+<configure xmlns:browser="http://namespaces.zope.org/browser"
+           xmlns="http://namespaces.zope.org/zope"
+           i18n_domain="bika.cement">
+
+    <include package="archetypes.schemaextender"/>
+
+    <adapter name='bika.cement'
+             provides="archetypes.schemaextender.interfaces.ISchemaExtender"
+             factory=".analysisrequest.AnalysisRequestSchemaExtender"/>
+
+</configure>
