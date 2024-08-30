@@ -6,6 +6,12 @@
   <configure zcml:condition="installed AccessControl.security">
   <!-- -*- extra stuff goes here -*- -->
 
+    <permission
+        id="bika.cement.AddMixTypes"
+        title="bika.cement: Add MixTypes"
+    />
+
+
 
   </configure>
 
