@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-from bika.cement.config import _
+from senaite.core.setuphandlers import add_dexterity_items
+from Products.CMFPlone.interfaces import INonInstallable
+from zope.interface import implementer
 from bika.cement.config import PROFILE_ID
 from bika.cement.config import logger
 from bika.lims import api
 from senaite.core.setuphandlers import add_dexterity_items
-from Products.CMFPlone.interfaces import INonInstallable
-from zope.interface import implementer
 
 
 @implementer(INonInstallable)
@@ -21,7 +21,7 @@ class HiddenProfiles(object):
 def post_install(context):
     """Post install script"""
     # Do something at the end of the installation of this package.
-    logger.info("BIKA.AQUACULTURE post install handler [BEGIN]")
+    logger.info("BIKA.CEMENT post install handler [BEGIN]")
     profile_id = PROFILE_ID
     context = context._getImportContext(profile_id)
     portal = context.getSite()
@@ -32,6 +32,7 @@ def uninstall(context):
     """Uninstall script"""
     # Do something at the end of the uninstallation of this package.
 
+
 def add_dexterity_setup_items(portal):
     """Adds the Dexterity Container in the Setup Folder
 
@@ -40,6 +41,9 @@ def add_dexterity_setup_items(portal):
     """
     # Tuples of ID, Title, FTI
     items = [
+        ("materialtype_folder",
+         "Material Types",
+         "MaterialTypeFolder"),
         ("material_class_folder", "Material Class", "MaterialClassFolder"),
     ]
     setup = api.get_setup()

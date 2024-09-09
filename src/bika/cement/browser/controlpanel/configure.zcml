@@ -1,0 +1,16 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:zcml="http://namespaces.zope.org/zcml">
+
+  <include package="senaite.core.permissions" />
+
+  <!-- Material Type Folder -->
+  <browser:page
+      for="bika.cement.content.materialtypefolder.IMaterialTypeFolder"
+      name="view"
+      class=".materialtypefolder.MaterialTypeFolderView"
+      permission="senaite.core.permissions.ManageBika"
+      layer="bika.cement.interfaces.IBikaCementLayer"/>
+
+</configure>
