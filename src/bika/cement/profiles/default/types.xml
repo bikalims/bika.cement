@@ -3,4 +3,6 @@
   <property name="title">Controls the available contenttypes in your portal</property>
   <!--<object name="example_ct" meta_type="Dexterity FTI"/>-->
   <object name="MixTypes" meta_type="Dexterity FTI"/>
+  <object name="MaterialClass" meta_type="Dexterity FTI"/>
+  <object name="MaterialClassFolder" meta_type="Dexterity FTI"/>
 </object>
