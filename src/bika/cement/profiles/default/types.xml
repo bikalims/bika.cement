@@ -5,6 +5,8 @@
   <!-- Material Types -->
   <object name="MaterialType" meta_type="Dexterity FTI" />
   <object name="MaterialTypeFolder" meta_type="Dexterity FTI" />
+  <object name="MaterialClass" meta_type="Dexterity FTI"/>
+  <object name="MaterialClassFolder" meta_type="Dexterity FTI"/>
 
 </object>
 
