@@ -58,6 +58,9 @@ class MaterialTypeFolderView(ListingView):
             ("title", {
                 "title": _("Title"),
                 "index": "sortable_title"}),
+            ("description", {
+                "title": _("Description"),
+                "index": "description"}),
         ))
 
         self.review_states = [
@@ -91,5 +94,6 @@ class MaterialTypeFolderView(ListingView):
         obj = api.get_object(obj)
 
         item["replace"]["title"] = get_link_for(obj)
+        item["description"] = api.get_description(obj)
 
         return item
