@@ -8,5 +8,9 @@
   <object name="MaterialClass" meta_type="Dexterity FTI"/>
   <object name="MaterialClassFolder" meta_type="Dexterity FTI"/>
 
+  <!-- Curing Methods-->
+  <object name="CuringMethod" meta_type="Dexterity FTI" />
+  <object name="CuringMethodFolder" meta_type="Dexterity FTI" />
+
 </object>
 

@@ -18,3 +18,8 @@ class IMaterialTypeFolder(Interface):
 class IMaterialClassFolder(Interface):
     """Marker interface for material class setup folder
     """
+
+
+class ICuringMethodFolder(Interface):
+    """Marker interface for material type setup folder
+    """
