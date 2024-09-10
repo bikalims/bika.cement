@@ -33,5 +33,5 @@ class IMaterialClassFolderSchema(model.Schema):
 
 @implementer(IMaterialClassFolder, IMaterialClassFolderSchema, IHideActionsMenu)
 class MaterialClassFolder(Container):
-    """A folder/container for species
+    """A folder/container for material classes
     """

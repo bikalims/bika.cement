@@ -4,7 +4,6 @@
 
 from zope.interface import Interface
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
-from zope.interface import Interface
 
 class IBikaCementLayer(IDefaultBrowserLayer):
     """Marker interface that defines a browser layer."""
@@ -13,11 +12,6 @@ class IBikaCementLayer(IDefaultBrowserLayer):
 class IMaterialTypeFolder(Interface):
     """Marker interface for material type setup folder
     """
-
-class IMaterialClass(Interface):
-    """Marker interface for material class
-    """
-
 
 class IMaterialClassFolder(Interface):
     """Marker interface for material class setup folder

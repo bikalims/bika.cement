@@ -9,11 +9,11 @@
       i18n:translate=""
       name="title">Material Class</property>
   <property
-      i18n:translate=""Material Class
-      name="description">Material Class item</property>
+      i18n:translate=""
+      name="description">Material Classes</property>
 
   <property name="allow_discussion">False</property>
-  <property name="factory">Material Class</property>
+  <property name="factory">MaterialClass</property>
   <property name="icon_expr"></property>
   <property name="link_target"></property>
 

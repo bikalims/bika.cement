@@ -12,5 +12,13 @@
       class=".materialtypefolder.MaterialTypeFolderView"
       permission="senaite.core.permissions.ManageBika"
       layer="bika.cement.interfaces.IBikaCementLayer"/>
+      
+  <!-- Material Class Folder -->
+  <browser:page
+      for="bika.cement.content.materialclassfolder.IMaterialClassFolder"
+      name="view"
+      class=".materialclassfolder.MaterialClassFolderView"
+      permission="senaite.core.permissions.ManageBika"
+      layer="bika.cement.interfaces.IBikaCementLayer"/>
 
 </configure>

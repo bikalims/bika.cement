@@ -5,7 +5,7 @@
 
   <!-- Title and Description -->
   <property name="title"
-            i18n:translate="">MaterialClass</property>
+            i18n:translate="">Material Classes</property>
   <property name="description"
             i18n:translate=""></property>
 
@@ -45,8 +45,8 @@
   <property name="add_permission">cmf.AddPortalContent</property>
 
   <!-- Python class for content items of this sort -->
-  <property name="schema">bika.cement.content.materialcalssfolder.IMaterialClassFolder</property>
-  <property name="klass">bika.cement.content.materialcalssfolder.MaterialClassFolder</property>
+  <property name="schema">bika.cement.content.materialclassfolder.IMaterialClassFolder</property>
+  <property name="klass">bika.cement.content.materialclassfolder.MaterialClassFolder</property>
 
   <!-- Dexterity behaviours for this type -->
   <property name="behaviors">
