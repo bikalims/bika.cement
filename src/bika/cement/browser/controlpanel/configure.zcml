@@ -29,4 +29,12 @@
       permission="senaite.core.permissions.ManageBika"
       layer="bika.cement.interfaces.IBikaCementLayer"/>
 
+  <!-- Mix Type Folder -->
+  <browser:page
+      for="bika.cement.content.mixtypefolder.IMixTypeFolder"
+      name="view"
+      class=".mixtypefolder.MixTypeFolderView"
+      permission="senaite.core.permissions.ManageBika"
+      layer="bika.cement.interfaces.IBikaCementLayer"/>
+
 </configure>

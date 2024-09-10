@@ -21,5 +21,10 @@ class IMaterialClassFolder(Interface):
 
 
 class ICuringMethodFolder(Interface):
-    """Marker interface for material type setup folder
+    """Marker interface for curing meethod setup folder
+    """
+
+
+class IMixTypeFolder(Interface):
+    """Marker interface for mix type setup folder
     """
