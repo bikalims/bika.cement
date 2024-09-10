@@ -13,3 +13,7 @@ class IBikaCementLayer(IDefaultBrowserLayer):
 class IMaterialTypeFolder(Interface):
     """Marker interface for material type setup folder
     """
+
+class IMaterialClassFolder(Interface):
+    """Marker interface for material class setup folder
+    """
