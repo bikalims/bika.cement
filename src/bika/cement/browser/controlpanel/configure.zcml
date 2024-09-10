@@ -12,6 +12,14 @@
       class=".materialtypefolder.MaterialTypeFolderView"
       permission="senaite.core.permissions.ManageBika"
       layer="bika.cement.interfaces.IBikaCementLayer"/>
+      
+  <!-- Curing Method Folder -->
+  <browser:page
+      for="bika.cement.content.curingmethodfolder.ICuringMethodFolder"
+      name="view"
+      class=".curingmethodfolder.CuringMethodFolderView"
+      permission="senaite.core.permissions.ManageBika"
+      layer="bika.cement.interfaces.IBikaCementLayer"/>
 
   <!-- Material Class Folder -->
   <browser:page
