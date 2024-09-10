@@ -44,7 +44,7 @@ def add_dexterity_setup_items(portal):
          "Material Types",
          "MaterialTypeFolder"),
         ("materialclass_folder",
-         "Material Class",
+         "Material Classes",
          "MaterialClassFolder"),
     ]
     setup = api.get_setup()
