@@ -8,9 +8,13 @@
   <object name="MaterialClass" meta_type="Dexterity FTI"/>
   <object name="MaterialClassFolder" meta_type="Dexterity FTI"/>
 
-  <!-- Curing Methods-->
+  <!-- Curing Methods -->
   <object name="CuringMethod" meta_type="Dexterity FTI" />
   <object name="CuringMethodFolder" meta_type="Dexterity FTI" />
+
+  <!-- Mix Types -->
+  <object name="MixType" meta_type="Dexterity FTI" />
+  <object name="MixTypeFolder" meta_type="Dexterity FTI" />
 
 </object>
 
