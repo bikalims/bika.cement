@@ -7,10 +7,26 @@ from plone.supermodel import model
 from senaite.core.catalog import SETUP_CATALOG
 from senaite import api
 from zope.interface import implementer
+from zope import schema
 
 
 class IMaterialClass(model.Schema):
     """Marker interface and Dexterity Python Schema for MaterialClass"""
+
+    title = schema.TextLine(
+        title=u"Title",
+        required=True,
+    )
+
+    description = schema.Text(
+        title=u"Description",
+        required=False,
+    )
+
+    sortOrder = schema.Int(
+        title=u"Sort Order",
+        required=False,
+    )
 
 
 @implementer(IMaterialClass, IDeactivable)

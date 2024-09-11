@@ -54,6 +54,9 @@ class MaterialClassFolderView(ListingView):
         self.pagesize = 25
 
         self.columns = collections.OrderedDict((
+            ("sortOrder", {
+                "title": _("Sort Order"),
+                "index": "sortOrder"}),
             ("title", {
                 "title": _("Title"),
                 "index": "sortable_title"}),
@@ -94,5 +97,6 @@ class MaterialClassFolderView(ListingView):
 
         item["replace"]["title"] = get_link_for(obj)
         item["description"] = api.get_description(obj)
+        item["sortOrder"] = obj.sortOrder
 
         return item
