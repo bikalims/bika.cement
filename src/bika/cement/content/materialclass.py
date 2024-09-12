@@ -23,9 +23,9 @@ class IMaterialClass(model.Schema):
         required=False,
     )
 
-    sortOrder = schema.Int(
-        title=u"Sort Order",
-        required=False,
+    sort_key = schema.Int(
+        title=u"Sort Key",
+        required=True,
     )
 
 

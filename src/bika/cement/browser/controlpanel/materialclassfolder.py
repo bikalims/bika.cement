@@ -37,7 +37,7 @@ class MaterialClassFolderView(ListingView):
 
         self.contentFilter = {
             "portal_type": "MaterialClass",
-            "sort_on": "sortable_title",
+            "sort_on": "sort_key",
         }
 
         self.context_actions = {
@@ -54,9 +54,9 @@ class MaterialClassFolderView(ListingView):
         self.pagesize = 25
 
         self.columns = collections.OrderedDict((
-            ("sortOrder", {
-                "title": _("Sort Order"),
-                "index": "sortOrder"}),
+            ("sort_key", {
+                "title": _("Sort Key"),
+                "index": "sort_key"}),
             ("title", {
                 "title": _("Title"),
                 "index": "sortable_title"}),
@@ -97,6 +97,6 @@ class MaterialClassFolderView(ListingView):
 
         item["replace"]["title"] = get_link_for(obj)
         item["description"] = api.get_description(obj)
-        item["sortOrder"] = obj.sortOrder
+        item["sort_key"] = obj.sort_key
 
         return item

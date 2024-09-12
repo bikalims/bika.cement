@@ -4,7 +4,17 @@ from zope.interface import implementer
 from bika.cement.config import PROFILE_ID
 from bika.cement.config import logger
 from bika.lims import api
-from senaite.core.setuphandlers import add_dexterity_items
+from senaite.core.catalog import SETUP_CATALOG
+from senaite.core.setuphandlers import add_dexterity_items, setup_other_catalogs
+
+
+INDEXES = [
+    (SETUP_CATALOG, "sort_key", "", "FieldIndex"),
+]
+
+COLUMNS = [
+    (SETUP_CATALOG, "sort_key"),
+]
 
 
 @implementer(INonInstallable)
@@ -25,6 +35,7 @@ def post_install(context):
     context = context._getImportContext(profile_id)
     portal = context.getSite()
     add_dexterity_setup_items(portal)
+    setup_catalogs(portal)
 
 
 def uninstall(context):
@@ -55,3 +66,8 @@ def add_dexterity_setup_items(portal):
     ]
     setup = api.get_setup()
     add_dexterity_items(setup, items)
+
+
+def setup_catalogs(portal):
+    """Setup catalogs"""
+    setup_other_catalogs(portal, indexes=INDEXES, columns=COLUMNS)
