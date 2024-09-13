@@ -38,6 +38,7 @@ class MaterialClassFolderView(ListingView):
         self.contentFilter = {
             "portal_type": "MaterialClass",
             "sort_on": "sort_key",
+            "sort_order": "ascending",
         }
 
         self.context_actions = {
