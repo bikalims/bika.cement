@@ -6,11 +6,30 @@ from plone.dexterity.content import Container
 from plone.supermodel import model
 from senaite.core.catalog import SETUP_CATALOG
 from senaite import api
+from senaite.core.schema import UIDReferenceField
+from zope import schema
 from zope.interface import implementer
 
 
 class IMaterialType(model.Schema):
     """Marker interface and Dexterity Python Schema for Material Types"""
+
+    title = schema.TextLine(
+        title=u"Title",
+        required=True,
+    )
+
+    description = schema.Text(
+        title=u"Description",
+        required=False,
+    )
+
+    MaterialClass = UIDReferenceField(
+        title=u"Material Class",
+        allowed_types=("MaterialClass", ),
+        multi_valued=False,
+        required=False,
+    )
 
 
 @implementer(IMaterialType, IDeactivable)
