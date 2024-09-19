@@ -7,10 +7,10 @@
   <!-- Basic properties -->
   <property
       i18n:translate=""
-      name="title">Curing Methods</property>
+      name="title">Curing Method</property>
   <property
       i18n:translate=""
-      name="description">Curing Methods</property>
+      name="description">Curing Method</property>
 
   <property name="allow_discussion">False</property>
   <property name="factory">CuringMethod</property>
@@ -22,10 +22,10 @@
   <property name="filter_content_types">True</property>
   <!-- Schema, class and security -->
   <property name="add_permission">cmf.AddPortalContent</property>
-  <property name="klass">bika.cement.content.curingmethod.CuringMethod</property>
   <property name="model_file"></property>
   <property name="model_source"></property>
-  <property name="schema">bika.cement.content.curingmethod.ICuringMethod</property>
+  <property name="schema">bika.cement.content.curingmethod.ICuringMethodSchema</property>
+  <property name="klass">bika.cement.content.curingmethod.CuringMethod</property>
 
   <!-- Enabled behaviors -->
   <property name="behaviors" purge="false">

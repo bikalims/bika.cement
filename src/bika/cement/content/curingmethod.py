@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from AccessControl import ClassSecurityInfo
+from bika.cement.interfaces import ICuringMethod
 from bika.lims.interfaces import IDeactivable
 from plone.dexterity.content import Container
 from plone.supermodel import model
@@ -10,7 +11,7 @@ from zope import schema
 from zope.interface import implementer
 
 
-class ICuringMethod(model.Schema):
+class ICuringMethodSchema(model.Schema):
     """Marker interface and Dexterity Python Schema for Curing Methods"""
 
     title = schema.TextLine(
@@ -24,7 +25,7 @@ class ICuringMethod(model.Schema):
     )
 
 
-@implementer(ICuringMethod, IDeactivable)
+@implementer(ICuringMethod, ICuringMethodSchema, IDeactivable)
 class CuringMethod(Container):
     """Content-type class for ICuringMethod"""
 
