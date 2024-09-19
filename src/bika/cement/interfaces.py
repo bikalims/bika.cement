@@ -28,3 +28,8 @@ class ICuringMethodFolder(Interface):
 class IMixTypeFolder(Interface):
     """Marker interface for mix type setup folder
     """
+
+
+class IMixMaterialFolder(Interface):
+    """Marker interface for mix type setup folder
+    """

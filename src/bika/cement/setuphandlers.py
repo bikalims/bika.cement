@@ -57,6 +57,7 @@ def add_dexterity_setup_items(portal):
         ("materialclass_folder", "Material Classes", "MaterialClassFolder"),
         ("curingmethod_folder", "Curing Methods", "CuringMethodFolder"),
         ("mixtype_folder", "Mix Types", "MixTypeFolder"),
+        ("mixmaterial_folder", "Mix Materials", "MixMaterialFolder"),
     ]
     setup = api.get_setup()
     add_dexterity_items(setup, items)
