@@ -24,7 +24,7 @@
   <property name="add_permission">cmf.AddPortalContent</property>
   <property name="model_file"></property>
   <property name="model_source"></property>
-  <property name="schema">bika.cement.content.materialclass.IMaterialClass</property>
+  <property name="schema">bika.cement.content.materialclass.IMaterialClassSchema</property>
   <property name="klass">bika.cement.content.materialclass.MaterialClass</property>
 
   <!-- Enabled behaviors -->
