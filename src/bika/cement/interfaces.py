@@ -31,7 +31,7 @@ class ICuringMethods(Interface):
 
 
 class IMixTypeFolder(Interface):
-    """Marker interface for mix types setup foler
+    """Marker interface for mix types setup folder
     """
 
 
