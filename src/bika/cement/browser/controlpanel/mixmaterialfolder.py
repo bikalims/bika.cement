@@ -58,22 +58,22 @@ class MixMaterialFolderView(ListingView):
             ("title", {
                 "title": _("Title"),
                 "index": "sortable_title"}),
-            ("materialType", {
+            ("material_type", {
                 "title": _("Material Type"),
                 "index": "material_type"}),
-            ("Manufacturer", {
+            ("manufacturer", {
                 "title": _("Manufacturer"),
                 "index": "sortable_title"}),
-            ("Supplier", {
+            ("supplier", {
                 "title": _("Supplier"),
                 "index": "sortable_title"}),
             ("description", {
                 "title": _("Description"),
                 "index": "description"}),
-            ("specificGravity", {
+            ("specific_gravity", {
                 "title": _("Specific Gravity"),
                 "index": "specific_gravity"}),
-            ("absorptionRate", {
+            ("absorption_rate", {
                 "title": _("Absorption Rate"),
                 "index": "absorption_rate"}),
         ))
@@ -110,8 +110,8 @@ class MixMaterialFolderView(ListingView):
 
         item["replace"]["title"] = get_link_for(obj)
         item["description"] = api.get_description(obj)
-        item["specificGravity"] = obj.specific_gravity
-        item["absorptionRate"] = obj.absorption_rate
+        item["specific_gravity"] = obj.specific_gravity
+        item["absorption_rate"] = obj.absorption_rate
 
         # Manufacturer
         manufacturer_list = obj.manufacturer
@@ -122,8 +122,8 @@ class MixMaterialFolderView(ListingView):
             manufacturer_link = get_link(
                 manufacturer_url, manufacturer_title
             )
-            item["Manufacturer"] = manufacturer_title
-            item["replace"]["Manufacturer"] = manufacturer_link
+            item["manufacturer"] = manufacturer_title
+            item["replace"]["manufacturer"] = manufacturer_link
 
         # Supplier
         supplier_list = obj.supplier
@@ -134,8 +134,8 @@ class MixMaterialFolderView(ListingView):
             supplier_link = get_link(
                 supplier_url, supplier_title
             )
-            item["Supplier"] = supplier_link
-            item["replace"]["Supplier"] = supplier_link
+            item["supplier"] = supplier_title
+            item["replace"]["supplier"] = supplier_link
 
         # Material Type
         material_type_list = obj.material_type
@@ -146,7 +146,7 @@ class MixMaterialFolderView(ListingView):
             material_type_link = get_link(
                 material_type_url, material_type_title
             )
-            item["materialType"] = material_type_link
-            item["replace"]["materialType"] = material_type_link
+            item["material_type"] = material_type_title
+            item["replace"]["material_type"] = material_type_link
 
         return item
