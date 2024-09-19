@@ -12,7 +12,7 @@
 
   <!-- Curing Methods -->
   <object name="CuringMethod" meta_type="Dexterity FTI" />
-  <object name="CuringMethodFolder" meta_type="Dexterity FTI" />
+  <object name="CuringMethods" meta_type="Dexterity FTI" />
 
   <!-- Mix Types -->
   <object name="MixType" meta_type="Dexterity FTI" />

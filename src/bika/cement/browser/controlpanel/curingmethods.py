@@ -27,12 +27,12 @@ from senaite.app.listing import ListingView
 from senaite.core.catalog import SETUP_CATALOG
 
 
-class CuringMethodFolderView(ListingView):
+class CuringMethodsView(ListingView):
     """Displays all available sample containers in a table
     """
 
     def __init__(self, context, request):
-        super(CuringMethodFolderView, self).__init__(context, request)
+        super(CuringMethodsView, self).__init__(context, request)
 
         self.catalog = SETUP_CATALOG
 

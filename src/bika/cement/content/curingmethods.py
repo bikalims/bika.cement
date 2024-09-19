@@ -22,16 +22,16 @@ from plone.dexterity.content import Container
 from plone.supermodel import model
 from zope.interface import implementer
 
-from bika.cement.interfaces import ICuringMethodFolder
+from bika.cement.interfaces import ICuringMethods
 from senaite.core.interfaces import IHideActionsMenu
 
 
-class ICuringMethodFolderSchema(model.Schema):
+class ICuringMethodsSchema(model.Schema):
     """Schema interface
     """
 
 
-@implementer(ICuringMethodFolder, ICuringMethodFolderSchema, IHideActionsMenu)
-class CuringMethodFolder(Container):
+@implementer(ICuringMethods, ICuringMethodsSchema, IHideActionsMenu)
+class CuringMethods(Container):
     """A folder/container for material types
     """

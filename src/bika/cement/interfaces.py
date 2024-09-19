@@ -11,22 +11,27 @@ class IBikaCementLayer(IDefaultBrowserLayer):
 
 
 class IMaterialTypeFolder(Interface):
-    """Marker interface for material type setup folder
+    """Marker interface for material types setup folder
     """
 
 
 class IMaterialClassFolder(Interface):
-    """Marker interface for material class setup folder
+    """Marker interface for material classes setup folder
     """
 
 
-class ICuringMethodFolder(Interface):
-    """Marker interface for curing meethod setup folder
+class ICuringMethod(Interface):
+    """Marker interface for curing methods
+    """
+
+
+class ICuringMethods(Interface):
+    """Marker interface for curing methods setup folder
     """
 
 
 class IMixTypeFolder(Interface):
-    """Marker interface for mix type setup folder
+    """Marker interface for mix types setup foler
     """
 
 
