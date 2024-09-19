@@ -37,4 +37,12 @@
       permission="senaite.core.permissions.ManageBika"
       layer="bika.cement.interfaces.IBikaCementLayer"/>
 
+  <!-- Mix Material Folder -->
+  <browser:page
+      for="bika.cement.content.mixmaterialfolder.IMixMaterialFolder"
+      name="view"
+      class=".mixmaterialfolder.MixMaterialFolderView"
+      permission="senaite.core.permissions.ManageBika"
+      layer="bika.cement.interfaces.IBikaCementLayer"/>
+
 </configure>
