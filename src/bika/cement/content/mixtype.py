@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from AccessControl import ClassSecurityInfo
+from bika.cement.interfaces import IMixType
 from bika.lims.interfaces import IDeactivable
 from plone.dexterity.content import Container
 from plone.supermodel import model
@@ -10,8 +11,8 @@ from zope import schema
 from zope.interface import implementer
 
 
-class IMixType(model.Schema):
-    """Marker interface and Dexterity Python Schema for Curing Methods"""
+class IMixTypeSchema(model.Schema):
+    """Marker interface and Dexterity Python Schema for Mix Types"""
 
     title = schema.TextLine(
         title=u"Title",
@@ -24,7 +25,7 @@ class IMixType(model.Schema):
     )
 
 
-@implementer(IMixType, IDeactivable)
+@implementer(IMixType, IMixTypeSchema, IDeactivable)
 class MixType(Container):
     """Content-type class for IMixType"""
 
