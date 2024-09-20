@@ -45,8 +45,8 @@
   <property name="add_permission">cmf.AddPortalContent</property>
 
   <!-- Python class for content items of this sort -->
-  <property name="schema">bika.cement.content.materialclassfolder.IMaterialClassesSchema</property>
-  <property name="klass">bika.cement.content.materialclassfolder.MaterialClasses</property>
+  <property name="schema">bika.cement.content.materialclasses.IMaterialClassesSchema</property>
+  <property name="klass">bika.cement.content.materialclasses.MaterialClasses</property>
 
   <!-- Dexterity behaviours for this type -->
   <property name="behaviors">
