@@ -8,7 +8,7 @@
 
   <!-- Material Classes -->
   <object name="MaterialClass" meta_type="Dexterity FTI"/>
-  <object name="MaterialClassFolder" meta_type="Dexterity FTI"/>
+  <object name="MaterialClasses" meta_type="Dexterity FTI"/>
 
   <!-- Curing Methods -->
   <object name="CuringMethod" meta_type="Dexterity FTI" />
@@ -20,7 +20,7 @@
 
   <!-- Mix Materials -->
   <object name="MixMaterial" meta_type="Dexterity FTI" />
-  <object name="MixMaterialFolder" meta_type="Dexterity FTI" />
+  <object name="MixMaterials" meta_type="Dexterity FTI" />
 
 </object>
 

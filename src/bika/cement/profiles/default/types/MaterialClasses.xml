@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<object name="MaterialClassFolder" meta_type="Dexterity FTI"
+<object name="MaterialClasses" meta_type="Dexterity FTI"
         i18n:domain="bika.cement"
         xmlns:i18n="http://xml.zope.org/namespaces/i18n">
 
@@ -13,10 +13,10 @@
   <property name="icon_expr">senaite_theme/icon/container</property>
 
   <!-- factory name; usually the same as type name -->
-  <property name="factory">MaterialClassFolder</property>
+  <property name="factory">MaterialClasses</property>
 
   <!-- URL TALES expression to add an item TTW -->
-  <property name="add_view_expr">string:${folder_url}/++add++MaterialClassFolder</property>
+  <property name="add_view_expr">string:${folder_url}/++add++MaterialClasses</property>
 
   <property name="link_target"/>
   <property name="immediate_view">view</property>
@@ -45,8 +45,8 @@
   <property name="add_permission">cmf.AddPortalContent</property>
 
   <!-- Python class for content items of this sort -->
-  <property name="schema">bika.cement.content.materialclassfolder.IMaterialClassFolder</property>
-  <property name="klass">bika.cement.content.materialclassfolder.MaterialClassFolder</property>
+  <property name="schema">bika.cement.content.materialclasses.IMaterialClassesSchema</property>
+  <property name="klass">bika.cement.content.materialclasses.MaterialClasses</property>
 
   <!-- Dexterity behaviours for this type -->
   <property name="behaviors">

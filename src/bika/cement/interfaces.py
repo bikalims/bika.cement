@@ -15,7 +15,12 @@ class IMaterialTypeFolder(Interface):
     """
 
 
-class IMaterialClassFolder(Interface):
+class IMaterialClass(Interface):
+    """Marker interface for material classes
+    """
+
+
+class IMaterialClasses(Interface):
     """Marker interface for material classes setup folder
     """
 
@@ -35,6 +40,11 @@ class IMixTypeFolder(Interface):
     """
 
 
-class IMixMaterialFolder(Interface):
-    """Marker interface for mix type setup folder
+class IMixMaterial(Interface):
+    """Marker interface for mix material
+    """
+
+
+class IMixMaterials(Interface):
+    """Marker interface for mix material setup folder
     """
