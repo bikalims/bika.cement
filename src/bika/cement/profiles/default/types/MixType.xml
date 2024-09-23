@@ -7,10 +7,10 @@
   <!-- Basic properties -->
   <property
       i18n:translate=""
-      name="title">Mix Types</property>
+      name="title">Mix Type</property>
   <property
       i18n:translate=""
-      name="description">Mix Types</property>
+      name="description">Mix Type</property>
 
   <property name="allow_discussion">False</property>
   <property name="factory">MixType</property>
@@ -22,10 +22,10 @@
   <property name="filter_content_types">True</property>
   <!-- Schema, class and security -->
   <property name="add_permission">cmf.AddPortalContent</property>
-  <property name="klass">bika.cement.content.mixtype.MixType</property>
   <property name="model_file"></property>
   <property name="model_source"></property>
-  <property name="schema">bika.cement.content.mixtype.IMixType</property>
+  <property name="schema">bika.cement.content.mixtype.IMixTypeSchema</property>
+  <property name="klass">bika.cement.content.mixtype.MixType</property>
 
   <!-- Enabled behaviors -->
   <property name="behaviors" purge="false">

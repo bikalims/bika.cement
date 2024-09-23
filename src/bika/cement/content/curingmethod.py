@@ -16,7 +16,7 @@ class ICuringMethodSchema(model.Schema):
 
     title = schema.TextLine(
         title=u"Title",
-        required=False,
+        required=True,
     )
 
     description = schema.Text(

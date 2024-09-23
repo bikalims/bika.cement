@@ -22,16 +22,16 @@ from plone.dexterity.content import Container
 from plone.supermodel import model
 from zope.interface import implementer
 
-from bika.cement.interfaces import IMaterialTypeFolder
+from bika.cement.interfaces import IMixTypes
 from senaite.core.interfaces import IHideActionsMenu
 
 
-class IMaterialTypeFolderSchema(model.Schema):
+class IMixTypesSchema(model.Schema):
     """Schema interface
     """
 
 
-@implementer(IMaterialTypeFolder, IMaterialTypeFolderSchema, IHideActionsMenu)
-class MaterialTypeFolder(Container):
+@implementer(IMixTypes, IMixTypesSchema, IHideActionsMenu)
+class MixTypes(Container):
     """A folder/container for material types
     """

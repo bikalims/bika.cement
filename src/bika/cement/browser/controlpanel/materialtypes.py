@@ -22,46 +22,51 @@ import collections
 
 from bika.cement.config import _
 from bika.lims import api
-from bika.lims.utils import get_link_for
+from bika.lims.utils import get_link, get_link_for
 from senaite.app.listing import ListingView
 from senaite.core.catalog import SETUP_CATALOG
 
 
-class MixTypeFolderView(ListingView):
-    """Displays all available sample containers in a table
-    """
+class MaterialTypesView(ListingView):
+    """Displays all available material types in a table"""
 
     def __init__(self, context, request):
-        super(MixTypeFolderView, self).__init__(context, request)
+        super(MaterialTypesView, self).__init__(context, request)
 
         self.catalog = SETUP_CATALOG
 
         self.contentFilter = {
-            "portal_type": "MixType",
+            "portal_type": "MaterialType",
             "sort_on": "sortable_title",
         }
 
         self.context_actions = {
             _("Add"): {
-                "url": "++add++MixType",
+                "url": "++add++MaterialType",
                 "icon": "++resource++bika.lims.images/add.png",
-            }}
+            }
+        }
 
         t = self.context.translate
-        self.title = t(_("Mix Types"))
+        self.title = t(_("Material Types"))
         self.description = t(_(""))
 
         self.show_select_column = True
         self.pagesize = 25
 
-        self.columns = collections.OrderedDict((
-            ("title", {
-                "title": _("Title"),
-                "index": "sortable_title"}),
-            ("description", {
-                "title": _("Description"),
-                "index": "description"}),
-        ))
+        self.columns = collections.OrderedDict(
+            (
+                ("title", {"title": _("Title"), "index": "sortable_title"}),
+                (
+                    "material_class",
+                    {"title": _("Material Class"), "index": "sortable_title"},
+                ),
+                (
+                    "description",
+                    {"title": _("Description"), "index": "description"},
+                ),
+            )
+        )
 
         self.review_states = [
             {
@@ -69,12 +74,14 @@ class MixTypeFolderView(ListingView):
                 "title": _("Active"),
                 "contentFilter": {"is_active": True},
                 "columns": self.columns.keys(),
-            }, {
+            },
+            {
                 "id": "inactive",
                 "title": _("Inactive"),
-                "contentFilter": {'is_active': False},
+                "contentFilter": {"is_active": False},
                 "columns": self.columns.keys(),
-            }, {
+            },
+            {
                 "id": "all",
                 "title": _("All"),
                 "contentFilter": {},
@@ -96,4 +103,14 @@ class MixTypeFolderView(ListingView):
         item["replace"]["title"] = get_link_for(obj)
         item["description"] = api.get_description(obj)
 
+        material_class_list = obj.material_class
+        if material_class_list:
+            material_class_obj = api.get_object_by_uid(material_class_list[0])
+            material_class_title = material_class_obj.title
+            material_class_url = material_class_obj.absolute_url()
+            material_class_link = get_link(
+                material_class_url, material_class_title
+            )
+            item["material_class"] = material_class_title
+            item["replace"]["material_class"] = material_class_link
         return item
