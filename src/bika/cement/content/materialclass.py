@@ -6,7 +6,7 @@ from bika.lims.interfaces import IDeactivable
 from plone.dexterity.content import Container
 from plone.supermodel import model
 from senaite.core.catalog import SETUP_CATALOG
-from senaite import api
+from bika.lims import api
 from zope.interface import implementer
 from zope import schema
 
