@@ -27,34 +27,37 @@ from senaite.app.listing import ListingView
 from senaite.core.catalog import SETUP_CATALOG
 
 
-class MixTypeFolderView(ListingView):
+class MaterialClassesView(ListingView):
     """Displays all available sample containers in a table
     """
 
     def __init__(self, context, request):
-        super(MixTypeFolderView, self).__init__(context, request)
-
+        super(MaterialClassesView, self).__init__(context, request)
         self.catalog = SETUP_CATALOG
 
         self.contentFilter = {
-            "portal_type": "MixType",
-            "sort_on": "sortable_title",
+            "portal_type": "MaterialClass",
+            "sort_on": "sort_key",
+            "sort_order": "ascending",
         }
 
         self.context_actions = {
             _("Add"): {
-                "url": "++add++MixType",
+                "url": "++add++MaterialClass",
                 "icon": "++resource++bika.lims.images/add.png",
             }}
 
         t = self.context.translate
-        self.title = t(_("Mix Types"))
+        self.title = t(_("Material Classes"))
         self.description = t(_(""))
 
         self.show_select_column = True
         self.pagesize = 25
 
         self.columns = collections.OrderedDict((
+            ("sort_key", {
+                "title": _("Sort Key"),
+                "index": "sort_key"}),
             ("title", {
                 "title": _("Title"),
                 "index": "sortable_title"}),
@@ -95,5 +98,6 @@ class MixTypeFolderView(ListingView):
 
         item["replace"]["title"] = get_link_for(obj)
         item["description"] = api.get_description(obj)
+        item["sort_key"] = obj.sort_key
 
         return item

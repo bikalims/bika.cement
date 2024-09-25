@@ -7,15 +7,15 @@
 
   <!-- Material Type Folder -->
   <browser:page
-      for="bika.cement.content.materialtypefolder.IMaterialTypeFolder"
+      for="bika.cement.interfaces.IMaterialTypes"
       name="view"
-      class=".materialtypefolder.MaterialTypeFolderView"
+      class=".materialtypes.MaterialTypesView"
       permission="senaite.core.permissions.ManageBika"
       layer="bika.cement.interfaces.IBikaCementLayer"/>
       
   <!-- Curing Method Folder -->
   <browser:page
-      for="bika.cement.content.curingmethods.ICuringMethods"
+      for="bika.cement.interfaces.ICuringMethods"
       name="view"
       class=".curingmethods.CuringMethodsView"
       permission="senaite.core.permissions.ManageBika"
@@ -23,25 +23,25 @@
 
   <!-- Material Class Folder -->
   <browser:page
-      for="bika.cement.content.materialclassfolder.IMaterialClassFolder"
+      for="bika.cement.interfaces.IMaterialClasses"
       name="view"
-      class=".materialclassfolder.MaterialClassFolderView"
+      class=".materialclasses.MaterialClassesView"
       permission="senaite.core.permissions.ManageBika"
       layer="bika.cement.interfaces.IBikaCementLayer"/>
 
   <!-- Mix Type Folder -->
   <browser:page
-      for="bika.cement.content.mixtypefolder.IMixTypeFolder"
+      for="bika.cement.interfaces.IMixTypes"
       name="view"
-      class=".mixtypefolder.MixTypeFolderView"
+      class=".mixtypes.MixTypesView"
       permission="senaite.core.permissions.ManageBika"
       layer="bika.cement.interfaces.IBikaCementLayer"/>
 
   <!-- Mix Material Folder -->
   <browser:page
-      for="bika.cement.content.mixmaterialfolder.IMixMaterialFolder"
+      for="bika.cement.interfaces.IMixMaterials"
       name="view"
-      class=".mixmaterialfolder.MixMaterialFolderView"
+      class=".mixmaterials.MixMaterialsView"
       permission="senaite.core.permissions.ManageBika"
       layer="bika.cement.interfaces.IBikaCementLayer"/>
 

@@ -53,11 +53,11 @@ def add_dexterity_setup_items(portal):
     """
     # Tuples of ID, Title, FTI
     items = [
-        ("materialtype_folder", "Material Types", "MaterialTypeFolder"),
-        ("materialclass_folder", "Material Classes", "MaterialClassFolder"),
+        ("materialtypes", "Material Types", "MaterialTypes"),
+        ("materialclasses", "Material Classes", "MaterialClasses"),
         ("curingmethods", "Curing Methods", "CuringMethods"),
-        ("mixtype_folder", "Mix Types", "MixTypeFolder"),
-        ("mixmaterial_folder", "Mix Materials", "MixMaterialFolder"),
+        ("mixtypes", "Mix Types", "MixTypes"),
+        ("mixmaterials", "Mix Materials", "MixMaterials"),
     ]
     setup = api.get_senaite_setup()
     add_dexterity_items(setup, items)

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from AccessControl import ClassSecurityInfo
+from bika.cement.interfaces import IMixMaterial
 from bika.lims.interfaces import IDeactivable
 from plone.dexterity.content import Container
 from plone.supermodel import model
@@ -12,7 +13,7 @@ from zope import schema
 from senaite.core.schema import UIDReferenceField
 
 
-class IMixMaterial(model.Schema):
+class IMixMaterialSchema(model.Schema):
     """Marker interface and Dexterity Python Schema for Mix Material"""
 
     # add basic things here
@@ -58,7 +59,7 @@ class IMixMaterial(model.Schema):
     )
 
 
-@implementer(IMixMaterial, IDeactivable)
+@implementer(IMixMaterial, IMixMaterialSchema, IDeactivable)
 class MixMaterial(Container):
     """Content-type class for IMixMaterial"""
 

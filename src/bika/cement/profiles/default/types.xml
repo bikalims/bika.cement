@@ -4,11 +4,11 @@
 
   <!-- Material Types -->
   <object name="MaterialType" meta_type="Dexterity FTI" />
-  <object name="MaterialTypeFolder" meta_type="Dexterity FTI" />
+  <object name="MaterialTypes" meta_type="Dexterity FTI" />
 
   <!-- Material Classes -->
   <object name="MaterialClass" meta_type="Dexterity FTI"/>
-  <object name="MaterialClassFolder" meta_type="Dexterity FTI"/>
+  <object name="MaterialClasses" meta_type="Dexterity FTI"/>
 
   <!-- Curing Methods -->
   <object name="CuringMethod" meta_type="Dexterity FTI" />
@@ -16,11 +16,11 @@
 
   <!-- Mix Types -->
   <object name="MixType" meta_type="Dexterity FTI" />
-  <object name="MixTypeFolder" meta_type="Dexterity FTI" />
+  <object name="MixTypes" meta_type="Dexterity FTI" />
 
   <!-- Mix Materials -->
   <object name="MixMaterial" meta_type="Dexterity FTI" />
-  <object name="MixMaterialFolder" meta_type="Dexterity FTI" />
+  <object name="MixMaterials" meta_type="Dexterity FTI" />
 
 </object>
 

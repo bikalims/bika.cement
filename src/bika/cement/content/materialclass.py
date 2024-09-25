@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from AccessControl import ClassSecurityInfo
+from bika.cement.interfaces import IMaterialClass
 from bika.lims.interfaces import IDeactivable
 from plone.dexterity.content import Container
 from plone.supermodel import model
@@ -10,7 +11,7 @@ from zope.interface import implementer
 from zope import schema
 
 
-class IMaterialClass(model.Schema):
+class IMaterialClassSchema(model.Schema):
     """Marker interface and Dexterity Python Schema for MaterialClass"""
 
     title = schema.TextLine(
@@ -29,7 +30,7 @@ class IMaterialClass(model.Schema):
     )
 
 
-@implementer(IMaterialClass, IDeactivable)
+@implementer(IMaterialClass, IMaterialClassSchema, IDeactivable)
 class MaterialClass(Container):
     """Content-type class for IMaterialClass"""
 

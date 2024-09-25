@@ -27,11 +27,11 @@ from senaite.app.listing import ListingView
 from senaite.core.catalog import SETUP_CATALOG
 
 
-class MaterialTypeFolderView(ListingView):
-    """Displays all available sample containers in a table"""
+class MaterialTypesView(ListingView):
+    """Displays all available material types in a table"""
 
     def __init__(self, context, request):
-        super(MaterialTypeFolderView, self).__init__(context, request)
+        super(MaterialTypesView, self).__init__(context, request)
 
         self.catalog = SETUP_CATALOG
 
@@ -58,7 +58,7 @@ class MaterialTypeFolderView(ListingView):
             (
                 ("title", {"title": _("Title"), "index": "sortable_title"}),
                 (
-                    "MaterialClass",
+                    "material_class",
                     {"title": _("Material Class"), "index": "sortable_title"},
                 ),
                 (
@@ -103,7 +103,7 @@ class MaterialTypeFolderView(ListingView):
         item["replace"]["title"] = get_link_for(obj)
         item["description"] = api.get_description(obj)
 
-        material_class_list = obj.MaterialClass
+        material_class_list = obj.material_class
         if material_class_list:
             material_class_obj = api.get_object_by_uid(material_class_list[0])
             material_class_title = material_class_obj.title
@@ -111,6 +111,6 @@ class MaterialTypeFolderView(ListingView):
             material_class_link = get_link(
                 material_class_url, material_class_title
             )
-            item["MaterialClass"] = material_class_title
-            item["replace"]["MaterialClass"] = material_class_link
+            item["material_class"] = material_class_title
+            item["replace"]["material_class"] = material_class_link
         return item

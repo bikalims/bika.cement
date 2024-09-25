@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<object name="MixMaterialFolder" meta_type="Dexterity FTI"
+<object name="MixTypes" meta_type="Dexterity FTI"
         i18n:domain="bika.cement"
         xmlns:i18n="http://xml.zope.org/namespaces/i18n">
 
   <!-- Title and Description -->
   <property name="title"
-            i18n:translate="">Mix Material</property>
+            i18n:translate="">Mix Types</property>
   <property name="description"
             i18n:translate=""></property>
 
@@ -13,10 +13,10 @@
   <property name="icon_expr">senaite_theme/icon/container</property>
 
   <!-- factory name; usually the same as type name -->
-  <property name="factory">MixMaterialFolder</property>
+  <property name="factory">MixTypes</property>
 
   <!-- URL TALES expression to add an item TTW -->
-  <property name="add_view_expr">string:${folder_url}/++add++MixMaterialFolder</property>
+  <property name="add_view_expr">string:${folder_url}/++add++MixTypes</property>
 
   <property name="link_target"/>
   <property name="immediate_view">view</property>
@@ -28,7 +28,7 @@
   <property name="filter_content_types">True</property>
   <!-- If filtering, what's allowed -->
   <property name="allowed_content_types">
-    <element value="MixMaterial" />
+    <element value="MixType" />
   </property>
 
   <property name="allow_discussion">False</property>
@@ -45,8 +45,8 @@
   <property name="add_permission">cmf.AddPortalContent</property>
 
   <!-- Python class for content items of this sort -->
-  <property name="schema">bika.cement.content.mixmaterialfolder.IMixMaterialFolder</property>
-  <property name="klass">bika.cement.content.mixmaterialfolder.MixMaterialFolder</property>
+  <property name="schema">bika.cement.content.mixtypes.IMixTypesSchema</property>
+  <property name="klass">bika.cement.content.mixtypes.MixTypes</property>
 
   <!-- Dexterity behaviours for this type -->
   <property name="behaviors">

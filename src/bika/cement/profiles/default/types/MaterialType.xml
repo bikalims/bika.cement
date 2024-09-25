@@ -10,7 +10,7 @@
       name="title">Material Type</property>
   <property
       i18n:translate=""
-      name="description">Material Types</property>
+      name="description">Material Type</property>
 
   <property name="allow_discussion">False</property>
   <property name="factory">MaterialType</property>
@@ -22,10 +22,10 @@
   <property name="filter_content_types">True</property>
   <!-- Schema, class and security -->
   <property name="add_permission">cmf.AddPortalContent</property>
-  <property name="klass">bika.cement.content.materialtype.MaterialType</property>
   <property name="model_file"></property>
   <property name="model_source"></property>
-  <property name="schema">bika.cement.content.materialtype.IMaterialType</property>
+  <property name="schema">bika.cement.content.materialtype.IMaterialTypeSchema</property>
+  <property name="klass">bika.cement.content.materialtype.MaterialType</property>
 
   <!-- Enabled behaviors -->
   <property name="behaviors" purge="false">
