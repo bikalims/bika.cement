@@ -8,6 +8,8 @@
 from bika.cement.content.curingmethods import ICuringMethods
 from bika.cement.content.materialtypes import IMaterialTypes
 from bika.cement.content.mixtypes import IMixTypes
+from bika.cement.content.materialclasses import IMaterialClasses
+from bika.cement.content.mixmaterials import IMixMaterials
 from bika.cement.tests.base import SimpleTestCase
 from plone import api
 from plone.app.testing import TEST_USER_ID
@@ -91,3 +93,47 @@ class TestContentTypes(SimpleTestCase):
         # check that deleting the object works too
         api.content.delete(obj=obj)
         self.assertNotIn('mixtypes', parent.objectIds())
+
+    def test_add_material_classes(self):
+
+        obj = api.content.create(
+            container=self.portal,
+            type='MaterialClasses',
+            id='materialclasses',
+        )
+
+        self.assertTrue(
+            IMaterialClasses.providedBy(obj),
+            u'IMaterialClasses not provided by {0}!'.format(
+                obj.id,
+            ),
+        )
+
+        parent = obj.__parent__
+        self.assertIn('materialclasses', parent.objectIds())
+
+        # check that deleting the object works too
+        api.content.delete(obj=obj)
+        self.assertNotIn('materialclasses', parent.objectIds())
+
+    def test_add_mix_materials(self):
+
+        obj = api.content.create(
+            container=self.portal,
+            type='MixMaterials',
+            id='mixmaterials',
+        )
+
+        self.assertTrue(
+            IMixMaterials.providedBy(obj),
+            u'IMixMaterials not provided by {0}!'.format(
+                obj.id,
+            ),
+        )
+
+        parent = obj.__parent__
+        self.assertIn('mixmaterials', parent.objectIds())
+
+        # check that deleting the object works too
+        api.content.delete(obj=obj)
+        self.assertNotIn('mixmaterials', parent.objectIds())
