@@ -38,6 +38,7 @@ class MaterialTypesView(ListingView):
         self.contentFilter = {
             "portal_type": "MaterialType",
             "sort_on": "sortable_title",
+            "sort_order": "ascending",
         }
 
         self.context_actions = {
@@ -59,7 +60,7 @@ class MaterialTypesView(ListingView):
                 ("title", {"title": _("Title"), "index": "sortable_title"}),
                 (
                     "material_class",
-                    {"title": _("Material Class"), "index": "sortable_title"},
+                    {"title": _("Material Class")},
                 ),
                 (
                     "description",
