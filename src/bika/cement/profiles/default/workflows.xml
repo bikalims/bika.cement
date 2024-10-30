@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<object name="portal_workflow" meta_type="Plone Workflow Tool">
+    <property name="title">Workflow definitions for bika.cement</property>
+    <bindings>
+        <type type_id="MaterialClass">
+            <bound-workflow workflow_id="senaite_deactivable_type_workflow"/>
+        </type>
+        <type type_id="MaterialType">
+            <bound-workflow workflow_id="senaite_deactivable_type_workflow"/>
+        </type>
+        <type type_id="MixMaterial">
+            <bound-workflow workflow_id="senaite_deactivable_type_workflow"/>
+        </type>
+        <type type_id="MixType">
+            <bound-workflow workflow_id="senaite_deactivable_type_workflow"/>
+        </type>
+        <type type_id="CuringMethod">
+            <bound-workflow workflow_id="senaite_deactivable_type_workflow"/>
+        </type>
+    </bindings>
+</object>
+
