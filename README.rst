@@ -13,7 +13,7 @@
 bika.cement
 ===========
 
-bika.cement Is a Senaite ad-on for cement and concrete research and QC labs
+bika.cement Is a Senaite add-on for cement and concrete research and QC labs
 
 Features
 --------
