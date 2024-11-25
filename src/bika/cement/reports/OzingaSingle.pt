@@ -126,6 +126,9 @@
          content: "<tal:t i18n:translate=''>Page</tal:t> " counter(page) " <tal:t i18n:translate=''>of</tal:t> " counter(pages);
        }
      }
+     .report .time-series-matrix table {
+       border: 10x;
+     }
     </style>
   </tal:css>
 
@@ -333,6 +336,10 @@
               <tbody>
                 <tal:analyses tal:repeat="analysis python:view.get_analyses_by(model, poc=poc, category=category)">
                   <tr>
+                    <p tal:content="python: dir(analysis)"/>
+                    <p tal:content="python: analysis.ResultOptionsType"/>
+                  </tr>
+                  <tr>
                     <td class="analysis">
                       <span class="text-success"
                             tal:condition="analysis/Accredited">
@@ -357,7 +364,10 @@
                       <span class="capture-date" tal:content="python:view.get_result_capture_date(analysis)"></span>
                     </td>
                     <td class="text-right">
-                      <span class="result" tal:content="structure python:model.get_formatted_result(analysis)">23</span>
+                      <span tal:condition="python: analysis.ResultOptionsType == 'timeseries'"
+                        class="result" >See Below</span>
+                      <span tal:condition="python: analysis.ResultOptionsType != 'timeseries'"
+                        class="result" tal:content="structure python:model.get_formatted_result(analysis)">23</span>
                     </td>
                     <td class="text-left text-muted font-italic">
                       <span class="units" tal:content="structure python:model.get_formatted_unit(analysis)"></span>
@@ -388,6 +398,44 @@
                 </tr>
               </tfoot>
             </table>
+
+            <!--  TIMESERIES RESULTS -->
+            <tal:render
+              define="analyses python:[analysis for analysis in view.get_analyses_by(model, poc=poc, category=category) if analysis.ResultOptionsType=='timeseries']"
+              condition="python:analyses">
+                <div class="row section-timeseries no-gutters">
+                  <div class="">
+                    <h2 i18n:translate>TimeSeries Results</h2>
+                    <tal:block tal:repeat="analysis analyses">
+                      <div tal:define="columns python: analysis.TimeSeriesColumns;
+                                         values python:view.json_loads(model.get_formatted_result(analysis))">
+                        <p tal:content="analysis/Title"/>
+                        <table class="time-series-matrix table table-sm table-condensed">
+                          <thead>
+                            <tr>
+                              <tal:head tal:repeat="col columns">
+                                <th tal:content="python: col['ColumnTitle']"/>
+                              </tal:head>
+                            </tr>
+                          <thead>
+                          <tbody>
+                            <tr tal:repeat="row values">
+                              <tal:cell tal:repeat="cell row">
+                                <th tal:content="python: cell"/>
+                              </tal:cell>
+                            </tr>
+                          </tbody>
+                        </table>
+
+                        <svg class="time-series-graph" tal:attributes="data-columns columns; data-values values"/>
+                      </div>
+                    </tal:block>
+                  </div>
+                  <br />
+                </div>
+            </tal:render>
+
+
           </tal:categories_in_poc>
         </tal:poc>
       </div>
