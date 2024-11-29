@@ -8,4 +8,8 @@
              provides="archetypes.schemaextender.interfaces.ISchemaExtender"
              factory=".analysisrequest.AnalysisRequestSchemaExtender"/>
 
+    <adapter name="bika.cement.batch"
+             provides="archetypes.schemaextender.interfaces.ISchemaExtender"
+             factory=".batch.BatchSchemaExtender"/>
+
 </configure>
