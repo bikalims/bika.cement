@@ -17,11 +17,11 @@
 #
 # Copyright 2018-2021 by it's authors.
 # Some rights reserved, see README and LICENSE.
-
 import six
 from archetypes.schemaextender.interfaces import IExtensionField
 from Products.Archetypes import public
 from bika.lims.browser.fields import UIDReferenceField
+from plone.app.blob.field import FileField
 from zope.interface import implements
 from zope.site.hooks import getSite
 
@@ -79,4 +79,8 @@ class ExtensionField(object):
 
 
 class ExtUIDReferenceField(ExtensionField, UIDReferenceField):
+    "Field extender"
+
+
+class ExtFileField(ExtensionField, FileField):
     "Field extender"
