@@ -17,11 +17,12 @@
 #
 # Copyright 2018-2021 by it's authors.
 # Some rights reserved, see README and LICENSE.
+
 import six
 from archetypes.schemaextender.interfaces import IExtensionField
-from Products.Archetypes import public
 from bika.lims.browser.fields import UIDReferenceField
 from plone.app.blob.field import FileField
+from Products.Archetypes import public
 from zope.interface import implements
 from zope.site.hooks import getSite
 
