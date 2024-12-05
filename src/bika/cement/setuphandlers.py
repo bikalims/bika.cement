@@ -38,6 +38,7 @@ def post_install(context):
     portal = context.getSite()
     add_dexterity_setup_items(portal)
     setup_catalogs(portal)
+    add_mix_tab_to_batch(portal)
 
 
 def uninstall(context):
@@ -66,3 +67,32 @@ def add_dexterity_setup_items(portal):
 def setup_catalogs(portal):
     """Setup catalogs"""
     setup_other_catalogs(portal, indexes=INDEXES, columns=COLUMNS)
+
+
+def add_mix_tab_to_batch(portal):
+    pt = api.get_tool("portal_types", context=portal)
+    fti = pt.get("Batch")
+    # Added location listing
+    actions = fti.listActions()
+    action_ids = [a.id for a in actions]
+    if "mix" not in action_ids:
+        fti.addAction(
+            id="mix",
+            name="Mix",
+            permission="View",
+            category="object",
+            visible=True,
+            icon_expr="string:${portal_url}/images/mix.png",
+            action="string:${object_url}/mix",
+            condition="",
+            link_target="",
+        )
+
+    # # add to allowed types
+    # allowed_types = fti.allowed_content_types
+    # if allowed_types:
+    #     allowed_types = list(allowed_types)
+    #     if "SamplePointLocation" not in allowed_types:
+    #         allowed_types.append("SamplePointLocation")
+    #         fti.allowed_content_types = allowed_types
+    #         logger.info("Add SamplePointLocation from Client's allowed types")
