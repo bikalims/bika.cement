@@ -92,7 +92,7 @@ def add_mix_tab_to_batch(portal):
     # allowed_types = fti.allowed_content_types
     # if allowed_types:
     #     allowed_types = list(allowed_types)
-    #     if "SamplePointLocation" not in allowed_types:
-    #         allowed_types.append("SamplePointLocation")
+    #     if "Mix" not in allowed_types:
+    #         allowed_types.append("Mix")
     #         fti.allowed_content_types = allowed_types
-    #         logger.info("Add SamplePointLocation from Client's allowed types")
+    #         logger.info("Add Mix on Batches allowed types")
