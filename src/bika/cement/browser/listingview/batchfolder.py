@@ -43,7 +43,11 @@ class BatchesListingViewAdapter(object):
         mix_template_file = [
             (
                 "MixTemplateFile",
-                {"toggle": False, "sortable": False, "title": _("Mix Template")},
+                {
+                    "toggle": False,
+                    "sortable": False,
+                    "title": _("Mix Template"),
+                },
             )
         ]
 
