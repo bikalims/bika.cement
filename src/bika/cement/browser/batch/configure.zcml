@@ -1,0 +1,14 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    i18n_domain="bika.cement">
+
+    <browser:page
+      for="bika.lims.interfaces.IBatch"
+      name="mix"
+      class="bika.cement.browser.batch.mix.BatchMixView"
+      permission="senaite.core.permissions.ManageAnalysisRequests"
+      layer="bika.cement.interfaces.IBikaCementLayer"
+    />
+
+</configure>

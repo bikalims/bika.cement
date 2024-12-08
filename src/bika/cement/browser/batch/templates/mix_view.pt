@@ -1,0 +1,24 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="bika.cement">
+
+<head>< i18n:translate=""
+        tal:content="Mix View"/>
+</head>
+
+
+<body>
+
+<div metal:fill-slot="content-core">
+
+    <h1>
+        <img tal:attributes="src string:++resource++senaite.sampleimporter.static/img/sampleimport_big.png"/>
+        <span i18n:translate="">Mix</span>
+    </h1>
+
+
+</div>
+
+</body>
+</html>
