@@ -88,11 +88,11 @@ def add_mix_tab_to_batch(portal):
             link_target="",
         )
 
-    # # add to allowed types
-    # allowed_types = fti.allowed_content_types
-    # if allowed_types:
-    #     allowed_types = list(allowed_types)
-    #     if "Mix" not in allowed_types:
-    #         allowed_types.append("Mix")
-    #         fti.allowed_content_types = allowed_types
-    #         logger.info("Add Mix on Batches allowed types")
+    # add to allowed types
+    allowed_types = fti.allowed_content_types
+    if isinstance(allowed_types, tuple) or isinstance(allowed_types, list):
+        allowed_types = list(allowed_types)
+        if "MixDesign" not in allowed_types:
+            allowed_types.append("MixDesign")
+            fti.allowed_content_types = tuple(allowed_types)
+            logger.info("Add MixDesign on Batches allowed types")

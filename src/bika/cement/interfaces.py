@@ -58,3 +58,13 @@ class IMixMaterial(Interface):
 class IMixMaterials(Interface):
     """Marker interface for mix materials setup folder
     """
+
+
+class IMixDesign(Interface):
+    """Marker interface for mix design
+    """
+
+
+class IMixDesignConcrete(Interface):
+    """Marker interface for mix design
+    """
