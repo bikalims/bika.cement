@@ -22,5 +22,11 @@
   <object name="MixMaterial" meta_type="Dexterity FTI" />
   <object name="MixMaterials" meta_type="Dexterity FTI" />
 
+  <!-- Mix Design -->
+  <object name="MixDesign" meta_type="Dexterity FTI" />
+
+  <!-- Mix Design Concrete-->
+  <object name="MixDesignConcrete" meta_type="Dexterity FTI" />
+
 </object>
 
