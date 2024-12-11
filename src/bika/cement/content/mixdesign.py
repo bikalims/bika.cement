@@ -40,6 +40,13 @@ class IMixDesignSchema(model.Schema):
         multi_valued=False,
         required=False,
     )
+    mix_materials = UIDReferenceField(
+        title=_(u"title_mix_design_mix_material", default=u"Mix Materials"),
+        relationship="MixDesignMixMaterial",
+        allowed_types=("MixMaterial", ),
+        multi_valued=True,
+        required=False,
+    )
 
     directives.widget("date", DatetimeWidget, show_time=False)
     date = DatetimeField(

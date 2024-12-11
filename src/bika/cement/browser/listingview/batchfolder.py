@@ -59,6 +59,8 @@ class BatchesListingViewAdapter(object):
         if not is_installed():
             return item
         obj = api.get_object(obj)
+        if not hasattr(obj, "MixTemplateFile"):
+            return item
         # using the regular obj.DateExported gives us errors
         # hence we are using the schema to get the value
         mix_template_file = obj.MixTemplateFile
