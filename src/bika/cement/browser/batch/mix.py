@@ -8,7 +8,7 @@ from zope.interface import implements
 
 from bika.lims import api
 from bika.lims.browser import BrowserView
-from senaite.core.catalog import SENAITE_CATALOG
+from senaite.core.catalog import SETUP_CATALOG
 
 
 class BatchMixView(BrowserView):
@@ -27,9 +27,21 @@ class BatchMixView(BrowserView):
         query = {
             "portal_type": "MixDesign",
             "path": {
-                "query": api.get_path(batch)
+                "query": api.get_path(batch),
             },
         }
-        brains = api.search(query, SENAITE_CATALOG)
+        brains = api.search(query, SETUP_CATALOG)
+        if len(brains) == 1:
+            return api.get_object(brains[0])
+
+    def get_mix_design_concrete(self):
+        mix_design = self.get_mix_design()
+        query = {
+            "portal_type": "MixDesignConcrete",
+            "path": {
+                "query": api.get_path(mix_design),
+            },
+        }
+        brains = api.search(query, SETUP_CATALOG)
         if len(brains) == 1:
             return api.get_object(brains[0])
