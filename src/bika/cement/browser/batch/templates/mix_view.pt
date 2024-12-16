@@ -69,6 +69,7 @@
           </tr>
         </table>
    </div>
+   <!-- -->
 
    <div class="col-12" tal:define="concrete python:view.get_mix_design_concrete()">
        <table class="sampleheader-table table table-sm table-bordered">
@@ -110,6 +111,15 @@
          </tr>
        </table>
    </div>
+   <!-- -->
+
+      <!-- Viewlet manager: sample sections -->
+      <div class="row" id="sample-sections">
+        <div class="col-sm-12">
+          <div tal:replace="structure provider:senaite.samplesections"></div>
+        </div>
+      </div>
+
  </div>
 
 </body>
