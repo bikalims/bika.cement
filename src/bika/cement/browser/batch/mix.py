@@ -11,8 +11,11 @@ from bika.lims import api
 from bika.lims.browser import BrowserView
 from senaite.core.catalog import SETUP_CATALOG
 
+from bika.cement.browser.controlpanel.mixmaterials import (
+    MixMaterialsView as MMV
+)
 from bika.cement.config import _
-from bika.cement.browser.controlpanel.mixmaterials import MixMaterialsView as MMV
+from bika.cement.config import is_installed
 
 
 class BatchMixView(BrowserView):
@@ -92,5 +95,38 @@ class MixMaterialTable(MMV):
 
     def __init__(self, context, request):
         super(MixMaterialTable, self).__init__(context, request)
-
+        self.contentFilter = {
+            "UID": self.get_mix_design().mix_materials,
+        }
         self.show_search = False
+        self.show_workflow_action_buttons = False
+        self.show_select_column = False
+        self.enable_ajax_transitions = None
+
+    def before_render(self):
+        if not is_installed():
+            return
+
+        # Remove review states, show all(default) and no filter
+        for i in range(len(self.review_states)):
+            if self.review_states[i]["id"] != "default":
+                continue
+            self.review_states = [self.review_states[i]]
+            break
+
+    def get_mix_design(self):
+        batch = self.context
+        query = {
+            "portal_type": "MixDesign",
+            "path": {
+                "query": api.get_path(batch),
+            },
+        }
+        brains = api.search(query, SETUP_CATALOG)
+        if len(brains) == 1:
+            return api.get_object(brains[0])
+
+        values = batch.values()
+        mix_design = [md for md in values if md.portal_type == "MixDesign"]
+        if len(mix_design) == 1:
+            return mix_design[0]
