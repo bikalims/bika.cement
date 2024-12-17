@@ -13,7 +13,7 @@ from bika.lims.browser import BrowserView
 from senaite.core.catalog import SETUP_CATALOG
 
 from bika.cement.browser.controlpanel.mixmaterials import (
-    MixMaterialsView as MMV
+    MixMaterialsView as MMV,
 )
 from bika.cement.config import _
 from bika.cement.config import is_installed
@@ -69,8 +69,10 @@ class BatchMixView(BrowserView):
 
     def get_data_from_blob_file(self, blob, sheet_name=None):
         # Step 1: Open the blob
-        with blob.open('r') as blob_file:
-            workbook = openpyxl.load_workbook(blob_file, data_only=True, read_only=True)
+        with blob.open("r") as blob_file:
+            workbook = openpyxl.load_workbook(
+                blob_file, data_only=True, read_only=True
+            )
 
             # Step 2: Get the specific sheet
             if sheet_name:
@@ -139,7 +141,9 @@ class BatchMixView(BrowserView):
         concrete_mix_design.super_air_meter = data.get("super_air_meter")
         concrete_mix_design.design_air = data.get("design_air")
         concrete_mix_design.design_slump = data.get("design_slump")
-        concrete_mix_design.theoretical_unit_weight = data.get("theoretical_unit_weight")
+        concrete_mix_design.theoretical_unit_weight = data.get(
+            "theoretical_unit_weight"
+        )
         concrete_mix_design.measured_air = data.get("measured_air")
         concrete_mix_design.measured_slump = data.get("measured_slump")
         concrete_mix_design.lab_temperature = data.get("lab_temperature")
@@ -149,8 +153,8 @@ class BatchMixView(BrowserView):
 
 
 class MixMaterialViewlet(ViewletBase):
-    """Laboratory analyses section viewlet for Sample view
-    """
+    """Laboratory analyses section viewlet for Sample view"""
+
     index = ViewPageTemplateFile("templates/mixmaterials.pt")
 
     title = _("Materials")
@@ -184,8 +188,7 @@ class MixMaterialViewlet(ViewletBase):
 
 
 class MixMaterialTable(MMV):
-    """Displays all available sample containers in a table
-    """
+    """Displays all available sample containers in a table"""
 
     def __init__(self, context, request):
         super(MixMaterialTable, self).__init__(context, request)
