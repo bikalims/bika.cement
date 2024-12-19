@@ -124,7 +124,9 @@ class BatchMixView(BrowserView):
         material_type_uid = self.get_material_type_uid(mix_data[1])
         if not material_type_uid:
             return
-        material_class_uid = self.get_material_class_uid(material_type_uid, mix_data[2])
+        material_class_uid = self.get_material_class_uid(
+            material_type_uid, mix_data[2]
+        )
         if not material_class_uid:
             return
         mix_material_uid = self.get_mix_material_uid(mix_data[1], mix_data[0])
@@ -167,7 +169,9 @@ class BatchMixView(BrowserView):
             mix_obj = mix_obj_product.getObject()
             if mix_obj.Title() == mix_material:
                 mix_material_type_uid = mix_obj.material_type[0]
-                mix_material_type_title = api.get_object_by_uid(mix_material_type_uid).Title()
+                mix_material_type_title = api.get_object_by_uid(
+                    mix_material_type_uid
+                ).Title()
                 if mix_material_type_title == material_type_title:
                     return api.get_uid(mix_obj)
         return
