@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from Acquisition import aq_base
 import openpyxl
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from plone.app.contentlisting.interfaces import IContentListing
@@ -32,13 +33,14 @@ class BatchMixView(BrowserView):
         mix_template_file = batch.MixTemplateFile
         if not mix_template_file:
             return self.template()
+        if self.get_mix_design():  # A mix design already exists
+            return self.template()
+
         blob_file = mix_template_file.blob
         sheet_name = "SSD & Batch values"
         data = self.get_data_from_blob_file(blob_file, sheet_name)
         mix_design_data = self.parse_mix_design_data(data)
         concrete_data = self.parse_mix_design_concrete_data(data)
-        if self.get_mix_design():
-            return self.template()
         mix_design = self.create_mix_design(mix_design_data)
         self.create_concrete_mix_design(mix_design, concrete_data)
         return self.template()
@@ -69,7 +71,9 @@ class BatchMixView(BrowserView):
 
     def get_data_from_blob_file(self, blob, sheet_name=None):
         # Step 1: Open the blob
-        with blob.open("r") as blob_file:
+        base_blob = aq_base(blob)
+        with base_blob.open("r") as blob_file:
+            blob_file.seek(0)
             workbook = openpyxl.load_workbook(
                 blob_file, data_only=True, read_only=True
             )
@@ -89,15 +93,84 @@ class BatchMixView(BrowserView):
                 if row:
                     if row[0] == "COA":
                         coa = True
-            return data
+        return data
 
     def parse_mix_design_data(self, data):
         mix_design_data = {}
         mix_design_data["title"] = data[0][2]
         mix_design_data["project"] = data[0][2]
         mix_design_data["mix_design_type"] = data[0][4]
-        # to-do: (mix_materials)
+        mix_materials = self.parse_mix_materials(data)
+        mix_design_data.update({"mix_materials": mix_materials})
         return mix_design_data
+
+    def parse_mix_materials(self, data):
+        mix_materials = []
+        in_materials_section = False
+        for row in data:  # to-do:how to stop going through list
+            if in_materials_section and row[1] and row[1] != "Classes":
+                material_class = row[1]
+                material_type = row[2]
+                mix_material = row[3]
+                mix_info = [mix_material, material_type, material_class]
+                mix_material = self.material_mix_validation(mix_info)
+                if mix_material:
+                    mix_materials.append(mix_material)
+            if "Design and Batch" in row[1]:
+                in_materials_section = True
+        return mix_materials
+
+    def material_mix_validation(self, mix_data):
+        material_type_uid = self.get_material_type_uid(mix_data[1])
+        if not material_type_uid:
+            return
+        material_class_uid = self.get_material_class_uid(material_type_uid, mix_data[2])
+        if not material_class_uid:
+            return
+        mix_material_uid = self.get_mix_material_uid(mix_data[1], mix_data[0])
+        if not mix_material_uid:
+            return
+        return mix_material_uid
+
+    def get_material_type_uid(self, material_type):
+        setup = self.context.setup
+        query = {
+            "portal_type": "MaterialType",
+            "path": {
+                "query": api.get_path(setup.materialtypes),
+            },
+        }
+        brains = api.search(query, SETUP_CATALOG)
+        for type_obj in brains:
+            if type_obj.Title == material_type:
+                return api.get_uid(type_obj)
+        return
+
+    def get_material_class_uid(self, material_type_uid, material_class):
+        material_type = api.get_object_by_uid(material_type_uid)
+        material_class_uid = material_type.material_class
+        material_class_obj = api.get_object_by_uid(material_class_uid[0])
+        if material_class_obj.Title() == material_class:
+            return material_class_uid[0]
+        return
+
+    def get_mix_material_uid(self, material_type_title, mix_material):
+        setup = self.context.setup
+        query = {
+            "portal_type": "MixMaterial",
+            "path": {
+                "query": api.get_path(setup.mixmaterials),
+            },
+        }
+        brains = api.search(query, SETUP_CATALOG)
+        for mix_obj_product in brains:
+            mix_obj = mix_obj_product.getObject()
+            if mix_obj.Title() == mix_material:
+                mix_material_type_uid = mix_obj.material_type[0]
+                mix_material_type_title = api.get_object_by_uid(mix_material_type_uid).Title()
+                if mix_material_type_title == material_type_title:
+                    return api.get_uid(mix_obj)
+        return
 
     def parse_mix_design_concrete_data(self, data):
         concrete_data = {}
@@ -127,6 +200,7 @@ class BatchMixView(BrowserView):
         mix_design.title = data.get("title")
         mix_design.project = data.get("project")
         mix_design.mix_design_type = data.get("mix_design_type")
+        mix_design.mix_materials = data.get("mix_materials")
         # mix_design.edit(**data)
         return mix_design
 
