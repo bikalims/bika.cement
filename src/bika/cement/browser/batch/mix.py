@@ -44,7 +44,7 @@ class BatchMixView(BrowserView):
             return self.template()
         if portal_type == "MixDesignConcrete":
             return self.template()
-        if portal_type == "Mortar" or "Paste":
+        if portal_type == "MixDesignMortarPaste":
             return self.mortar_p_template()
 
         return self.template()
@@ -90,7 +90,6 @@ class BatchMixView(BrowserView):
         brains = api.search(query, SETUP_CATALOG)
         if len(brains) == 1:
             return api.get_object(brains[0])
-
 
 
 class MixMaterialViewlet(ViewletBase):
