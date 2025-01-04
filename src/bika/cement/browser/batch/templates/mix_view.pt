@@ -104,7 +104,7 @@
            <td><span tal:content="concrete/measured_unit_weight|nothing"/> °F</td>
          </tr>
          <tr>
-           <td class="label">Design Slump (in)</td>
+           <td class="label bg-light">Design Slump (in)</td>
            <td><span tal:content="concrete/design_slump|nothing"/> in</td>
            <td class="label bg-light">Measured Slump (in)</td>
            <td><span tal:content="concrete/measured_unit_weight|nothing"/></td>
