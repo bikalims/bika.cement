@@ -33,15 +33,20 @@ class BatchMixView(BrowserView):
         mix_design = self.get_mix_design()
         if not mix_design:
             return self.template()
-        # TODO: check sample view and just render the data regardless of type
 
-        portal_type = mix_design.portal_type
+        # TODO: check sample view and just render the data regardless of type
+        mix_design_type = mix_design.mix_design_type
+        if not mix_design_type:
+            return self.template()
+
+        portal_type = api.get_object_by_uid(mix_design_type[0]).portal_type
         if not portal_type:
+            return self.template()
+        if portal_type == "MixDesignConcrete":
             return self.template()
         if portal_type == "Mortar" or "Paste":
             return self.mortar_p_template()
-        if portal_type == "Concrete":
-            return self.template()
+
         return self.template()
 
     def get_mix_design(self):
