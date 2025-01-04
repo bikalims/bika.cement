@@ -68,3 +68,8 @@ class IMixDesign(Interface):
 class IMixDesignConcrete(Interface):
     """Marker interface for mix design
     """
+
+
+class IMixDesignMortarPaste(Interface):
+    """Marker interface for mix design
+    """

@@ -12,7 +12,7 @@
                       title view/title|nothing"
           class="d-inline-block"
           tal:condition="title">
-        <img tal:condition="icon|nothing"
+        <img tal:condition="icon|nothing" style="width:32px"
              tal:attributes="src string:${portal/absolute_url}/senaite_theme/icon/${icon}"/>
         <span class="align-middle" i18n:translate="" tal:content="title"/>
       </h3>

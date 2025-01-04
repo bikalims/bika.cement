@@ -156,6 +156,30 @@ class IMixDesignConcreteSchema(model.Schema):
             default=u"Super Air Meter #"),
         required=False,
     )
+    trucked_volume = schema.Text(
+        title=_(
+            u"title_mix_design_concrete_trucked_vol",
+            default=u"Trucked Vol"),
+        required=False,
+    )
+    trucked_number = schema.Text(
+        title=_(
+            u"title_mix_design_concrete_truck_number",
+            default=u"Truck #"),
+        required=False,
+    )
+    ticket_number = schema.Text(
+        title=_(
+            u"title_mix_design_concrete_ticket_number",
+            default=u"Ticket #"),
+        required=False,
+    )
+    plant_number = schema.Text(
+        title=_(
+            u"title_mix_design_concrete_plant_number",
+            default=u"Plant #"),
+        required=False,
+    )
 
 
 @implementer(IMixDesignConcrete, IMixDesignConcreteSchema, IDeactivable)

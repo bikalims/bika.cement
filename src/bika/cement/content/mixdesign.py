@@ -36,7 +36,7 @@ class IMixDesignSchema(model.Schema):
     mix_design_type = UIDReferenceField(
         title=_(u"title_mix_design_type", default=u"Mix Design Type"),
         relationship="MixDesignTypes",
-        allowed_types=("MixDesignConcrete", ),
+        allowed_types=("MixDesignConcrete", "MixDesignMortarPaste"),
         multi_valued=False,
         required=False,
     )
@@ -54,6 +54,10 @@ class IMixDesignSchema(model.Schema):
         description=_(
             u"description_mix_design_date",
             default=u"Mix Design Date"),
+        required=False,
+    )
+    additional_info = schema.Text(
+        title=_(u"title_mix_design_addtional_info", default=u"Additional Info"),
         required=False,
     )
 

@@ -28,5 +28,7 @@
   <!-- Mix Design Concrete-->
   <object name="MixDesignConcrete" meta_type="Dexterity FTI" />
 
-</object>
+  <!-- Mix Design Mortar/Paste-->
+  <object name="MixDesignMortarPaste" meta_type="Dexterity FTI" />
 
+</object>

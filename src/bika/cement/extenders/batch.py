@@ -4,14 +4,14 @@ from archetypes.schemaextender.interfaces import IBrowserLayerAwareExtender
 from archetypes.schemaextender.interfaces import ISchemaExtender
 from bika.cement.config import _
 from bika.cement.interfaces import IBikaCementLayer
-from bika.cement.extenders.fields import ExtFileField
+from bika.cement.extenders.fields import ExtMixTemplateFileField
 from bika.lims.interfaces import IBatch
 from Products.Archetypes.atapi import FileWidget
 from zope.component import adapts
 from zope.interface import implementer
 
 
-mix_template_file = ExtFileField(
+mix_template_file = ExtMixTemplateFileField(
     "MixTemplateFile",
     widget=FileWidget(
         label=_("Mix Template"),
