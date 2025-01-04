@@ -130,6 +130,7 @@ class MixTemplateFileExtensionField(object):
                 concrete_data = self.parse_mix_design_concrete_data(data)
                 mix_design = self.create_mix_design(batch, mix_design_data)
                 self.create_concrete_mix_design(mix_design, concrete_data)
+                self.mix_materials(mix_design, data)
 
         return mutator
 
@@ -260,6 +261,20 @@ class MixTemplateFileExtensionField(object):
         # concrete_mix_design.edit(**data)
         mix_design.mix_design_type = [concrete_mix_design.UID()]
         return concrete_mix_design
+
+    def mix_materials(self, mix_design, data):
+        setup = api.get_senaite_setup()
+        folder = setup.get("mixmaterials")
+        mix_mat_data = data[9:]
+        mix_materials = []
+        for mx in mix_mat_data:
+            # m_class = mx[1]
+            # m_type = mx[2]
+            m_name = mx[3]
+            # TODO: Check if MixMaterial already exists
+            mix_material = api.create(folder, "MixMaterial", title=m_name)
+            mix_materials.append(mix_material.UID())
+        mix_design.mix_materials = mix_materials
 
 
 class ExtMixTemplateFileField(MixTemplateFileExtensionField, FileField):
