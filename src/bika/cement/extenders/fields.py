@@ -21,8 +21,8 @@
 import io
 import six
 import openpyxl
-from openpyxl import load_workbook
 from archetypes.schemaextender.interfaces import IExtensionField
+from openpyxl import load_workbook
 from plone.app.blob.field import FileField
 from Products.Archetypes import public
 from zope.interface import implements
@@ -122,12 +122,14 @@ class MixTemplateFileExtensionField(object):
             change_samples = self.has_spreadsheet_file_content_changed(
                 batch, "MixTemplateFile")
             self.set(batch, value)
-            # sheet_name = "SSD & Batch values"
-            # data = self.get_data_from_blob_file(value.file, sheet_name)
-            # mix_design_data = self.parse_mix_design_data(data)
-            # concrete_data = self.parse_mix_design_concrete_data(data)
-            # mix_design = self.create_mix_design(mix_design_data)
-            # self.create_concrete_mix_design(mix_design, concrete_data)
+            sheet_name = "SSD & Batch values"
+            if batch.MixTemplateFile:
+                blob = batch.MixTemplateFile.blob
+                data = self.get_data_from_blob_file(blob, sheet_name)
+                mix_design_data = self.parse_mix_design_data(data)
+                concrete_data = self.parse_mix_design_concrete_data(data)
+                mix_design = self.create_mix_design(batch, mix_design_data)
+                self.create_concrete_mix_design(mix_design, concrete_data)
 
         return mutator
 
@@ -176,25 +178,6 @@ class MixTemplateFileExtensionField(object):
 
         return True
 
-    # def get_data_from_blob_file(self, workbook, sheet_name=None):
-    #     # Step 1: Open the blob
-    #     # Step 2: Get the specific sheet
-    #     if sheet_name:
-    #         sheet = workbook[sheet_name]  # Access by name
-    #     else:
-    #         sheet = workbook.active  # Default to the first sheet
-
-    #     # Step 3: Extract data
-    #     data = []
-    #     coa = False
-    #     for row in sheet.iter_rows(values_only=True):
-    #         if coa and any(row):
-    #             data.append(row)
-    #         if row:
-    #             if row[0] == "COA":
-    #                 coa = True
-    #     return data
-
     def get_data_from_blob_file(self, blob, sheet_name=None):
         # Step 1: Open the blob
         with blob.open("r") as blob_file:
@@ -223,7 +206,6 @@ class MixTemplateFileExtensionField(object):
         mix_design_data = {}
         mix_design_data["title"] = data[0][2]
         mix_design_data["project"] = data[0][2]
-        mix_design_data["mix_design_type"] = data[0][4]
         # to-do: (mix_materials)
         return mix_design_data
 
@@ -249,12 +231,11 @@ class MixTemplateFileExtensionField(object):
         concrete_data["concrete_temp"] = data[6][4]
         return concrete_data
 
-    def create_mix_design(self, data):
-        batch = self.context
+    def create_mix_design(self, batch, data):
         mix_design = api.create(batch, "MixDesign")
         mix_design.title = data.get("title")
         mix_design.project = data.get("project")
-        mix_design.mix_design_type = data.get("mix_design_type")
+        # mix_design.mix_design_type = data.get("mix_design_type")
         # mix_design.edit(**data)
         return mix_design
 
@@ -277,6 +258,7 @@ class MixTemplateFileExtensionField(object):
         concrete_mix_design.lab_temperature = data.get("lab_temperature")
         concrete_mix_design.concrete_temp = data.get("concrete_temp")
         # concrete_mix_design.edit(**data)
+        mix_design.mix_design_type = [concrete_mix_design.UID()]
         return concrete_mix_design
 
 
