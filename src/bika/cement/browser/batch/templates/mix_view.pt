@@ -22,57 +22,32 @@
 
  <div metal:fill-slot="content-core" tal:define="mix_design python:view.get_mix_design()">
    <div class="col-12">
-        <table class="table table-sm table-condensed">
+        <table class="table table-sm table-bordered">
           <colgroup>
-            <col style="width:50%"/>
-            <col style="width:50%"/>
+            <col style="width:25%"/>
+            <col style="width:25%"/>
+            <col style="width:25%"/>
+            <col style="width:25%"/>
           </colgroup>
           <tr>
-            <td style="border:none;" class="align-top pr-2">
-              <!-- Left Table -->
-              <table class="table table-sm table-condensed">
-                <!-- Client Name(s) -->
-                <tr>
-                  <td class="label" i18n:translate="">Project</td>
-                  <td class="field">
-                      <div tal:content="mix_design/project|nothing"/>
-                  </td>
-                </tr>
-                <!-- Contact Name(s) -->
-                <tr>
-                  <td class="label" i18n:translate="">Date</td>
-                  <td class="field">
-                      <div tal:content="mix_design/date|nothing"/>
-                  </td>
-                </tr>
-              </table>
-            </td>
-            <td style="border:none;" class="align-top pl-2">
-              <!-- Right Table -->
-              <table class="table table-sm table-condensed">
-                <!-- Client Name(s) -->
-                <tr>
-                  <td class="label" i18n:translate="">Design</td>
-                  <td class="field">
-                      <div tal:content="mix_design/title|nothing"/>
-                  </td>
-                </tr>
-                <!-- Contact Name(s) -->
-                <tr>
-                  <td class="label" i18n:translate="">Type</td>
-                  <td class="field">
-                      <div>Concrete</div>
-                  </td>
-                </tr>
-              </table>
-            </td>
+            <td class="label bg-light" i18n:translate="">Project</td>
+            <td class="field"><div tal:content="mix_design/project|nothing"/></td>
+            <td class="label bg-light" i18n:translate="">Design</td>
+            <td class="field"><div tal:content="mix_design/title|nothing"/></td>
+          </tr>
+          <!-- Contact Name(s) -->
+          <tr>
+            <td class="label bg-light" i18n:translate="">Date</td>
+            <td class="field"><div tal:content="mix_design/date|nothing"/></td>
+            <td class="label bg-light" i18n:translate="">Type</td>
+            <td class="field"><div>Concrete</div></td>
           </tr>
         </table>
    </div>
    <!-- -->
 
    <div class="col-12" tal:define="concrete python:view.get_mix_design_concrete()">
-       <table class="sampleheader-table table table-sm table-bordered">
+       <table class="table table-sm table-bordered">
          <tr>
            <td class="label bg-light">Design W/CM</td>
            <td tal:content="concrete/design|nothing"></td>
