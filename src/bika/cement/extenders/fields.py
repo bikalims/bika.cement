@@ -18,11 +18,9 @@
 # Copyright 2018-2021 by it's authors.
 # Some rights reserved, see README and LICENSE.
 
-import io
 import six
 import openpyxl
 from archetypes.schemaextender.interfaces import IExtensionField
-from openpyxl import load_workbook
 from plone.app.blob.field import FileField
 from Products.Archetypes import public
 from zope.interface import implements
@@ -119,8 +117,6 @@ class MixSpreadsheetFileExtensionField(object):
 
     def getMutator(self, batch):
         def mutator(value, **kw):
-            change_samples = self.has_spreadsheet_file_content_changed(
-                batch, "MixSpreadsheet")
             self.set(batch, value)
             sheet_name = "SSD & Batch values"
             if batch.MixSpreadsheet:
@@ -144,40 +140,6 @@ class MixSpreadsheetFileExtensionField(object):
             raise ValueError("Bad index accessor value: %r", name)
         else:
             return getattr(instance, name)
-
-    def has_spreadsheet_file_content_changed(self, obj, field_name):
-        field = obj.getField(field_name)
-        if not field:
-            msg = "Field '{}' is not a valid file field.".format(field_name)
-            raise ValueError(msg)
-
-        current_file = field.get(obj)
-        if not current_file:
-            return False
-
-        original_files = getattr(obj, '_at_field_original_value', {})
-        original_file = original_files.get(field_name, None)
-        if not original_file:
-            return True
-
-        # Compare spreadsheet content
-        current_content = load_workbook(io.BytesIO(current_file.data))
-        original_content = load_workbook(io.BytesIO(original_file.data))
-
-        return not self.compare_workbooks(current_content, original_content)
-
-    def compare_workbooks(self, wb1, wb2):
-        """Simple comparison of two workbooks."""
-        if len(wb1.sheetnames) != len(wb2.sheetnames):
-            return False
-
-        for sheet1, sheet2 in zip(wb1, wb2):
-            if sheet1.title != sheet2.title:
-                return False
-            if list(sheet1.values) != list(sheet2.values):
-                return False
-
-        return True
 
     def get_data_from_blob_file(self, blob, sheet_name=None):
         # Step 1: Open the blob
