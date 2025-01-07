@@ -92,7 +92,7 @@ class ExtFileField(ExtensionField, FileField):
     "Field extender"
 
 
-class MixTemplateFileExtensionField(object):
+class MixSpreadsheetFileExtensionField(object):
     """Mix-in class to make Archetypes fields not depend on generated
     accessors and mutators, and use AnnotationStorage by default.
     """
@@ -101,7 +101,7 @@ class MixTemplateFileExtensionField(object):
     storage = public.AnnotationStorage()
 
     def __init__(self, *args, **kwargs):
-        super(MixTemplateFileExtensionField, self).__init__(*args, **kwargs)
+        super(MixSpreadsheetFileExtensionField, self).__init__(*args, **kwargs)
         self.args = args
         self.kwargs = kwargs
 
@@ -120,11 +120,11 @@ class MixTemplateFileExtensionField(object):
     def getMutator(self, batch):
         def mutator(value, **kw):
             change_samples = self.has_spreadsheet_file_content_changed(
-                batch, "MixTemplateFile")
+                batch, "MixSpreadsheet")
             self.set(batch, value)
             sheet_name = "SSD & Batch values"
-            if batch.MixTemplateFile:
-                blob = batch.MixTemplateFile.blob
+            if batch.MixSpreadsheet:
+                blob = batch.MixSpreadsheet.blob
                 data = self.get_data_from_blob_file(blob, sheet_name)
                 mix_design_data = self.parse_mix_design_data(data)
                 concrete_data = self.parse_mix_design_concrete_data(data)
@@ -276,5 +276,5 @@ class MixTemplateFileExtensionField(object):
         mix_design.mix_materials = mix_materials
 
 
-class ExtMixTemplateFileField(MixTemplateFileExtensionField, FileField):
+class ExtMixSpreadsheetFileField(MixSpreadsheetFileExtensionField, FileField):
     "Field extender"
