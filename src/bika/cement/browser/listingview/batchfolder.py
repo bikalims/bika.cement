@@ -42,34 +42,34 @@ class BatchesListingViewAdapter(object):
 
         mix_template_file = [
             (
-                "MixTemplateFile",
+                "MixSpreadsheet",
                 {
                     "toggle": False,
                     "sortable": False,
-                    "title": _("Mix Template"),
+                    "title": _("Mix Spreadsheet"),
                 },
             )
         ]
 
         self.listing.columns.update(mix_template_file)
         for i in range(len(self.listing.review_states)):
-            self.listing.review_states[i]["columns"].append("MixTemplateFile")
+            self.listing.review_states[i]["columns"].append("MixSpreadsheet")
 
     def folder_item(self, obj, item, index):
         if not is_installed():
             return item
         obj = api.get_object(obj)
-        if not hasattr(obj, "MixTemplateFile"):
+        if not hasattr(obj, "MixSpreadsheet"):
             return item
         # using the regular obj.DateExported gives us errors
         # hence we are using the schema to get the value
-        mix_template_file = obj.MixTemplateFile
+        mix_template_file = obj.MixSpreadsheet
         filesize = mix_template_file.get_size()
         if filesize > 0:
             url = item.get("url")
             filename = mix_template_file.getFilename()
-            download_url = "{}/at_download/MixTemplateFile".format(url)
+            download_url = "{}/at_download/MixSpreadsheet".format(url)
             anchor = get_link(download_url, filename)
-            item["MixTemplateFile"] = filename
-            item["replace"]["MixTemplateFile"] = anchor
+            item["MixSpreadsheet"] = filename
+            item["replace"]["MixSpreadsheet"] = anchor
         return item

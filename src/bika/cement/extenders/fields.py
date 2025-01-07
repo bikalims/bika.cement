@@ -92,7 +92,7 @@ class ExtFileField(ExtensionField, FileField):
     "Field extender"
 
 
-class MixTemplateFileExtensionField(object):
+class MixSpreadsheetFileExtensionField(object):
     """Mix-in class to make Archetypes fields not depend on generated
     accessors and mutators, and use AnnotationStorage by default.
     """
@@ -101,7 +101,7 @@ class MixTemplateFileExtensionField(object):
     storage = public.AnnotationStorage()
 
     def __init__(self, *args, **kwargs):
-        super(MixTemplateFileExtensionField, self).__init__(*args, **kwargs)
+        super(MixSpreadsheetFileExtensionField, self).__init__(*args, **kwargs)
         self.args = args
         self.kwargs = kwargs
 
@@ -120,11 +120,11 @@ class MixTemplateFileExtensionField(object):
     def getMutator(self, batch):
         def mutator(value, **kw):
             change_samples = self.has_spreadsheet_file_content_changed(
-                batch, "MixTemplateFile")
+                batch, "MixSpreadsheet")
             self.set(batch, value)
             sheet_name = "SSD & Batch values"
-            if batch.MixTemplateFile:
-                blob = batch.MixTemplateFile.blob
+            if batch.MixSpreadsheet:
+                blob = batch.MixSpreadsheet.blob
                 data = self.get_data_from_blob_file(blob, sheet_name)
                 mix_design_data = self.parse_mix_design_data(data)
                 concrete_data = self.parse_mix_design_concrete_data(data)
@@ -205,21 +205,19 @@ class MixTemplateFileExtensionField(object):
 
     def parse_mix_design_data(self, data):
         mix_design_data = {}
-        mix_design_data["title"] = data[0][2]
+        mix_design_data["design_title"] = data[1][2]
         mix_design_data["project"] = data[0][2]
         # to-do: (mix_materials)
         return mix_design_data
 
     def parse_mix_design_concrete_data(self, data):
         concrete_data = {}
-        concrete_data["title"] = data[0][2]
         concrete_data["batch_volume"] = data[0][6]
-        concrete_data["design"] = data[1][2]  # design number
+        concrete_data["design_title"] = data[1][2]  # design w/cm (title)
         concrete_data["replacement"] = data[1][4]
         concrete_data["paste_content"] = data[1][6]
-        # missing design w/cm
         concrete_data["total_cm"] = data[2][4]
-        # missing theoretical volume
+        concrete_data["theoretical_volume"] = data[2][6]
         concrete_data["super_air_meter"] = data[2][8]
         concrete_data["design_air"] = data[3][2]
         concrete_data["design_slump"] = data[3][4]
@@ -234,7 +232,7 @@ class MixTemplateFileExtensionField(object):
 
     def create_mix_design(self, batch, data):
         mix_design = api.create(batch, "MixDesign")
-        mix_design.title = data.get("title")
+        mix_design.title = data.get("design_title")
         mix_design.project = data.get("project")
         # mix_design.mix_design_type = data.get("mix_design_type")
         # mix_design.edit(**data)
@@ -244,10 +242,11 @@ class MixTemplateFileExtensionField(object):
         concrete_mix_design = api.create(mix_design, "MixDesignConcrete")
         concrete_mix_design.title = data.get("title")
         concrete_mix_design.batch_volume = data.get("batch_volume")
-        concrete_mix_design.design = data.get("design")
+        concrete_mix_design.design = data.get("design_title")
         concrete_mix_design.replacement = data.get("replacement")
         concrete_mix_design.paste_content = data.get("paste_content")
         concrete_mix_design.total_cm = data.get("total_cm")
+        concrete_mix_design.theoretical_volume = data.get("theoretical_volume")
         concrete_mix_design.super_air_meter = data.get("super_air_meter")
         concrete_mix_design.design_air = data.get("design_air")
         concrete_mix_design.design_slump = data.get("design_slump")
@@ -277,5 +276,5 @@ class MixTemplateFileExtensionField(object):
         mix_design.mix_materials = mix_materials
 
 
-class ExtMixTemplateFileField(MixTemplateFileExtensionField, FileField):
+class ExtMixSpreadsheetFileField(MixSpreadsheetFileExtensionField, FileField):
     "Field extender"
