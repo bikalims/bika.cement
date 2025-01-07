@@ -207,6 +207,17 @@ class MixSpreadsheetFileExtensionField(object):
         mix_design_data = {}
         mix_design_data["design_title"] = data[1][2]
         mix_design_data["project"] = data[0][2]
+        mix_design_data["additional_info"] = data[0][7]
+        date = data[5][2]
+        time = data[6][2]
+        datetime = date
+        if date and time:
+            datetime = date.replace(hour=time.hour,
+                                    minute=time.minute,
+                                    second=time.second,
+                                    microsecond=time.microsecond
+                    )
+        mix_design_data["date"] = datetime
         # to-do: (mix_materials)
         return mix_design_data
 
@@ -224,16 +235,22 @@ class MixSpreadsheetFileExtensionField(object):
         concrete_data["theoretical_unit_weight"] = data[3][6]
         concrete_data["measured_air"] = data[4][2]
         concrete_data["measured_slump"] = data[4][4]
-        # date missing
         concrete_data["lab_temperature"] = data[5][4]
-        # missing time
         concrete_data["concrete_temp"] = data[6][4]
+        # Additional Table
+        concrete_data["trucked_volume"] = data[3][8]
+        concrete_data["trucked_number"] = data[4][8]
+        concrete_data["ticket_number"] = data[5][8]
+        concrete_data["plant_number"] = data[6][8]
         return concrete_data
 
     def create_mix_design(self, batch, data):
         mix_design = api.create(batch, "MixDesign")
         mix_design.title = data.get("design_title")
         mix_design.project = data.get("project")
+        mix_design.additional_info = data.get("additional_info")
+        mix_design.date = data.get("date")
+
         # mix_design.mix_design_type = data.get("mix_design_type")
         # mix_design.edit(**data)
         return mix_design
@@ -257,6 +274,11 @@ class MixSpreadsheetFileExtensionField(object):
         concrete_mix_design.measured_slump = data.get("measured_slump")
         concrete_mix_design.lab_temperature = data.get("lab_temperature")
         concrete_mix_design.concrete_temp = data.get("concrete_temp")
+
+        concrete_mix_design.trucked_volume = data.get("trucked_volume")
+        concrete_mix_design.trucked_number = data.get("trucked_number")
+        concrete_mix_design.ticket_number = data.get("ticket_number")
+        concrete_mix_design.plant_number = data.get("plant_number")
         # concrete_mix_design.edit(**data)
         mix_design.mix_design_type = [concrete_mix_design.UID()]
         return concrete_mix_design
