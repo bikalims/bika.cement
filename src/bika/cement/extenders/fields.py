@@ -126,7 +126,7 @@ class MixSpreadsheetFileExtensionField(object):
                 mix_design_data = self.parse_mix_design_data(data)
                 if not mix_design_data:
                     pu = api.get_tool("plone_utils")
-                    msg = "Spreadsheet Mix Design is Required"
+                    msg = "Spreadsheet Mix Design and Project are Required"
                     pu.addPortalMessage(msg, "error")
                     return mutator
 
@@ -175,9 +175,12 @@ class MixSpreadsheetFileExtensionField(object):
     def parse_mix_design_data(self, data):
         mix_design_data = {}
         mix_design_data["design_title"] = data[1][2]
+        mix_design_data["project"] = data[0][2]
         if not mix_design_data["design_title"]:
             return {}
-        mix_design_data["project"] = data[0][2]
+        if not mix_design_data["project"]:
+            return {}
+
         mix_design_data["additional_info"] = data[0][7]
         date = data[5][2]
         time = data[6][2]

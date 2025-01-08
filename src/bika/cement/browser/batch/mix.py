@@ -55,6 +55,8 @@ class BatchMixView(BrowserView):
 
     def get_mix_design_concrete(self):
         mix_design = self.get_mix_design()
+        if not mix_design:
+            return None
         return mix_design.get_mix_design_concrete()
 
     def get_mix_design_mortar_paste(self):
