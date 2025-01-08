@@ -104,3 +104,20 @@ class MixDesign(Container):
         concrete = [md for md in values if md.portal_type == "MixDesignConcrete"]
         if len(concrete) == 1:
             return concrete[0]
+
+    def get_mix_design_mortar_paste(self):
+        mix_design = self
+        query = {
+            "portal_type": "MixDesignMortarPaste",
+            "path": {
+                "query": api.get_path(mix_design),
+            },
+        }
+        brains = api.search(query, SETUP_CATALOG)
+        if len(brains) == 1:
+            return api.get_object(brains[0])
+
+        values = mix_design.values()
+        mortar_paste = [md for md in values if md.portal_type == "MixDesignMortarPaste"]
+        if len(mortar_paste) == 1:
+            return mortar_paste[0]

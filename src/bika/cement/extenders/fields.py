@@ -230,9 +230,9 @@ class MixSpreadsheetFileExtensionField(object):
         concrete_data["design_title"] = data[1][2]  # design w/cm (title)
         concrete_data["replacement"] = data[1][4]
         concrete_data["lab_temperature"] = data[5][4]
-        concrete_data["mortar_temperature"] = data[5][4]
-        concrete_data["mold_numbers"] = data[5][4]
-        concrete_data["mortar_flow"] = data[5][4]
+        concrete_data["mortar_temperature"] = data[6][4]
+        concrete_data["mold_numbers"] = data[5][6]
+        concrete_data["mortar_flow"] = data[6][6]
         return concrete_data
 
     def create_mix_design(self, batch, data):
@@ -281,34 +281,21 @@ class MixSpreadsheetFileExtensionField(object):
         return concrete_mix_design
 
     def create_mortar_paste_mix_design(self, mix_design, data):
-        concrete_mix_design = mix_design.get_mix_design_concrete()
-        if not concrete_mix_design:
-            concrete_mix_design = api.create(mix_design, "MixDesignConcrete")
+        import pdb; pdb.set_trace()
+        mortar_paste_mix_design = mix_design.get_mix_design_mortar_paste()
+        if not mortar_paste_mix_design:
+            mortar_paste_mix_design = api.create(mix_design, "MixDesignMortarPaste")
 
-        concrete_mix_design.batch_volume = data.get("batch_volume")
-        concrete_mix_design.design = data.get("design_title")
-        concrete_mix_design.replacement = data.get("replacement")
-        concrete_mix_design.paste_content = data.get("paste_content")
-        concrete_mix_design.total_cm = data.get("total_cm")
-        concrete_mix_design.theoretical_volume = data.get("theoretical_volume")
-        concrete_mix_design.super_air_meter = data.get("super_air_meter")
-        concrete_mix_design.design_air = data.get("design_air")
-        concrete_mix_design.design_slump = data.get("design_slump")
-        concrete_mix_design.theoretical_unit_weight = data.get(
-            "theoretical_unit_weight"
-        )
-        concrete_mix_design.measured_air = data.get("measured_air")
-        concrete_mix_design.measured_slump = data.get("measured_slump")
-        concrete_mix_design.lab_temperature = data.get("lab_temperature")
-        concrete_mix_design.concrete_temp = data.get("concrete_temp")
+        mortar_paste_mix_design.design = data.get("design_title")
+        mortar_paste_mix_design.replacement = data.get("replacement")
+        mortar_paste_mix_design.lab_temperature = data.get("lab_temperature")
+        mortar_paste_mix_design.mortar_temperature = data.get("mortar_temperature")
+        mortar_paste_mix_design.mold_numbers = data.get("mold_numbers")
+        mortar_paste_mix_design.mortar_flow = data.get("mortar_flow")
 
-        concrete_mix_design.trucked_volume = data.get("trucked_volume")
-        concrete_mix_design.trucked_number = data.get("trucked_number")
-        concrete_mix_design.ticket_number = data.get("ticket_number")
-        concrete_mix_design.plant_number = data.get("plant_number")
-        # concrete_mix_design.edit(**data)
-        mix_design.mix_design_type = [concrete_mix_design.UID()]
-        return concrete_mix_design
+        # mortar_paste_mix_design.edit(**data)
+        mix_design.mix_design_type = [mortar_paste_mix_design.UID()]
+        return mortar_paste_mix_design
 
     def mix_materials(self, mix_design, data):
         setup = api.get_senaite_setup()
