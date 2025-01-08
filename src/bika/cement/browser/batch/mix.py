@@ -30,7 +30,7 @@ class BatchMixView(BrowserView):
     def __call__(self):
         #
         batch = self.context
-        mix_design = self.get_mix_design()
+        mix_design = batch.get_mix_design()
         if not mix_design:
             return self.template()
 
@@ -51,31 +51,11 @@ class BatchMixView(BrowserView):
 
     def get_mix_design(self):
         batch = self.context
-        query = {
-            "portal_type": "MixDesign",
-            "path": {
-                "query": api.get_path(batch),
-            },
-        }
-        brains = api.search(query, SETUP_CATALOG)
-        if len(brains) == 1:
-            return api.get_object(brains[0])
-        return None
+        return batch.get_mix_design()
 
     def get_mix_design_concrete(self):
         mix_design = self.get_mix_design()
-        if not mix_design:
-            return None
-
-        query = {
-            "portal_type": "MixDesignConcrete",
-            "path": {
-                "query": api.get_path(mix_design),
-            },
-        }
-        brains = api.search(query, SETUP_CATALOG)
-        if len(brains) == 1:
-            return api.get_object(brains[0])
+        return mix_design.get_mix_design_concrete()
 
     def get_mix_design_mortar_paste(self):
         mix_design = self.get_mix_design()
@@ -153,18 +133,4 @@ class MixMaterialTable(MMV):
 
     def get_mix_design(self):
         batch = self.context
-        query = {
-            "portal_type": "MixDesign",
-            "path": {
-                "query": api.get_path(batch),
-            },
-        }
-        brains = api.search(query, SETUP_CATALOG)
-        if len(brains) == 1:
-            return api.get_object(brains[0])
-
-        values = batch.values()
-        mix_design = [md for md in values if md.portal_type == "MixDesign"]
-        if len(mix_design) == 1:
-            return mix_design[0]
-        return None
+        return batch.get_mix_design()

@@ -207,7 +207,10 @@ class MixSpreadsheetFileExtensionField(object):
         return concrete_data
 
     def create_mix_design(self, batch, data):
-        mix_design = api.create(batch, "MixDesign")
+        # NOTE: Only one mix design per batch, or edit the existing mix design
+        mix_design = batch.get_mix_design()
+        if not mix_design:
+            mix_design = api.create(batch, "MixDesign")
         mix_design.title = data.get("design_title")
         mix_design.project = data.get("project")
         mix_design.additional_info = data.get("additional_info")
@@ -218,7 +221,11 @@ class MixSpreadsheetFileExtensionField(object):
         return mix_design
 
     def create_concrete_mix_design(self, mix_design, data):
-        concrete_mix_design = api.create(mix_design, "MixDesignConcrete")
+        # NOTE: Only one concrete mix per mix design, or edit the existing
+        # concrete mix
+        concrete_mix_design = mix_design.get_mix_design_concrete()
+        if not concrete_mix_design:
+            concrete_mix_design = api.create(mix_design, "MixDesignConcrete")
         concrete_mix_design.title = data.get("title")
         concrete_mix_design.batch_volume = data.get("batch_volume")
         concrete_mix_design.design = data.get("design_title")

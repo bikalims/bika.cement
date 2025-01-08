@@ -87,3 +87,20 @@ class MixDesign(Container):
         result = schema[fieldname].set
         self.reindexObject()
         return result
+
+    def get_mix_design_concrete(self):
+        mix_design = self
+        query = {
+            "portal_type": "MixDesignConcrete",
+            "path": {
+                "query": api.get_path(mix_design),
+            },
+        }
+        brains = api.search(query, SETUP_CATALOG)
+        if len(brains) == 1:
+            return api.get_object(brains[0])
+
+        values = mix_design.values()
+        concrete = [md for md in values if md.portal_type == "MixDesignConcrete"]
+        if len(concrete) == 1:
+            return concrete[0]
