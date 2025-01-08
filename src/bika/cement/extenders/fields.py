@@ -123,6 +123,12 @@ class MixSpreadsheetFileExtensionField(object):
                 blob = batch.MixSpreadsheet.blob
                 data = self.get_data_from_blob_file(blob, sheet_name)
                 mix_design_data = self.parse_mix_design_data(data)
+                if not mix_design_data:
+                    pu = api.get_tool("plone_utils")
+                    msg = "Spreadsheet Mix Design is Required"
+                    pu.addPortalMessage(msg, "error")
+                    return mutator
+
                 concrete_data = self.parse_mix_design_concrete_data(data)
                 mix_design = self.create_mix_design(batch, mix_design_data)
                 self.create_concrete_mix_design(mix_design, concrete_data)
@@ -168,6 +174,8 @@ class MixSpreadsheetFileExtensionField(object):
     def parse_mix_design_data(self, data):
         mix_design_data = {}
         mix_design_data["design_title"] = data[1][2]
+        if not mix_design_data["design_title"]:
+            return {}
         mix_design_data["project"] = data[0][2]
         mix_design_data["additional_info"] = data[0][7]
         date = data[5][2]
