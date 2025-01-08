@@ -21,7 +21,7 @@ from bika.cement.config import is_installed
 class BatchMixView(BrowserView):
     implements(IViewView)
     template = ViewPageTemplateFile("templates/mix_view.pt")
-    mortar_p_template = ViewPageTemplateFile("templates/mix_morta_paste_view.pt")
+    mortar_p_template = ViewPageTemplateFile("templates/mix_mortar_paste_view.pt")
 
     def __init__(self, context, request):
         super(BatchMixView, self).__init__(context, request)

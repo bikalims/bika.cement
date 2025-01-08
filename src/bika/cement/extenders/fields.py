@@ -129,10 +129,18 @@ class MixSpreadsheetFileExtensionField(object):
                     msg = "Spreadsheet Mix Design is Required"
                     pu.addPortalMessage(msg, "error")
                     return mutator
-
-                concrete_data = self.parse_mix_design_concrete_data(data)
-                mix_design = self.create_mix_design(batch, mix_design_data)
-                self.create_concrete_mix_design(mix_design, concrete_data)
+                import pdb; pdb.set_trace()
+                design_type = mix_design_data.get("type")
+                if "Mortar" in design_type or "Paste" in design_type:
+                    mortar_paste_data = self.parse_mix_design_mortar_paste_data(data)
+                    mix_design = self.create_mix_design(batch, mix_design_data)
+                    self.create_mortar_paste_mix_design(mix_design, mortar_paste_data)
+                elif design_type == "Concrete":
+                    concrete_data = self.parse_mix_design_concrete_data(data)
+                    mix_design = self.create_mix_design(batch, mix_design_data)
+                    self.create_concrete_mix_design(mix_design, concrete_data)
+                else:
+                    return mutator
                 self.mix_materials(mix_design, data)
 
         return mutator
@@ -178,7 +186,6 @@ class MixSpreadsheetFileExtensionField(object):
         if not mix_design_data["design_title"]:
             return {}
         mix_design_data["project"] = data[0][2]
-        mix_design_data["additional_info"] = data[0][7]
         date = data[5][2]
         time = data[6][2]
         datetime = date
@@ -189,6 +196,9 @@ class MixSpreadsheetFileExtensionField(object):
                                     microsecond=time.microsecond
                     )
         mix_design_data["date"] = datetime
+        mix_design_data["type"] = data[0][4]
+        if mix_design_data.get("type") == "Concrete":
+            mix_design_data["additional_info"] = data[0][7]
         # to-do: (mix_materials)
         return mix_design_data
 
@@ -215,6 +225,16 @@ class MixSpreadsheetFileExtensionField(object):
         concrete_data["plant_number"] = data[6][8]
         return concrete_data
 
+    def parse_mix_design_mortar_paste_data(self, data):
+        concrete_data = {}
+        concrete_data["design_title"] = data[1][2]  # design w/cm (title)
+        concrete_data["replacement"] = data[1][4]
+        concrete_data["lab_temperature"] = data[5][4]
+        concrete_data["mortar_temperature"] = data[5][4]
+        concrete_data["mold_numbers"] = data[5][4]
+        concrete_data["mortar_flow"] = data[5][4]
+        return concrete_data
+
     def create_mix_design(self, batch, data):
         # NOTE: Only one mix design per batch, or edit the existing mix design
         mix_design = batch.get_mix_design()
@@ -222,9 +242,9 @@ class MixSpreadsheetFileExtensionField(object):
             mix_design = api.create(batch, "MixDesign")
         mix_design.title = data.get("design_title")
         mix_design.project = data.get("project")
-        mix_design.additional_info = data.get("additional_info")
         mix_design.date = data.get("date")
-
+        if data.get("type") == "Concrete":
+            mix_design.additional_info = data.get("additional_info")
         # mix_design.mix_design_type = data.get("mix_design_type")
         # mix_design.edit(**data)
         return mix_design
@@ -235,7 +255,36 @@ class MixSpreadsheetFileExtensionField(object):
         concrete_mix_design = mix_design.get_mix_design_concrete()
         if not concrete_mix_design:
             concrete_mix_design = api.create(mix_design, "MixDesignConcrete")
-        concrete_mix_design.title = data.get("title")
+        concrete_mix_design.batch_volume = data.get("batch_volume")
+        concrete_mix_design.design = data.get("design_title")
+        concrete_mix_design.replacement = data.get("replacement")
+        concrete_mix_design.paste_content = data.get("paste_content")
+        concrete_mix_design.total_cm = data.get("total_cm")
+        concrete_mix_design.theoretical_volume = data.get("theoretical_volume")
+        concrete_mix_design.super_air_meter = data.get("super_air_meter")
+        concrete_mix_design.design_air = data.get("design_air")
+        concrete_mix_design.design_slump = data.get("design_slump")
+        concrete_mix_design.theoretical_unit_weight = data.get(
+            "theoretical_unit_weight"
+        )
+        concrete_mix_design.measured_air = data.get("measured_air")
+        concrete_mix_design.measured_slump = data.get("measured_slump")
+        concrete_mix_design.lab_temperature = data.get("lab_temperature")
+        concrete_mix_design.concrete_temp = data.get("concrete_temp")
+
+        concrete_mix_design.trucked_volume = data.get("trucked_volume")
+        concrete_mix_design.trucked_number = data.get("trucked_number")
+        concrete_mix_design.ticket_number = data.get("ticket_number")
+        concrete_mix_design.plant_number = data.get("plant_number")
+        # concrete_mix_design.edit(**data)
+        mix_design.mix_design_type = [concrete_mix_design.UID()]
+        return concrete_mix_design
+
+    def create_mortar_paste_mix_design(self, mix_design, data):
+        concrete_mix_design = mix_design.get_mix_design_concrete()
+        if not concrete_mix_design:
+            concrete_mix_design = api.create(mix_design, "MixDesignConcrete")
+
         concrete_mix_design.batch_volume = data.get("batch_volume")
         concrete_mix_design.design = data.get("design_title")
         concrete_mix_design.replacement = data.get("replacement")
