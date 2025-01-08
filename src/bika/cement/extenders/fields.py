@@ -28,6 +28,7 @@ from zope.site.hooks import getSite
 
 from bika.lims import api
 from bika.lims.browser.fields import UIDReferenceField
+from senaite.core.catalog import SETUP_CATALOG
 
 
 class ExtensionField(object):
@@ -265,14 +266,28 @@ class MixSpreadsheetFileExtensionField(object):
         folder = setup.get("mixmaterials")
         mix_mat_data = data[9:]
         mix_materials = []
+        errors = []
+        query = {
+            "portal_type": "MixMaterial",
+            "path": {
+                "query": api.get_path(folder),
+            },
+        }
         for mx in mix_mat_data:
-            # m_class = mx[1]
-            # m_type = mx[2]
             m_name = mx[3]
-            # TODO: Check if MixMaterial already exists
-            mix_material = api.create(folder, "MixMaterial", title=m_name)
-            mix_materials.append(mix_material.UID())
+            query["title"] = m_name
+            # TODO: filter by title once the title index has been added
+            brains = api.search(query, SETUP_CATALOG)
+            brains = [md for md in brains if md.title == m_name]
+            if not brains:
+                errors.append(m_name)
+                continue
+            mix_materials.append(brains[0].UID)
         mix_design.mix_materials = mix_materials
+        if errors:
+            msg = "Spreadsheet Mix Materials not found: %s" % ", ".join(errors)
+            pu = api.get_tool("plone_utils")
+            pu.addPortalMessage(msg, "error")
 
 
 class ExtMixSpreadsheetFileField(MixSpreadsheetFileExtensionField, FileField):
