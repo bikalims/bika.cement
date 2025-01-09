@@ -4,8 +4,11 @@ def format_number(value, decimal_places=2):
     if value in (None, ""):
         return None
     
-    if isinstance(value, int):
-        return value  # Return as-is if it's an integer
+    if isinstance(value, (int, long)):
+        try:
+            return int(value)  # Return as-is if it's an integer
+        except OverflowError:
+            return value
     
     try:
         num = float(value)
