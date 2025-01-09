@@ -130,14 +130,13 @@ class MixSpreadsheetFileExtensionField(object):
                     msg = "Spreadsheet Mix Design and Project are Required"
                     pu.addPortalMessage(msg, "error")
                     return mutator
+                mix_design = self.create_mix_design(batch, mix_design_data)
                 design_type = mix_design_data.get("type")
                 if "Mortar" in design_type or "Paste" in design_type:
                     mortar_paste_data = self.parse_mix_design_mortar_paste_data(data)
-                    mix_design = self.create_mix_design(batch, mix_design_data)
                     self.create_mortar_paste_mix_design(mix_design, mortar_paste_data)
                 elif design_type == "Concrete":
                     concrete_data = self.parse_mix_design_concrete_data(data)
-                    mix_design = self.create_mix_design(batch, mix_design_data)
                     self.create_concrete_mix_design(mix_design, concrete_data)
                 else:
                     return mutator
@@ -285,7 +284,6 @@ class MixSpreadsheetFileExtensionField(object):
         return concrete_mix_design
 
     def create_mortar_paste_mix_design(self, mix_design, data):
-        import pdb; pdb.set_trace()
         mortar_paste_mix_design = mix_design.get_mix_design_mortar_paste()
         if not mortar_paste_mix_design:
             mortar_paste_mix_design = api.create(mix_design, "MixDesignMortarPaste")
@@ -315,6 +313,8 @@ class MixSpreadsheetFileExtensionField(object):
         }
         for mx in mix_mat_data:
             m_name = mx[3]
+            if not m_name:
+                continue
             query["title"] = m_name
             # TODO: filter by title once the title index has been added
             brains = api.search(query, SETUP_CATALOG)
