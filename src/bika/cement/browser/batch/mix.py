@@ -22,7 +22,7 @@ class BatchMixView(BrowserView):
     implements(IViewView)
     template = ViewPageTemplateFile("templates/mix_view.pt")
     mortar_p_template = ViewPageTemplateFile(
-        "templates/mix_morta_paste_view.pt"
+        "templates/mix_mortar_paste_view.pt"
     )
 
     def __init__(self, context, request):
@@ -67,7 +67,7 @@ class BatchMixView(BrowserView):
             return None
         query = {
             "portal_type": "MixDesignMortarPaste",
-            "path": {"query": api.get_path(mix_design),},
+            "path": {"query": api.get_path(mix_design), },
         }
         brains = api.search(query, SETUP_CATALOG)
         if len(brains) == 1:
