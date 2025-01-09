@@ -231,11 +231,11 @@ class MixSpreadsheetFileExtensionField(object):
     def parse_mix_design_mortar_paste_data(self, data):
         concrete_data = {}
         concrete_data["design_title"] = data[1][2]  # design w/cm (title)
-        concrete_data["replacement"] = data[1][4]
-        concrete_data["lab_temperature"] = data[5][4]
-        concrete_data["mortar_temperature"] = data[6][4]
+        concrete_data["replacement"] = format_number(data[1][4])
+        concrete_data["lab_temperature"] = format_number(data[5][4])
+        concrete_data["mortar_temperature"] = format_number(data[6][4])
         concrete_data["mold_numbers"] = data[5][6]
-        concrete_data["mortar_flow"] = data[6][6]
+        concrete_data["mortar_flow"] = format_number(data[6][6])
         return concrete_data
 
     def create_mix_design(self, batch, data):
