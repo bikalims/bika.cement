@@ -101,7 +101,9 @@ class MixDesign(Container):
             return api.get_object(brains[0])
 
         values = mix_design.values()
-        concrete = [md for md in values if md.portal_type == "MixDesignConcrete"]
+        concrete = [
+            md for md in values if md.portal_type == "MixDesignConcrete"
+        ]
         if len(concrete) == 1:
             return concrete[0]
 

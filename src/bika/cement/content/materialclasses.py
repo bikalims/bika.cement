@@ -31,9 +31,7 @@ class IMaterialClassesSchema(model.Schema):
     """
 
 
-@implementer(IMaterialClasses,
-             IMaterialClassesSchema,
-             IHideActionsMenu)
+@implementer(IMaterialClasses, IMaterialClassesSchema, IHideActionsMenu)
 class MaterialClasses(Container):
     """A folder/container for material classes
     """
