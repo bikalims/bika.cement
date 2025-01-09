@@ -123,3 +123,17 @@ class MixDesign(Container):
         mortar_paste = [md for md in values if md.portal_type == "MixDesignMortarPaste"]
         if len(mortar_paste) == 1:
             return mortar_paste[0]
+
+    def get_mix_design_type(self):
+        mix_design = self
+        mix_design_type = mix_design.mix_design_type
+        if not mix_design_type:
+            return
+
+        portal_type = api.get_object_by_uid(mix_design_type[0]).portal_type
+        if not portal_type:
+            return
+        if portal_type == "MixDesignConcrete":
+            return "Concrete"
+        if portal_type == "MixDesignMortarPaste":
+            return "Mortar or Paste"
