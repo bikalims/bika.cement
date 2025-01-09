@@ -210,7 +210,6 @@ class MixSpreadsheetFileExtensionField(object):
         concrete_data["theoretical_unit_weight"] = format_number(data[3][6])
         concrete_data["measured_air"] = format_number(data[4][2])
         concrete_data["measured_slump"] = format_number(data[4][4])
-        import pdb; pdb.set_trace()
         concrete_data["lab_temperature"] = format_number(data[5][4])
         concrete_data["concrete_temp"] = format_number(data[6][4])
         # Additional Table
