@@ -29,6 +29,7 @@ from zope.site.hooks import getSite
 from bika.lims import api
 from bika.lims.browser.fields import UIDReferenceField
 from senaite.core.catalog import SETUP_CATALOG
+from bika.cement.utils import format_number
 
 
 class ExtensionField(object):
@@ -207,22 +208,22 @@ class MixSpreadsheetFileExtensionField(object):
 
     def parse_mix_design_concrete_data(self, data):
         concrete_data = {}
-        concrete_data["batch_volume"] = data[0][6]
+        concrete_data["batch_volume"] = format_number(data[0][6])
         concrete_data["design_title"] = data[1][2]  # design w/cm (title)
-        concrete_data["replacement"] = data[1][4]
-        concrete_data["paste_content"] = data[1][6]
-        concrete_data["total_cm"] = data[2][4]
-        concrete_data["theoretical_volume"] = data[2][6]
+        concrete_data["replacement"] = format_number(data[1][4])
+        concrete_data["paste_content"] = format_number(data[1][6])
+        concrete_data["total_cm"] = format_number(data[2][4])
+        concrete_data["theoretical_volume"] = format_number(data[2][6])
         concrete_data["super_air_meter"] = data[2][8]
-        concrete_data["design_air"] = data[3][2]
-        concrete_data["design_slump"] = data[3][4]
-        concrete_data["theoretical_unit_weight"] = data[3][6]
-        concrete_data["measured_air"] = data[4][2]
-        concrete_data["measured_slump"] = data[4][4]
-        concrete_data["lab_temperature"] = data[5][4]
-        concrete_data["concrete_temp"] = data[6][4]
+        concrete_data["design_air"] = format_number(data[3][2])
+        concrete_data["design_slump"] = format_number(data[3][4])
+        concrete_data["theoretical_unit_weight"] = format_number(data[3][6])
+        concrete_data["measured_air"] = format_number(data[4][2])
+        concrete_data["measured_slump"] = format_number(data[4][4])
+        concrete_data["lab_temperature"] = format_number(data[5][4])
+        concrete_data["concrete_temp"] = format_number(data[6][4])
         # Additional Table
-        concrete_data["trucked_volume"] = data[3][8]
+        concrete_data["trucked_volume"] = format_number(data[3][8])
         concrete_data["trucked_number"] = data[4][8]
         concrete_data["ticket_number"] = data[5][8]
         concrete_data["plant_number"] = data[6][8]

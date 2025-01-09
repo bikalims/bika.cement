@@ -66,7 +66,7 @@
            <td class="label bg-light">Theoretical Volume</td>
            <td>
              <span tal:content="concrete/theoretical_volume|nothing"/>
-             <span tal:condition="concrete/theoretical_volume"> cu ft</span>
+             <span tal:condition="concrete/theoretical_volume|nothing"> cu ft</span>
            </td>
            <td class="label bg-light">Batch Volume</td>
            <td>
