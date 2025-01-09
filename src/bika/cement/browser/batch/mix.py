@@ -21,7 +21,9 @@ from bika.cement.config import is_installed
 class BatchMixView(BrowserView):
     implements(IViewView)
     template = ViewPageTemplateFile("templates/mix_view.pt")
-    mortar_p_template = ViewPageTemplateFile("templates/mix_morta_paste_view.pt")
+    mortar_p_template = ViewPageTemplateFile(
+        "templates/mix_morta_paste_view.pt"
+    )
 
     def __init__(self, context, request):
         super(BatchMixView, self).__init__(context, request)
@@ -65,9 +67,7 @@ class BatchMixView(BrowserView):
             return None
         query = {
             "portal_type": "MixDesignMortarPaste",
-            "path": {
-                "query": api.get_path(mix_design),
-            },
+            "path": {"query": api.get_path(mix_design),},
         }
         brains = api.search(query, SETUP_CATALOG)
         if len(brains) == 1:
@@ -115,7 +115,9 @@ class MixMaterialTable(MMV):
     def __init__(self, context, request):
         super(MixMaterialTable, self).__init__(context, request)
         self.contentFilter = {
-            "UID": self.get_mix_design().mix_materials if self.get_mix_design() else [],
+            "UID": self.get_mix_design().mix_materials
+            if self.get_mix_design()
+            else [],
         }
         self.show_search = False
         self.show_workflow_action_buttons = False
