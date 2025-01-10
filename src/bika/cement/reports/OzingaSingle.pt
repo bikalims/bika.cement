@@ -434,6 +434,9 @@
 
 
   <!--  Mix Information-->
+  <div style="padding-top: 20px;">
+    <h1>Mix</h1>
+  </div>
   <tal:render condition="python:True">
     <div class="col-12"  tal:define="batch model/Batch;
                                      mix_design batch/get_mix_design">
