@@ -435,7 +435,8 @@
 
   <!--  Mix Information-->
   <tal:render condition="python:True">
-    <div class="col-12" s>
+    <div class="col-12"  tal:define="batch model/Batch;
+                                     mix_design batch/get_mix_design">
         <table class="table table-sm table-bordered">
           <colgroup>
             <col style="width:25%"/>
@@ -460,7 +461,7 @@
     </div>
 
 <!--tal:define="concrete python:view.get_mix_design_concrete()" -->
-    <div class="col-12" tal:define="concrete python:view.get_mix_design_concrete()" >
+    <div class="col-12">
       <table class="table table-sm table-bordered">
         <tr>
           <td class="label bg-light">Design W/CM</td>
