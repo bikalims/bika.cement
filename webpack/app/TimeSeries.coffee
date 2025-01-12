@@ -68,7 +68,6 @@ class TimeSeries
   build_graph: ->
     console.log "TimeSeries::build_graph: entered"
 
-    console.log "TimeSeries::build_graph: is current"
     values = this.state.value
 
     if values == ""
@@ -92,7 +91,7 @@ class TimeSeries
         opacity: "1.0",
         symbol: d3.symbolCircle
       }
-    console.log(line_configs)
+    console.debug(line_configs)
 
     # Set up dimensions
     margin = {top: 40, right: 80, bottom: 50, left: 60}
@@ -200,11 +199,8 @@ class TimeSeries
     svg.append("g")
       .call(d3.axisLeft(y))
 
-    console.log(headers)
-    console.log(data)
-
     headers.slice(1).forEach((key, i) ->
-      console.log("Main loop: " + key + "  " + i)
+      console.debug("Main loop: " + key + "  " + i)
 
       # Filter data to exclude rows with null, undefined, or non-numeric values for the current key
       validData = data.filter((d) ->
@@ -282,69 +278,4 @@ class TimeSeries
 
     console.log "TimeSeries::build_graph: svg done"
 
-    #  # Convert SVG to PNG and replace it in the container
-    #  d3ToPng(svg.node(), 'my-image', { scale: 2, download: false, format: 'png' })
-    #      .then (fileData) =>
-    #          # Create an image element and set its source to the generated PNG
-    #          d3.select(@container).selectAll('svg').remove() # Remove existing SVG
-    #          d3.select(@container).selectAll('img').remove() # Remove existing SVG
-    #          d3.select(@container).append('div')
-    #              .attr('id', 'test')
-    #          d3.select(@container).append('img')
-    #              .attr('id', 'mike')
-    #              .attr('src', fileData)
-    #              .attr('alt', 'Generated Image')
-
-    # Convert SVG to PNG using a canvas
-    console.log("Container:", @container)
-     
-    test_svg = d3.select(@container).append('svg')
-        .attr('width', 100)
-        .attr('height', 100)
-        .attr('xmlns', 'http://www.w3.org/2000/svg') # Ensure correct namespace
-
-    test_svg.append('circle')
-        .attr('cx', 50)
-        .attr('cy', 50)
-        .attr('r', 40)
-        .attr('fill', 'red')
-
-    #  svgString = new XMLSerializer().serializeToString(test_svg.node())
-    #  console.log('svgString: ' + svgString)
-
-    #  # Create canvas with same dimensions as SVG
-    #  canvas = document.createElement 'canvas'
-    #  canvas.width = width
-    #  canvas.height = height
-    #  
-    #  parent = @container
-    #  # Ensure container has the canvas
-    #  parent.innerHTML = ''
-    #  parent.appendChild canvas
-
-    #  # Directly log canvas and Canvg for debugging
-    #  console.log 'Canvas:', canvas
-    #  console.log 'Canvg:', Canvg
-    #  console.log 'SVG outerHTML:', test_svg.node().outerHTML
-
-    #  try
-    #    # Convert SVG to PNG
-    #    Canvg.from(canvas, test_svg.node().outerHTML).then (canvg) ->
-    #      canvg.render()
-    #      
-    #      # Convert to image and replace SVG
-    #      img = document.createElement 'img'
-    #      img.src = canvas.toDataURL 'image/png'
-    #      container.innerHTML = ''
-    #      container.appendChild img
-
-    #      .catch (error) ->
-    #        console.error 'SVG to PNG conversion failed:', error
-    #  catch err
-    #    console.error 'Canvas creation error:', err
-
-
-    console.log "TimeSeries::build_graph: png done"
-
 window.TimeSeries = TimeSeries
-
