@@ -200,36 +200,49 @@ class TimeSeries
     svg.append("g")
       .call(d3.axisLeft(y))
 
+    console.log(headers)
+    console.log(data)
+
     headers.slice(1).forEach((key, i) ->
-      console.log('Main loop: ' + key + '  ' + i)
+      console.log("Main loop: " + key + "  " + i)
+
+      # Filter data to exclude rows with null, undefined, or non-numeric values for the current key
+      validData = data.filter((d) ->
+        d[key]? and not isNaN(d[key]) # Ensure value exists and is numeric
+      )
+
       # Line generator
-      line = d3.line()
+      lineGen = d3.line()
         .x((d) ->
-          console.debug("Mapping X:", d[index], " to ", x(d[index]))
           x(d[index])
         )
         .y((d) ->
-          console.debug("Mapping Y:", d[key], " to ", y(d[key]))
           y(d[key])
         )
 
       svg.append("path")
-        .datum(data)
+        .datum(validData) # Use filtered data
         .attr("fill", "none")
         .attr("stroke-width", 2)
         .attr("stroke", line_configs[i].color)
         .attr("opacity", line_configs[i].opacity)
         .attr("stroke-dasharray", line_configs[i].dash)
-        .attr("d", line)
+        .attr("d", lineGen)
 
       # Add data points with different symbols
       svg.selectAll(".symbol-#{i}")
-        .data(data)
+        .data(validData) # Use filtered data
         .enter().append("path")
         .attr("class", "symbol symbol-#{i}")
         .attr("d", symbolGenerator.type(line_configs[i].symbol))
         .attr("transform", (d) ->
-          "translate(#{x(parseFloat(d[index]))}, #{y(parseFloat(d[key]))})"
+          # Ensure valid x and y before applying transform
+          xVal = parseFloat(d[index])
+          yVal = parseFloat(d[key])
+          if not isNaN(xVal) and not isNaN(yVal)
+            "translate(#{x(xVal)}, #{y(yVal)})"
+          else
+            null # Skip invalid points
         )
         .style("fill", line_configs[i].color)
         .style("opacity", line_configs[i].opacity)

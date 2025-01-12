@@ -41025,21 +41025,34 @@ TimeSeries = function () {
         // Draw axes
         svg.append("g").attr("transform", "translate(0,".concat(height, ")")).call(d3.axisBottom(x));
         svg.append("g").call(d3.axisLeft(y));
+        console.log(headers);
+        console.log(data);
         headers.slice(1).forEach(function (key, i) {
-          var line;
-          console.log('Main loop: ' + key + '  ' + i);
+          var lineGen, validData;
+          console.log("Main loop: " + key + "  " + i);
+          // Filter data to exclude rows with null, undefined, or non-numeric values for the current key
+          validData = data.filter(function (d) {
+            return d[key] != null && !isNaN(d[key]);
+          });
           // Line generator
-          line = d3.line().x(function (d) {
-            console.debug("Mapping X:", d[index], " to ", x(d[index]));
+          lineGen = d3.line().x(function (d) {
             return x(d[index]);
           }).y(function (d) {
-            console.debug("Mapping Y:", d[key], " to ", y(d[key]));
             return y(d[key]);
           });
-          svg.append("path").datum(data).attr("fill", "none").attr("stroke-width", 2).attr("stroke", line_configs[i].color).attr("opacity", line_configs[i].opacity).attr("stroke-dasharray", line_configs[i].dash).attr("d", line);
+          svg.append("path").datum(validData).attr("fill", "none").attr("stroke-width", 2).attr("stroke", line_configs[i].color).attr("opacity", line_configs[i].opacity).attr("stroke-dasharray", line_configs[i].dash).attr("d", lineGen); // Use filtered data
           // Add data points with different symbols
-          return svg.selectAll(".symbol-".concat(i)).data(data).enter().append("path").attr("class", "symbol symbol-".concat(i)).attr("d", symbolGenerator.type(line_configs[i].symbol)).attr("transform", function (d) {
-            return "translate(".concat(x(parseFloat(d[index])), ", ").concat(y(parseFloat(d[key])), ")");
+          return svg.selectAll(".symbol-".concat(i)).data(validData).enter().append("path").attr("class", "symbol symbol-".concat(i // Use filtered data
+          )).attr("d", symbolGenerator.type(line_configs[i].symbol)).attr("transform", function (d) {
+            var xVal, yVal;
+            // Ensure valid x and y before applying transform
+            xVal = parseFloat(d[index]);
+            yVal = parseFloat(d[key]);
+            if (!isNaN(xVal) && !isNaN(yVal)) {
+              return "translate(".concat(x(xVal), ", ").concat(y(yVal), ")");
+            } else {
+              return null; // Skip invalid points
+            }
           }).style("fill", line_configs[i].color).style("opacity", line_configs[i].opacity);
         });
         // Add legend
