@@ -438,8 +438,8 @@
     <h1>Mix</h1>
   </div>
   <tal:render condition="python:True">
-    <div class="col-12"  tal:define="batch model/Batch;
-                                     mix_design batch/get_mix_design">
+    <div class="col-12"  tal:define="mix_design python:view.get_mix_design(model)"
+                         tal:condition="python:mix_design">
         <table class="table table-sm table-bordered">
           <colgroup>
             <col style="width:25%"/>
@@ -504,6 +504,35 @@
         </tr>
       </table>
     </div>
+<!-- -->
+
+
+<!-- Mortar and Paste table-->
+
+   <div class="col-12" tal:define="mortar python:view.get_mix_design_mortar_paste(model)"
+                       tal:condition="python:mortar">
+       <table class="sampleheader-table table table-sm table-bordered">
+         <tr>
+           <td class="label bg-light">Design W/CM</td>
+           <td><span tal:content="mortar/design|nothing"/> %</td>
+           <td class="label bg-light">Replacement</td>
+           <td><span tal:content="mortar/replacement|nothing"/> %</td>
+         </tr>
+         <tr>
+           <td class="label bg-light">Lab Temperature</td>
+           <td><span tal:content="mortar/lab_temperature|nothing"/> °F</td>
+           <td class="label bg-light">Mortar Temperature</td>
+           <td><span tal:content="mortar/mortar_temperature|nothing"/> °F</td>
+         </tr>
+         <tr>
+           <td class="label bg-light">Mold Numbers</td>
+           <td><span tal:content="mortar/mold_numbers|nothing"/> in</td>
+           <td class="label bg-light">Mortar Flow</td>
+           <td><span tal:content="mortar/mortar_flow|nothing"/></td>
+         </tr>
+       </table>
+   </div>
+
 <!-- -->
 
   <!-- THIs is the the listingview .... will have to make a a new tabke and pull. Viewlet manager: sample sections -->
