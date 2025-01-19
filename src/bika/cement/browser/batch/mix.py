@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import collections
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from plone.app.contentlisting.interfaces import IContentListing
 from plone.app.layout.globals.interfaces import IViewView
@@ -9,11 +10,10 @@ from plone.app.layout.viewlets import ViewletBase
 
 from bika.lims import api
 from bika.lims.browser import BrowserView
+from bika.lims.utils import get_link, get_link_for
+from senaite.app.listing import ListingView
 from senaite.core.catalog import SETUP_CATALOG
 
-from bika.cement.browser.controlpanel.mixmaterials import (
-    MixMaterialsView as MMV,
-)
 from bika.cement.config import _
 from bika.cement.config import is_installed
 
@@ -109,31 +109,82 @@ class MixMaterialViewlet(ViewletBase):
         return view.ajax_contents_table()
 
 
-class MixMaterialTable(MMV):
+class MixMaterialTable(ListingView):
+
     """Displays all available sample containers in a table"""
 
     def __init__(self, context, request):
         super(MixMaterialTable, self).__init__(context, request)
+        self.catalog = SETUP_CATALOG
         self.contentFilter = {
             "UID": self.get_mix_design().mix_materials
             if self.get_mix_design()
             else [],
         }
+        t = self.context.translate
+        self.title = t(_("Mix Materials"))
+        self.icon = api.get_icon("MixMaterials", html_tag=False)
         self.show_search = False
         self.show_workflow_action_buttons = False
         self.show_select_column = False
         self.enable_ajax_transitions = None
+        self.columns = collections.OrderedDict((
+            ("material_class", {
+                "title": _("Class"),
+                "index": "sortable_title"}),
+            ("material_type", {
+                "title": _("Type"),
+                "index": "material_type"}),
+            ("title", {
+                "title": _("Title"),
+                "index": "sortable_title"}),
+            ("specific_gravity", {
+                "title": _("SG"),
+                "index": "specific_gravity"}),
+            ("absorption_rate", {
+                "title": _("Amount"),
+                "index": "absorption_rate"}),
+        ))
 
-    def before_render(self):
-        if not is_installed():
-            return
+        self.review_states = [
+            {
+                "id": "default",
+                "title": _("Active"),
+                "columns": self.columns.keys(),
+            }
+        ]
 
-        # Remove review states, show all(default) and no filter
-        for i in range(len(self.review_states)):
-            if self.review_states[i]["id"] != "default":
-                continue
-            self.review_states = [self.review_states[i]]
-            break
+    def folderitem(self, obj, item, index):
+        """Service triggered each time an item is iterated in folderitems.
+        The use of this service prevents the extra-loops in child objects.
+
+        :obj: the instance of the class to be foldered
+        :item: dict containing the properties of the object to be used by
+            the template
+        :index: current index of the item
+        """
+        obj = api.get_object(obj)
+        item["replace"]["title"] = get_link_for(obj)
+        item["specific_gravity"] = obj.specific_gravity
+        item["absorption_rate"] = obj.absorption_rate
+
+        # Material Type
+        material_type_list = obj.material_type
+        if material_type_list:
+            material_type = api.get_object_by_uid(material_type_list[0])
+            material_type_title = material_type.title
+            material_type_url = material_type.absolute_url()
+            material_type_link = get_link(
+                material_type_url, material_type_title
+            )
+            item["material_type"] = material_type_title
+            item["replace"]["material_type"] = material_type_link
+            m_class = api.get_object_by_uid(material_type.material_class[0])
+            item["material_class"] = m_class.title
+            item["replace"]["material_class"] = get_link(
+                m_class.absolute_url(), m_class.title
+            )
+        return item
 
     def get_mix_design(self):
         batch = self.context
