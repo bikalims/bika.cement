@@ -498,6 +498,136 @@
     </div>
   </tal:render>
 
+
+  <!--  Mix Information-->
+  <div style="padding-top: 20px;">
+    <h1>Mix</h1>
+  </div>
+  <tal:render condition="python:True">
+    <div class="col-12"  tal:define="mix_design python:view.get_mix_design(model)"
+                         tal:condition="python:mix_design">
+        <table class="table table-sm table-bordered">
+          <colgroup>
+            <col style="width:25%"/>
+            <col style="width:25%"/>
+            <col style="width:25%"/>
+            <col style="width:25%"/>
+          </colgroup>
+          <tr>
+            <td class="label bg-light" i18n:translate="">Project</td>
+            <td class="field"><div tal:content="mix_design/project|nothing"/></td>
+            <td class="label bg-light" i18n:translate="">Design</td>
+            <td class="field"><div tal:content="mix_design/title|nothing"/></td>
+          </tr>
+          <!-- Contact Name(s) -->
+          <tr>
+            <td class="label bg-light" i18n:translate="">Date</td>
+            <td class="field"><div tal:content="mix_design/date|nothing"/></td>
+            <td class="label bg-light" i18n:translate="">Type</td>
+            <td class="field"><div>Concrete</div></td>
+          </tr>
+        </table>
+    </div>
+
+<!--tal:define="concrete python:view.get_mix_design_concrete()" -->
+    <div class="col-12">
+      <table class="table table-sm table-bordered">
+        <tr>
+          <td class="label bg-light">Design W/CM</td>
+          <td tal:content="concrete/design|nothing"></td>
+          <td class="label bg-light">Total CM</td>
+          <td><span tal:content="concrete/total_cm|nothing"/> lb</td>
+          <td class="label bg-light">Replacement</td>
+          <td><span tal:content="concrete/replacement|nothing"/> %</td>
+        </tr>
+        <tr>
+          <td class="label bg-light">Theoretical Volume</td>
+          <td><span tal:content="concrete/theoretical_volume|nothing"/> cu ft</td>
+          <td class="label bg-light">Batch Volume</td>
+          <td><span tal:content="concrete/batch_volume|nothing"/> cu ft</td>
+          <td class="label bg-light">Paste Content</td>
+          <td><span tal:content="concrete/paste_content|nothing"/> %</td>
+        </tr>
+        <tr>
+          <td class="label bg-light">Design Air</td>
+          <td><span tal:content="concrete/design_air|nothing"/> %</td>
+          <td class="label bg-light">Measured Air</td>
+          <td><span tal:content="concrete/measured_air|nothing"/> %</td>
+          <td class="label bg-light">Super Air Meter</td>
+          <td><span tal:content="concrete/super_air_meter|nothing"/></td>
+        </tr>
+        <tr>
+          <td class="label bg-light">Lab Temperature</td>
+          <td><span tal:content="concrete/lab_temperature|nothing"/> °F</td>
+          <td class="label bg-light">Concrete Temp</td>
+          <td><span tal:content="concrete/measured_unit_weight|nothing"/> °F</td>
+        </tr>
+        <tr>
+          <td class="label bg-light">Design Slump (in)</td>
+          <td><span tal:content="concrete/design_slump|nothing"/> in</td>
+          <td class="label bg-light">Measured Slump (in)</td>
+          <td><span tal:content="concrete/measured_unit_weight|nothing"/></td>
+        </tr>
+      </table>
+    </div>
+<!-- -->
+
+
+<!-- Mortar and Paste table-->
+
+   <div class="col-12" tal:define="mortar python:view.get_mix_design_mortar_paste(model)"
+                       tal:condition="python:mortar">
+       <table class="sampleheader-table table table-sm table-bordered">
+         <tr>
+           <td class="label bg-light">Design W/CM</td>
+           <td><span tal:content="mortar/design|nothing"/> %</td>
+           <td class="label bg-light">Replacement</td>
+           <td><span tal:content="mortar/replacement|nothing"/> %</td>
+         </tr>
+         <tr>
+           <td class="label bg-light">Lab Temperature</td>
+           <td><span tal:content="mortar/lab_temperature|nothing"/> °F</td>
+           <td class="label bg-light">Mortar Temperature</td>
+           <td><span tal:content="mortar/mortar_temperature|nothing"/> °F</td>
+         </tr>
+         <tr>
+           <td class="label bg-light">Mold Numbers</td>
+           <td><span tal:content="mortar/mold_numbers|nothing"/> in</td>
+           <td class="label bg-light">Mortar Flow</td>
+           <td><span tal:content="mortar/mortar_flow|nothing"/></td>
+         </tr>
+       </table>
+   </div>
+
+<!-- -->
+
+  <!-- THIs is the the listingview .... will have to make a a new tabke and pull. Viewlet manager: sample sections -->
+  <div class="col-12" id="sample-sections">
+    <!-- <div tal:replace="structure provider:senaite.samplesections"></div> -->
+  </div>
+  <!--  tal:define="concrete python:view.get_mix_design_concrete()" -->
+  <div class="col-12" >
+    <table class="sampleheader-table table table-sm table-bordered">
+      <tr>
+        <td class="label bg-light">Truck Vol</td>
+        <td tal:content="concrete/trucked_volume|nothing"></td>
+        <td class="label bg-light">Truck #</td>
+        <td><span tal:content="concrete/trucked_number|nothing"/> lb</td>
+        <td class="label bg-light">Ticket #</td>
+        <td><span tal:content="concrete/ticket_number|nothing"/> %</td>
+        <td class="label bg-light">Plan #</td>
+        <td><span tal:content="concrete/plant_number|nothing"/> %</td>
+      </tr>
+      <tr>
+        <td class="label bg-light" colspan="8">Additional info</td>
+      </tr>
+      <tr>
+        <td class="" colspan="8">&nbsp;</td>
+      </tr>
+    </table>
+  </div>
+
+
   <!--  REMARKS -->
   <tal:render condition="python:True">
       <div class="row section-remarks no-gutters" tal:condition="model/Remarks">
@@ -602,7 +732,7 @@
         </table>
       </div>
     </div>
-  </tal:render>
+  </tal:render> 
 
   <!-- CUSTOM FOOTER -->
   <tal:render condition="python:footer">

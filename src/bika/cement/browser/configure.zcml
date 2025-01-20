@@ -7,6 +7,8 @@
   <!-- Set overrides folder for Just-a-Bunch-Of-Templates product -->
   <include package="z3c.jbot" file="meta.zcml" />
   <include package=".listingview" />
+  <include package=".controlpanel" />
+  <include package=".batch" />
 
   <browser:jbot
       directory="overrides"

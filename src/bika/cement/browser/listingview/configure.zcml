@@ -8,4 +8,11 @@
             provides="senaite.app.listing.interfaces.IListingViewAdapter"
             factory=".samples.SamplesListingViewAdapter"/>
 
+    <!-- batch listing -->
+    <subscriber
+            for="bika.lims.browser.batchfolder.BatchFolderContentsView
+                 zope.interface.Interface"
+            provides="senaite.app.listing.interfaces.IListingViewAdapter"
+            factory=".batchfolder.BatchesListingViewAdapter"/>
+
 </configure>
