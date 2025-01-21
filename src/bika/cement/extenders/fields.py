@@ -119,14 +119,19 @@ class MixSpreadsheetFileExtensionField(object):
 
     def getMutator(self, batch):
         def mutator(value, **kw):
+            pu = api.get_tool("plone_utils")
             self.set(batch, value)
             sheet_name = "SSD & Batch values"
             if batch.MixSpreadsheet:
                 blob = batch.MixSpreadsheet.blob
                 data = self.get_data_from_blob_file(blob, sheet_name)
+                mix_type = self.get_mix_type(data[0][4])
+                if not mix_type:
+                    msg = "Spreadsheet Mix Type {} not found".format(data[0][4])
+                    pu.addPortalMessage(msg, "error")
+                    return mutator
                 mix_design_data = self.parse_mix_design_data(data)
                 if not mix_design_data:
-                    pu = api.get_tool("plone_utils")
                     msg = "Spreadsheet Mix Design and Project are Required"
                     pu.addPortalMessage(msg, "error")
                     return mutator
@@ -139,6 +144,9 @@ class MixSpreadsheetFileExtensionField(object):
                     concrete_data = self.parse_mix_design_concrete_data(data)
                     self.create_concrete_mix_design(mix_design, concrete_data)
                 else:
+                    lmsg = "Mix Type Interface {} does not exist"
+                    msg = lmsg.format(design_type)
+                    pu.addPortalMessage(msg, "error")
                     return mutator
                 self.mix_materials(mix_design, data)
 
@@ -154,6 +162,15 @@ class MixSpreadsheetFileExtensionField(object):
             raise ValueError("Bad index accessor value: %r", name)
         else:
             return getattr(instance, name)
+
+    def get_mix_type(self, mix_type):
+        query = {
+            "portal_type": "MixType",
+        }
+        # TODO: filter by title once the title index has been added
+        brains = api.search(query, SETUP_CATALOG)
+        brains = [md for md in brains if md.title == mix_type]
+        return brains
 
     def get_data_from_blob_file(self, blob, sheet_name=None):
         # Step 1: Open the blob
@@ -193,11 +210,12 @@ class MixSpreadsheetFileExtensionField(object):
         time = data[6][2]
         datetime = date
         if date and time:
-            datetime = date.replace(hour=time.hour,
-                                    minute=time.minute,
-                                    second=time.second,
-                                    microsecond=time.microsecond
-                    )
+            datetime = date.replace(
+                hour=time.hour,
+                minute=time.minute,
+                second=time.second,
+                microsecond=time.microsecond
+            )
         mix_design_data["date"] = datetime
         mix_design_data["type"] = data[0][4]
         mix_design_data["additional_info"] = data[0][7]
