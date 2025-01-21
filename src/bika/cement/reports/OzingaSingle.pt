@@ -651,7 +651,6 @@
         </tr>
       </table>
     </div>
-  </tal:render>
 
   <!--  REMARKS -->
   <tal:render condition="python:True">
