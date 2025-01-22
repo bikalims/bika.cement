@@ -259,12 +259,12 @@ class TimeSeries
         "translate(#{xOffset}, #{yOffset})"
       )
 
-
-    # Add legend color squares
-    legendItems.append("rect")
-      .attr("x", 0)
-      .attr("width", 18)
-      .attr("height", 18)
+    # Add legend color symbols
+    legendItems.append("path")
+      .attr("d", (d, i) ->
+        d3.symbol().type(line_configs[i].symbol).size(100)()
+      )
+      .attr("transform", "translate(9, 9)")  # Center the symbol within the legend item
       .style("fill", (d, i) -> line_configs[i].color)
       .style("opacity", (d, i) -> line_configs[i].opacity)
 
