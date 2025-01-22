@@ -42,10 +42,7 @@
   </div>
 
   <script type="text/javascript">
-   console.info("######################################################################");
    window.options = "<tal:t replace='options'/>";
-   console.log(window.options);
-   console.info("######################################################################");
   </script>
 
 
@@ -126,11 +123,14 @@
          content: "<tal:t i18n:translate=''>Page</tal:t> " counter(page) " <tal:t i18n:translate=''>of</tal:t> " counter(pages);
        }
      }
-     .report .time-series-matrix table {
+     .report table.time-series-matrix {
        border: 1px solid black;
      }
+     .report table.time-series-matrix th {
+       border: 1px solid #ddd;
+     }
      .report .time-series-graph {
-       border: 1px solid black;
+       border: 1px solid #ddd;
      }
      .report .time-series-graph svg {
        border: 1px solid black;
@@ -138,6 +138,27 @@
      }
      .report .graph-title {
        color: black;
+     }
+
+     .time-series-data {
+       border: 1px solid #ddd;
+       background-color: rgb(233, 236, 239);
+       text-align: right;
+     }
+     .time-series-data span {
+       color: '#2d5e77';
+       border: None;
+       background-color: inherit;
+     }
+     .time-series-oor span {
+       color: red;
+     }
+     .fas {
+       font-family: 'Font Awesome 5 Free';
+       font-weight: 900;
+     }
+     .fa-exclamation-circle:before {
+       content: "\f06a";
      }
 
     </style>
@@ -417,13 +438,16 @@
                       <div class="row"
                            tal:define="columns python: analysis.TimeSeriesColumns;
                                        columns_str python:view.json_dumps(columns);
-                                       results python:view.json_loads(model.get_formatted_result(analysis));
+                                       graph_title python: analysis.GraphTitle;
+                                       graph_xaxis python: analysis.GraphXAxisTitle;
+                                       graph_yaxis python: analysis.GraphYAxisTitle;
+                                       results python:view.json_loads(view.get_timeseries_result(model, analysis));
                                        results_str python:view.json_dumps(results)">
 
                         <div class="col-12">
                           <h3 tal:content="analysis/Title"/>
 
-                          <table class="time-series-matrix table table-sm table-condensed">
+                          <table class="time-series-matrix table table-sm ">
                             <thead>
                               <tr>
                                 <tal:head tal:repeat="col columns">
@@ -434,14 +458,24 @@
                             <tbody>
                               <tr tal:repeat="row results">
                                 <tal:cell tal:repeat="cell row">
-                                  <th tal:content="python: cell"/>
+                                  <tal:block tal:define="OOR python: cell['val'] and cell['OOR'] and repeat.cell.index > 0">
+                                    <td tal:condition="OOR" class="time-series-data time-series-oor">
+                                      <span tal:content="python: cell['val']"/>
+                                      <img tal:attributes="src string:++plone++bika.cement.static/img/exclamation-circle.png"
+                                            title="Result out of range"
+                                            />
+                                    </td>
+                                    <td tal:condition="python: not OOR" class="time-series-data">
+                                        <span tal:content="python: cell['val']"/>
+                                    </td>
+                                  </tal:block>
                                 </tal:cell>
                               </tr>
                             </tbody>
                           </table>
 
                           <div class="time-series-graph"
-                            tal:attributes="data-columns columns_str; data-results results_str">
+                            tal:attributes="data-columns columns_str; data-results results_str; data-graph_title graph_title; data-graph_xaxis graph_xaxis; data-graph_yaxis graph_yaxis">
                           </div>
 
                         </div>
@@ -767,7 +801,6 @@
             if (isValidCharacter(word[i])) {
                 sanitizedString += word[i]; // Keep valid characters
             } else if (word[i].charCodeAt(0) == 8722) {
-                // console.error('Sanitized: ' + word[i] + ' = ' + word[i].charCodeAt(0));
                 sanitizedString += "-"
             } else {
                 // Invalid characters are skipped (not added to sanitizedString)
@@ -780,7 +813,6 @@
     function safeBtoa(word) {
       try {
         const sanitizedInput = sanitizeInput(word);
-        console.log('sanitizedInput')
         return btoa(sanitizedInput); // Now it's safe to use btoa
       } catch (error) {
         console.error('Failed to sanitize  object:', error);
@@ -839,13 +871,15 @@
     $(document).ready(function() {
 
         $('.time-series-graph').each(function(index, element) {
-          console.log('Started element')
 
           const container = d3.select(element);
           container.selectAll("svg").remove();  // Clear existing SVGs
           container.selectAll("img").remove();  // Clear existing SVGs
           
           let columns = element.getAttribute('data-columns');
+          let graph_title = element.getAttribute('data-graph_title');
+          let graph_xaxis = element.getAttribute('data-graph_xaxis');
+          let graph_yaxis = element.getAttribute('data-graph_yaxis');
           let results = element.getAttribute('data-results');
           
           try {
@@ -860,7 +894,8 @@
             row = results[i];
             new_row = []
             for (let j = 0; j < row.length; j++) {
-              val = row[j];
+              item = row[j];
+              val = item['val'];
               if (val.length > 0) {
                 new_row.push(val);
               }
@@ -871,9 +906,9 @@
           data = {
             results: new_results,
             time_series_columns: columns,
-            time_series_graph_title: "Time Series Graph",
-            time_series_graph_xaxis: "X-Axis",
-            time_series_graph_yaxis: "Y-Axis",
+            time_series_graph_title: graph_title,
+            time_series_graph_xaxis: graph_xaxis,
+            time_series_graph_yaxis: graph_yaxis,
             container: element
           };
           this.svgRef = { current: element };
@@ -881,9 +916,9 @@
           this.props = {
             item: {
               time_series_columns: columns,
-              time_series_graph_title: "Time Series Graph",
-              time_series_graph_xaxis: "X-Axis",
-              time_series_graph_yaxis: "Y-Axis"
+              time_series_graph_title: graph_title,
+              time_series_graph_xaxis: graph_xaxis,
+              time_series_graph_yaxis: graph_yaxis,
             }
           };
           // Create instance of TimeSeries
@@ -891,13 +926,11 @@
 
           // Build the graph
           timeSeriesGraph.build_graph();
-          const svg = container.selectAll("svg")
-          console.log('Nearly completed element')
-          insertSVGAsObject(svg.node(), container.node())
-          // convertSvgToPng(svg.node(), container.node())
-          // console.log('WTF');
 
-          console.log('Completed :', d3.select(element).html())
+          const svg = container.selectAll("svg")
+          insertSVGAsObject(svg.node(), container.node())
+
+          console.log('Completed timeseries COA graphs')
 
         });
 

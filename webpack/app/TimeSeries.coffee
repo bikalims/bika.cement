@@ -19,7 +19,7 @@ class TimeSeries
 
     this.props = element.props
 
-    console.log('constructor complete')
+    # console.log('constructor complete')
 
   ###
    * Converts the string value to an array
@@ -51,16 +51,16 @@ class TimeSeries
 
   getLineConfigs = (count) ->
     configs = [
-      {color: "#666666", opacity: 1.0, symbol: d3.symbolCircle, dash: ""}
-      {color: "#666666", opacity: 0.8, symbol: d3.symbolCircle, dash: ""}
-      {color: "#666666", opacity: 0.6, symbol: d3.symbolCircle, dash: ""}
-      {color: "#666666", opacity: 0.4, symbol: d3.symbolCircle, dash: ""}
-      {color: "#666666", opacity: 0.2, symbol: d3.symbolCircle, dash: ""}
+      {color: "#666666", opacity: 1.0, symbol: d3.symbolStar, dash: ""}
+      {color: "#666666", opacity: 0.8, symbol: d3.symbolSquare, dash: ""}
+      {color: "#666666", opacity: 0.6, symbol: d3.symbolTriangle, dash: ""}
+      {color: "#666666", opacity: 0.4, symbol: d3.symbolDiamond, dash: ""}
+      {color: "#666666", opacity: 0.2, symbol: d3.symbolCross, dash: ""}
     ]
     configs.slice(0, count)
 
   # Create symbol generator
-  symbolGenerator = d3.symbol().size(24)  # Adjust size as needed
+  symbolGenerator = d3.symbol().size(48)  # Adjust size as needed
 
   ###
    * Inputs table builder. Generates a table of  inputs as matrix
@@ -91,7 +91,7 @@ class TimeSeries
         opacity: "1.0",
         symbol: d3.symbolCircle
       }
-    console.debug(line_configs)
+    # console.debug(line_configs)
 
     # Set up dimensions
     margin = {top: 40, right: 80, bottom: 50, left: 60}
@@ -200,7 +200,7 @@ class TimeSeries
       .call(d3.axisLeft(y))
 
     headers.slice(1).forEach((key, i) ->
-      console.debug("Main loop: " + key + "  " + i)
+      # console.debug "Main loop: " + key + "  " + i
 
       # Filter data to exclude rows with null, undefined, or non-numeric values for the current key
       validData = data.filter((d) ->
@@ -276,6 +276,6 @@ class TimeSeries
       .style("font-size", "12px")
       .text((d) -> d)
 
-    console.log "TimeSeries::build_graph: svg done"
+    # console.debug "TimeSeries::build_graph: svg done"
 
 window.TimeSeries = TimeSeries
