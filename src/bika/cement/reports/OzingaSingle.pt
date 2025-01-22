@@ -437,7 +437,6 @@
   <div style="padding-top: 20px;">
     <h1>Mix</h1>
   </div>
-  <tal:render condition="python:True">
     <div class="col-12"  tal:define="mix_design python:view.get_mix_design(model)"
                          tal:condition="python:mix_design">
         <table class="table table-sm table-bordered">
@@ -450,10 +449,13 @@
           <tr>
             <td class="label bg-light" i18n:translate="">Project</td>
             <td class="field"><div tal:content="mix_design/project|nothing"/></td>
-            <td class="label bg-light" i18n:translate="">Design</td>
-            <td class="field"><div tal:content="mix_design/title|nothing"/></td>
+            <td class="label bg-light" i18n:translate="">Curing Method</td>
+            <td class="field">
+                <span tal:condition="model/CuringMethod">
+                    <div tal:content="model/CuringMethod/title|nothing"/>
+                </span>
+            </td>
           </tr>
-          <!-- Contact Name(s) -->
           <tr>
             <td class="label bg-light" i18n:translate="">Date</td>
             <td class="field"><div tal:content="mix_design/date|nothing"/></td>
@@ -507,31 +509,122 @@
     <!-- -->
 
 
-    <!-- Mortar and Paste table-->
-      <div class="col-12" tal:define="mortar python:view.get_mix_design_mortar_paste(model)"
-                          tal:condition="python:mortar">
-          <table class="sampleheader-table table table-sm table-bordered">
-            <tr>
-              <td class="label bg-light">Design W/CM</td>
-              <td><span tal:content="mortar/design|nothing"/> %</td>
-              <td class="label bg-light">Replacement</td>
-              <td><span tal:content="mortar/replacement|nothing"/> %</td>
-            </tr>
-            <tr>
-              <td class="label bg-light">Lab Temperature</td>
-              <td><span tal:content="mortar/lab_temperature|nothing"/> °F</td>
-              <td class="label bg-light">Mortar Temperature</td>
-              <td><span tal:content="mortar/mortar_temperature|nothing"/> °F</td>
-            </tr>
-            <tr>
-              <td class="label bg-light">Mold Numbers</td>
-              <td><span tal:content="mortar/mold_numbers|nothing"/> in</td>
-              <td class="label bg-light">Mortar Flow</td>
-              <td><span tal:content="mortar/mortar_flow|nothing"/></td>
-            </tr>
-          </table>
-      </div>
-    <!-- -->
+<!-- Mortar and Paste table-->
+
+   <div class="col-12" tal:define="mortar python:view.get_mix_design_mortar_paste(model)"
+                       tal:condition="python:mortar">
+       <table class="sampleheader-table table table-sm table-bordered">
+         <tr>
+           <td class="label bg-light">Design W/CM</td>
+           <td><span tal:content="mortar/design|nothing"/> %</td>
+           <td class="label bg-light">Replacement</td>
+           <td><span tal:content="mortar/replacement|nothing"/> %</td>
+         </tr>
+         <tr>
+           <td class="label bg-light">Lab Temperature</td>
+           <td><span tal:content="mortar/lab_temperature|nothing"/> °F</td>
+           <td class="label bg-light">Mortar Temperature</td>
+           <td><span tal:content="mortar/mortar_temperature|nothing"/> °F</td>
+         </tr>
+         <tr>
+           <td class="label bg-light">Mold Numbers</td>
+           <td><span tal:content="mortar/mold_numbers|nothing"/> in</td>
+           <td class="label bg-light">Mortar Flow</td>
+           <td><span tal:content="mortar/mortar_flow|nothing"/></td>
+         </tr>
+       </table>
+   </div>
+
+<!-- -->
+
+
+<!-- Materials Listing View-->
+
+ <div class="col-12">
+ <div class="w-100" tal:define="mix_design python:view.get_mix_design(model)">
+   <table class="table table-sm table-condensed">
+       <colgroup>
+         <!-- Class -->
+         <col style="width: 20%;">
+         <!-- Type -->
+         <col style="width: 30%;">
+         <!-- Title -->
+         <col style="width: 25%;">
+         <!-- SG -->
+         <col style="width: 10%">
+         <!-- Amount -->
+         <col style="width: 15%">
+       </colgroup>
+       <thead tal:condition="python:True">
+         <tr>
+            <th class="text-center" colspan="5">
+                <span>Design and Batch Proportions (Per chosen volume)</span>
+            </th>
+         </tr>
+         <tr>
+            <th colspan="5">
+                <span>Materials</span>
+            </th>
+         </tr>
+         <tr class="small">
+           <th>
+             <span>Class</span>
+           </th>
+           <th class="text-left">
+             <span i18n:translate="">Type</span>
+           </th>
+           <th class="text-left">
+             <span i18n:translate="">Title</span>
+           </th>
+           <th class="text-left">
+             <span i18n:translate="">SG</span>
+           </th>
+           <th class="text-left">
+             <span i18n:translate="">Amount</span>
+           </th>
+         </tr>
+       </thead>
+       <tbody>
+           <tal:materials tal:repeat="mix_material python:view.get_mix_materials(model)">
+               <tr class="small">
+                 <td class="analysis">
+                   <span tal:condition="mix_material/material_type">
+                     <span class="font-normal" tal:content="mix_material/material_type/material_class|nothing"></span>
+                   </span>
+                 </td>
+                 <td class="analysis">
+                   <span tal:condition="mix_material/material_type">
+                     <span class="font-normal" tal:content="mix_material/material_type/title|nothing"></span>
+                   </span>
+                 </td>
+                 <td class="analysis">
+                     <span class="font-normal" tal:content="mix_material/title|nothing"></span>
+                 </td>
+                 <td class="analysis">
+                     <span class="font-normal" tal:content="mix_material/specific_gravity|nothing"></span>
+                 </td>
+                 <td class="analysis">
+                     <span class="font-normal" tal:content="mix_material/absorption_rate|nothing"></span>
+                 </td>
+               </tr>
+           </tal:materials>
+           <tr>
+               <th colspan="5">
+                    <span>Additional Info</span>
+               </th>
+           </tr>
+           <tr>
+               <td colspan="5">
+                    <span class="font-normal" tal:content="mix_design/additional_info|nothing"></span>
+               </td>
+           </tr>
+       </tbody>
+   </table>
+ </div>
+ </div>
+
+
+<!-- -->
 
 
 
