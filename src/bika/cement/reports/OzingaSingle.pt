@@ -609,6 +609,7 @@
                  </td>
                </tr>
            </tal:materials>
+           <tal:is_mortar_or_paste tal:condition="python:view.get_mix_design_mortar_paste(model)">
            <tr>
                <th colspan="5">
                     <span>Additional Info</span>
@@ -619,6 +620,7 @@
                     <span class="font-normal" tal:content="mix_design/additional_info|nothing"></span>
                </td>
            </tr>
+           </tal:is_mortar_or_paste>
        </tbody>
    </table>
  </div>
