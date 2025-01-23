@@ -136,8 +136,8 @@ class MixSpreadsheetFileExtensionField(object):
                     pu.addPortalMessage(msg, "error")
                     return mutator
                 mix_design = self.create_mix_design(batch, mix_design_data)
-                design_type = mix_design_data.get("type")
-                if "Mortar" in design_type or "Paste" in design_type:
+                design_type = data[0][4]
+                if design_type in ["Mortar", "Paste"]:
                     mortar_paste_data = self.parse_mix_design_mortar_paste_data(data)
                     self.create_mortar_paste_mix_design(mix_design, mortar_paste_data)
                 elif design_type == "Concrete":
@@ -217,7 +217,9 @@ class MixSpreadsheetFileExtensionField(object):
                 microsecond=time.microsecond
             )
         mix_design_data["date"] = datetime
-        mix_design_data["type"] = data[0][4]
+        mix_type = self.get_mix_type(data[0][4])
+        if mix_type:
+            mix_design_data["mix_type"] = mix_type[0].UID
         mix_design_data["additional_info"] = data[0][7]
         return mix_design_data
 
@@ -263,6 +265,7 @@ class MixSpreadsheetFileExtensionField(object):
         mix_design.project = data.get("project")
         mix_design.date = data.get("date")
         mix_design.additional_info = data.get("additional_info")
+        mix_design.mix_type = data.get("mix_type")
         # mix_design.mix_design_type = data.get("mix_design_type")
         # mix_design.edit(**data)
         return mix_design
