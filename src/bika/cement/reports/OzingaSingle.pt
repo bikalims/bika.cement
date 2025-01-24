@@ -434,8 +434,8 @@
 
 
   <!--  Mix Information-->
-  <div style="padding-top: 20px;">
-    <h1>Mix</h1>
+  <div style="padding-top: 20px; padding-bottom: 10px;">
+    <h2 class="notes-header" style= "padding-left:15px">Mix</h2>
   </div>
     <div class="col-12"  tal:define="mix_design python:view.get_mix_design(model)"
                          tal:condition="python:mix_design">
@@ -447,8 +447,8 @@
             <col style="width:25%"/>
           </colgroup>
           <tr>
-            <td class="label bg-light" i18n:translate="">Project</td>
-            <td class="field"><div tal:content="mix_design/project|nothing"/></td>
+            <td class="label bg-light" i18n:translate="">Design # </td>
+            <td class="label bg-light"><div tal:content="mix_design/title|nothing"/></td>
             <td class="label bg-light" i18n:translate="">Curing Method</td>
             <td class="field">
                 <span tal:condition="model/CuringMethod">
@@ -473,37 +473,70 @@
           <td class="label bg-light">Design W/CM</td>
           <td tal:content="concrete/design|nothing"></td>
           <td class="label bg-light">Total CM</td>
-          <td><span tal:content="concrete/total_cm|nothing"/> lb</td>
+          <td>
+            <span tal:content="concrete/total_cm|nothing"/>
+            <span tal:condition="concrete/total_cm|nothing"> lb</span>
+          </td>
           <td class="label bg-light">Replacement</td>
-          <td><span tal:content="concrete/replacement|nothing"/> %</td>
+          <td>
+            <span tal:content="concrete/replacement|nothing"/>
+            <span tal:condition="concrete/replacement|nothing"> %</span>
+          </td>
         </tr>
         <tr>
           <td class="label bg-light">Theoretical Volume</td>
-          <td><span tal:content="concrete/theoretical_volume|nothing"/> cu ft</td>
-          <td class="label bg-light">Lab Batch Volume</td>
-          <td><span tal:content="concrete/batch_volume|nothing"/> cu ft</td>
+          <td>
+            <span tal:content="concrete/theoretical_volume|nothing"/>
+            <span tal:condition="concrete/theoretical_volume|nothing"> cu ft</span>
+          </td>
+          <td class="label bg-light">Batch Volume</td>
+          <td>
+            <span tal:content="concrete/batch_volume|nothing"/>
+            <span tal:condition="concrete/batch_volume|nothing"> cu ft</span>
+          </td>
           <td class="label bg-light">Paste Content</td>
-          <td><span tal:content="concrete/paste_content|nothing"/> %</td>
+          <td>
+            <span tal:content="concrete/paste_content|nothing"/>
+            <span tal:condition="concrete/paste_content|nothing"> %</span>
+          </td>
         </tr>
         <tr>
           <td class="label bg-light">Design Air</td>
-          <td><span tal:content="concrete/design_air|nothing"/> %</td>
+          <td>
+            <span tal:content="concrete/design_air|nothing"/>
+            <span tal:condition="concrete/design_air|nothing"> %</span>
+          </td>
           <td class="label bg-light">Measured Air</td>
-          <td><span tal:content="concrete/measured_air|nothing"/> %</td>
+          <td>
+            <span tal:content="concrete/measured_air|nothing"/>
+            <span tal:condition="concrete/measured_air|nothing"> %</span>
+          </td>
           <td class="label bg-light">Super Air Meter</td>
           <td><span tal:content="concrete/super_air_meter|nothing"/></td>
         </tr>
         <tr>
           <td class="label bg-light">Lab Temperature</td>
-          <td><span tal:content="concrete/lab_temperature|nothing"/> °F</td>
+          <td>
+            <span tal:content="concrete/lab_temperature|nothing"/>
+            <span tal:condition="concrete/lab_temperature|nothing"> °F</span>
+          </td>
           <td class="label bg-light">Concrete Temp</td>
-          <td><span tal:content="concrete/measured_unit_weight|nothing"/> °F</td>
+          <td>
+            <span tal:content="concrete/concrete_temp|nothing"/>
+            <span tal:condition="concrete/concrete_temp|nothing"> °F</span>
+          </td>
         </tr>
         <tr>
-          <td class="label bg-light">Design Slump (in)</td>
-          <td><span tal:content="concrete/design_slump|nothing"/> in</td>
-          <td class="label bg-light">Measured Slump (in)</td>
-          <td><span tal:content="concrete/measured_unit_weight|nothing"/></td>
+          <td class="label bg-light">Design Slump</td>
+          <td>
+            <span tal:content="concrete/design_slump|nothing"/>
+            <span tal:condition="concrete/design_slump|nothing"> in </span>
+          </td>
+          <td class="label bg-light">Measured Slump</td>
+          <td>
+            <span tal:content="concrete/measured_slump|nothing"/>
+            <span tal:condition="concrete/measured_slump|nothing"> in </span>
+          </td>
         </tr>
       </table>
     </div>
