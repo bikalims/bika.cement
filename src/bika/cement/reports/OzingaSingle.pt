@@ -462,10 +462,14 @@
             <td class="label bg-light" i18n:translate="">Type</td>
             <td class="field">
                     <div tal:content="python: view.get_mix_type(model) or ''"></div></td>
+            <td class="field">
+                    <div tal:content="python: view.get_mix_type(model) or ''"></div></td>
           </tr>
         </table>
     </div>
 
+    <div class="col-12" tal:define="concrete python:view.get_mix_design_concrete(model)"
+                        tal:condition="python:concrete">
     <div class="col-12" tal:define="concrete python:view.get_mix_design_concrete(model)"
                         tal:condition="python:concrete">
       <table class="table table-sm table-bordered">
@@ -489,7 +493,7 @@
             <span tal:content="concrete/theoretical_volume|nothing"/>
             <span tal:condition="concrete/theoretical_volume|nothing"> cu ft</span>
           </td>
-          <td class="label bg-light">Batch Volume</td>
+          <td class="label bg-light">Lab Batch Volume</td>
           <td>
             <span tal:content="concrete/batch_volume|nothing"/>
             <span tal:condition="concrete/batch_volume|nothing"> cu ft</span>
@@ -541,6 +545,7 @@
       </table>
     </div>
     <!-- -->
+    <!-- -->
 
 
 <!-- Mortar and Paste table-->
@@ -562,6 +567,7 @@
          </tr>
          <tr>
            <td class="label bg-light">Mold Numbers</td>
+           <td><span tal:content="mortar/mold_numbers|nothing"/></td>
            <td><span tal:content="mortar/mold_numbers|nothing"/></td>
            <td class="label bg-light">Mortar Flow</td>
            <td><span tal:content="mortar/mortar_flow|nothing"/></td>
@@ -643,6 +649,7 @@
                </tr>
            </tal:materials>
            <tal:is_mortar_or_paste tal:condition="python:view.get_mix_design_mortar_paste(model)">
+           <tal:is_mortar_or_paste tal:condition="python:view.get_mix_design_mortar_paste(model)">
            <tr>
                <th colspan="5">
                     <span>Additional Info</span>
@@ -654,6 +661,7 @@
                </td>
            </tr>
            </tal:is_mortar_or_paste>
+           </tal:is_mortar_or_paste>
        </tbody>
    </table>
  </div>
@@ -662,6 +670,34 @@
 
 <!-- -->
 
+
+
+    <!-- This is the the listingview .... will have to make a a new table and pull. Viewlet manager: sample sections -->
+    <div class="col-12" id="sample-sections">
+      <!-- <div tal:replace="structure provider:senaite.samplesections"></div> -->
+    </div>
+    <!-- Should this be conditioned or no; I think so-->
+    <div class="col-12" tal:define="concrete python:view.get_mix_design_concrete(model)"
+                          tal:condition="python:concrete">
+      <table class="sampleheader-table table table-sm table-bordered">
+        <tr>
+          <td class="label bg-light">Truck Vol</td>
+          <td tal:content="concrete/trucked_volume|nothing"></td>
+          <td class="label bg-light">Truck #</td>
+          <td><span tal:content="concrete/trucked_number|nothing"/> lb</td>
+          <td class="label bg-light">Ticket #</td>
+          <td><span tal:content="concrete/ticket_number|nothing"/> %</td>
+          <td class="label bg-light">Plan #</td>
+          <td><span tal:content="concrete/plant_number|nothing"/> %</td>
+        </tr>
+        <tr>
+          <td class="label bg-light" colspan="8">Additional info</td>
+        </tr>
+        <tr>
+          <td class="" colspan="8">&nbsp;</td>
+        </tr>
+      </table>
+    </div>
 
 
     <!-- This is the the listingview .... will have to make a a new table and pull. Viewlet manager: sample sections -->
