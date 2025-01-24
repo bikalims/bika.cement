@@ -144,9 +144,6 @@ class MixMaterialTable(ListingView):
             ("amounts", {
                 "title": _("Amount"),
                 "index": "amounts"}),
-            ("moisture_corrected_batch_amounts", {
-                "title": _("Moisture Corrected Batch Amounts"),
-                "index": "amounts"}),
         ))
 
         self.review_states = [
@@ -171,11 +168,6 @@ class MixMaterialTable(ListingView):
         item["replace"]["title"] = get_link_for(mix_obj)
         item["specific_gravity"] = mix_obj.specific_gravity
         item["amounts"] = obj.amounts
-        if obj.mix_type_title == "Concrete":
-            item["moisture_corrected_batch_amounts"] = obj.moisture_corrected_batch_amounts
-        else:
-            if "moisture_corrected_batch_amounts" in self.columns.keys():
-                self.columns.pop("moisture_corrected_batch_amounts")
 
         # Material Type
         material_type_list = mix_obj.material_type
