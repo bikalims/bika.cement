@@ -539,10 +539,90 @@
 <!-- -->
 
 
-<!-- Materials Listing View-->
+<!-- Materials Listing View for concrete-->
 
  <div class="col-12">
- <div class="w-100" tal:define="mix_design python:view.get_mix_design(model)">
+ <div class="w-100" tal:define="mix_design python:view.get_mix_design(model)"
+                    tal:condition="python:view.get_mix_design_concrete(model)">
+   <table class="table table-sm table-condensed">
+       <colgroup>
+         <!-- Class -->
+         <col style="width: 20%;">
+         <!-- Type -->
+         <col style="width: 20%;">
+         <!-- Title -->
+         <col style="width: 20%;">
+         <!-- SG -->
+         <col style="width: 10%">
+         <!-- Amounts -->
+         <col style="width: 15%">
+       </colgroup>
+       <thead tal:condition="python:True">
+         <tr>
+            <th class="text-center" colspan="5">
+                <span>Design and Batch Proportions (SSD/ cu ft)</span>
+            </th>
+         </tr>
+         <tr>
+            <th colspan="5">
+                <span>Materials</span>
+            </th>
+         </tr>
+         <tr class="small">
+           <th>
+             <span>Class</span>
+           </th>
+           <th class="text-left">
+             <span i18n:translate="">Type</span>
+           </th>
+           <th class="text-left">
+             <span i18n:translate="">Title</span>
+           </th>
+           <th class="text-left">
+             <span i18n:translate="">SG</span>
+           </th>
+           <th class="text-left">
+             <span i18n:translate="">Amount</span>
+           </th>
+         </tr>
+       </thead>
+       <tbody>
+           <tal:materials tal:repeat="mix_material python:view.get_mix_materials(model)">
+               <tr class="small">
+                 <td class="analysis">
+                   <span tal:condition="mix_material/material_type">
+                     <span class="font-normal" tal:content="mix_material/material_type/material_class|nothing"></span>
+                   </span>
+                 </td>
+                 <td class="analysis">
+                   <span tal:condition="mix_material/material_type">
+                     <span class="font-normal" tal:content="mix_material/material_type/title|nothing"></span>
+                   </span>
+                 </td>
+                 <td class="analysis">
+                     <span class="font-normal" tal:content="mix_material/title|nothing"></span>
+                 </td>
+                 <td class="analysis">
+                     <span class="font-normal" tal:content="mix_material/specific_gravity|nothing"></span>
+                 </td>
+                 <td class="analysis">
+                     <span class="font-normal" tal:content="mix_material/amounts|nothing"></span>
+                 </td>
+               </tr>
+           </tal:materials>
+       </tbody>
+   </table>
+ </div>
+ </div>
+
+
+<!-- -->
+
+<!-- Materials Listing View for mortar/paste-->
+
+ <div class="col-12">
+ <div class="w-100" tal:define="mix_design python:view.get_mix_design(model)"
+                    tal:condition="python:get_mix_design_mortar_paste(model)">
    <table class="table table-sm table-condensed">
        <colgroup>
          <!-- Class -->
@@ -553,10 +633,10 @@
          <col style="width: 25%;">
          <!-- SG -->
          <col style="width: 10%">
-         <!-- Amount -->
+         <!-- Amounts -->
          <col style="width: 15%">
        </colgroup>
-       <thead tal:condition="python:True">
+       <thead>
          <tr>
             <th class="text-center" colspan="5">
                 <span>Design and Batch Proportions (Per chosen volume)</span>
@@ -605,11 +685,10 @@
                      <span class="font-normal" tal:content="mix_material/specific_gravity|nothing"></span>
                  </td>
                  <td class="analysis">
-                     <span class="font-normal" tal:content="mix_material/absorption_rate|nothing"></span>
+                     <span class="font-normal" tal:content="mix_material/amounts|nothing"></span>
                  </td>
                </tr>
            </tal:materials>
-           <tal:is_mortar_or_paste tal:condition="python:view.get_mix_design_mortar_paste(model)">
            <tr>
                <th colspan="5">
                     <span>Additional Info</span>
@@ -620,7 +699,6 @@
                     <span class="font-normal" tal:content="mix_design/additional_info|nothing"></span>
                </td>
            </tr>
-           </tal:is_mortar_or_paste>
        </tbody>
    </table>
  </div>
@@ -628,7 +706,6 @@
 
 
 <!-- -->
-
 
 
     <!-- This is the the listingview .... will have to make a a new table and pull. Viewlet manager: sample sections -->

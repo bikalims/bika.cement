@@ -321,7 +321,7 @@ class MixSpreadsheetFileExtensionField(object):
         setup = api.get_senaite_setup()
         folder = setup.get("mixmaterials")
         mix_mat_data = data[9:]
-        mix_materials = []
+        mix_materials_amounts_list = []
         errors = []
         query = {
             "portal_type": "MixMaterial",
@@ -340,8 +340,15 @@ class MixSpreadsheetFileExtensionField(object):
             if not brains:
                 errors.append(m_name)
                 continue
-            mix_materials.append(brains[0].UID)
-        mix_design.mix_materials = mix_materials
+            mix_material_amount = api.create(mix_design, "MixMaterialAmount")
+            mix_material_amount.amounts = str(format(mx[5])) + " " + mx[6]
+            mix_material_amount.mix_material = brains[0].UID
+            mix_material_amount.mix_type_title = data[0][4]
+            if data[0][4] == "Concrete":
+                mix_material_amount.moisture_corrected_batch_amounts = str(format(mx[7])) + " " + mx[8]
+
+            mix_materials_amounts_list.append(mix_material_amount.UID())
+        mix_design.mix_materials = mix_materials_amounts_list
         if errors:
             msg = "Spreadsheet Mix Materials not found: %s" % ", ".join(errors)
             pu = api.get_tool("plone_utils")

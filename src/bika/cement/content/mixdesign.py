@@ -42,8 +42,8 @@ class IMixDesignSchema(model.Schema):
     )
     mix_materials = UIDReferenceField(
         title=_(u"title_mix_design_mix_material", default=u"Mix Materials"),
-        relationship="MixDesignMixMaterial",
-        allowed_types=("MixMaterial", ),
+        relationship="MixDesignMixMaterialAmount",
+        allowed_types=("MixMaterialAmount", ),
         multi_valued=True,
         required=False,
     )
