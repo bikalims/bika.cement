@@ -1,14 +1,19 @@
 # -*- coding: utf-8 -*-
 
 from AccessControl import ClassSecurityInfo
-from bika.cement.interfaces import IMaterialClass
-from bika.lims.interfaces import IDeactivable
+from Products.CMFCore import permissions
 from plone.dexterity.content import Container
 from plone.supermodel import model
-from senaite.core.catalog import SETUP_CATALOG
-from bika.lims import api
-from zope.interface import implementer
 from zope import schema
+from zope.interface import Invalid
+from zope.interface import implementer
+from zope.interface import invariant
+
+from bika.cement.config import _
+from bika.cement.interfaces import IMaterialClass
+from bika.lims import api
+from bika.lims.interfaces import IDeactivable
+from senaite.core.catalog import SETUP_CATALOG
 
 
 class IMaterialClassSchema(model.Schema):
@@ -28,6 +33,24 @@ class IMaterialClassSchema(model.Schema):
         title=u"Sort Key",
         required=True,
     )
+
+    @invariant
+    def validate_sort_key(data):
+        """Checks sort_key field for float value if exist
+        """
+        sort_key = getattr(data, "sort_key", None)
+        if sort_key is None:
+            return
+
+        try:
+            value = float(data.sort_key)
+        except Exception:
+            msg = _("Validation failed: value must be float")
+            raise Invalid(msg)
+
+        if value < 0 or value > 1000:
+            msg = _("Validation failed: value must be between 0 and 1000")
+            raise Invalid(msg)
 
 
 @implementer(IMaterialClass, IMaterialClassSchema, IDeactivable)
@@ -55,3 +78,16 @@ class MaterialClass(Container):
         result = schema[fieldname].set
         self.reindexObject()
         return result
+
+    @security.protected(permissions.View)
+    def getSortKey(self):
+        accessor = self.accessor("sort_key")
+        return accessor(self)
+
+    @security.protected(permissions.ModifyPortalContent)
+    def setSortKey(self, value):
+        mutator = self.mutator("sort_key")
+        mutator(self, value)
+
+    # BBB: AT schema field property
+    SortKey = property(getSortKey, setSortKey)

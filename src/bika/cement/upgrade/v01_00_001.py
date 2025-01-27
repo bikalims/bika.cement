@@ -18,14 +18,17 @@
 # Copyright 2019-2021 by it's authors.
 # Some rights reserved, see README and LICENSE.
 
+from bika.lims import api
 from bika.cement import PRODUCT_NAME
 from bika.cement import PROFILE_ID
 from bika.cement import logger
+from bika.cement.setuphandlers import setup_catalogs
 
+from senaite.core.catalog import SETUP_CATALOG
 from senaite.core.upgrade import upgradestep
 from senaite.core.upgrade.utils import UpgradeUtils
 
-version = "1.0.1"
+version = "1.0.2"
 
 
 @upgradestep(PRODUCT_NAME, version)
@@ -49,3 +52,14 @@ def upgrade(tool):
 
     logger.info("{0} upgraded to version {1}".format(PRODUCT_NAME, version))
     return True
+
+
+def reindex_mix_materials(tool):
+    logger.info("Reindexing mix material ...")
+    setup_catalogs(api.get_portal())
+    cat = api.get_tool(SETUP_CATALOG)
+    for brain in cat(portal_type="MixMaterial"):
+        obj = brain.getObject()
+        logger.info("Reindex mix material: %r" % obj)
+        obj.reindexObject()
+    logger.info("Reindexing mix materials [DONE]")
