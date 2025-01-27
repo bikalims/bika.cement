@@ -587,29 +587,25 @@
          </tr>
        </thead>
        <tbody>
-           <tal:materials tal:repeat="mix_material python:view.get_mix_materials(model)">
+           <tal:materials tal:repeat="row_data python:view.get_mix_material_row_data(model)">
                <tr class="small">
                  <td class="analysis">
-                   <span tal:condition="mix_material/material_type">
-                     <span class="font-normal" tal:content="mix_material/material_type/material_class|nothing"></span>
-                   </span>
+                     <span class="font-normal" tal:content="python: row_data[0]"></span>
                  </td>
                  <td class="analysis">
-                   <span tal:condition="mix_material/material_type">
-                     <span class="font-normal" tal:content="mix_material/material_type/title|nothing"></span>
-                   </span>
+                     <span class="font-normal" tal:content="python: row_data[1]"></span>
                  </td>
                  <td class="analysis">
-                     <span class="font-normal" tal:content="mix_material/title|nothing"></span>
+                     <span class="font-normal" tal:content="python: row_data[2]"></span>
                  </td>
                  <td class="analysis">
-                     <span class="font-normal" tal:content="mix_material/specific_gravity|nothing"></span>
+                     <span class="font-normal" tal:content="python: row_data[3]"></span>
                  </td>
                  <td class="analysis">
-                     <span class="font-normal" tal:content="mix_material/amounts|nothing"></span>
+                     <span class="font-normal" tal:content="python: row_data[4]"></span>
                  </td>
                </tr>
-           </tal:materials>
+          </tal:materials>
        </tbody>
    </table>
  </div>
@@ -666,26 +662,22 @@
          </tr>
        </thead>
        <tbody>
-           <tal:materials tal:repeat="mix_material python:view.get_mix_materials(model)">
+           <tal:materials tal:repeat="row_data python:view.get_mix_material_row_data(model)">
                <tr class="small">
                  <td class="analysis">
-                   <span tal:condition="mix_material/material_type">
-                     <span class="font-normal" tal:content="mix_material/material_type/material_class|nothing"></span>
-                   </span>
+                     <span class="font-normal" tal:content="python: row_data[0]"></span>
                  </td>
                  <td class="analysis">
-                   <span tal:condition="mix_material/material_type">
-                     <span class="font-normal" tal:content="mix_material/material_type/title|nothing"></span>
-                   </span>
+                     <span class="font-normal" tal:content="python: row_data[1]"></span>
                  </td>
                  <td class="analysis">
-                     <span class="font-normal" tal:content="mix_material/title|nothing"></span>
+                     <span class="font-normal" tal:content="python: row_data[2]"></span>
                  </td>
                  <td class="analysis">
-                     <span class="font-normal" tal:content="mix_material/specific_gravity|nothing"></span>
+                     <span class="font-normal" tal:content="python: row_data[3]"></span>
                  </td>
                  <td class="analysis">
-                     <span class="font-normal" tal:content="mix_material/amounts|nothing"></span>
+                     <span class="font-normal" tal:content="python: row_data[4]"></span>
                  </td>
                </tr>
            </tal:materials>
