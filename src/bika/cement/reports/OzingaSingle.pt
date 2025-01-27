@@ -622,7 +622,7 @@
 
  <div class="col-12">
  <div class="w-100" tal:define="mix_design python:view.get_mix_design(model)"
-                    tal:condition="python:get_mix_design_mortar_paste(model)">
+                    tal:condition="python:view.get_mix_design_mortar_paste(model)">
    <table class="table table-sm table-condensed">
        <colgroup>
          <!-- Class -->
