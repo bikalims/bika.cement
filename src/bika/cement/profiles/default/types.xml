@@ -31,4 +31,7 @@
   <!-- Mix Design Mortar/Paste-->
   <object name="MixDesignMortarPaste" meta_type="Dexterity FTI" />
 
+  <!-- Mix Material Amount -->
+  <object name="MixMaterialAmount" meta_type="Dexterity FTI" />
+
 </object>

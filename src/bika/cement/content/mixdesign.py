@@ -42,9 +42,17 @@ class IMixDesignSchema(model.Schema):
     )
     mix_materials = UIDReferenceField(
         title=_(u"title_mix_design_mix_material", default=u"Mix Materials"),
-        relationship="MixDesignMixMaterial",
-        allowed_types=("MixMaterial", ),
+        relationship="MixDesignMixMaterialAmount",
+        allowed_types=("MixMaterialAmount", ),
         multi_valued=True,
+        required=False,
+    )
+
+    mix_type = UIDReferenceField(
+        title=_(u"title_mix_type", default=u"Mix Type"),
+        relationship="DesignMixType",
+        allowed_types=("MixType", ),
+        multi_valued=False,
         required=False,
     )
 
@@ -126,14 +134,9 @@ class MixDesign(Container):
 
     def get_mix_design_type(self):
         mix_design = self
-        mix_design_type = mix_design.mix_design_type
-        if not mix_design_type:
+        mix_type_uid = mix_design.mix_type
+        mix_type_title = api.get_object_by_uid(mix_type_uid).title
+        if not mix_type_title:
             return
-
-        portal_type = api.get_object_by_uid(mix_design_type[0]).portal_type
-        if not portal_type:
-            return
-        if portal_type == "MixDesignConcrete":
-            return "Concrete"
-        if portal_type == "MixDesignMortarPaste":
-            return "Mortar or Paste"
+        if mix_type_title in ["Concrete", "Mortar", "Paste"]:
+            return mix_type_title

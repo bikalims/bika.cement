@@ -73,3 +73,8 @@ class IMixDesignConcrete(Interface):
 class IMixDesignMortarPaste(Interface):
     """Marker interface for mix design
     """
+
+
+class IMixMaterialAmount(Interface):
+    """Marker interface for mix material amount setup folder
+    """

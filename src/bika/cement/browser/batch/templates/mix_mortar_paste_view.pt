@@ -40,7 +40,7 @@
             <td class="label bg-light" i18n:translate="">Date</td>
             <td class="field"><div tal:content="mix_design/date|nothing"/></td>
             <td class="label bg-light" i18n:translate="">Type</td>
-            <td class="field"><div tal:content="mix_design/get_mix_design_type|nothing"/></td>
+            <td class="field"><div tal:content="python:mix_design.get_mix_design_type()"/></td>
           </tr>
         </table>
    </div>
@@ -61,7 +61,7 @@
          </tr>
          <tr>
            <td class="label bg-light">Mold Numbers</td>
-           <td><span tal:content="concrete/mold_numbers"/> in</td>
+           <td><span tal:content="concrete/mold_numbers"/></td>
            <td class="label bg-light">Mortar Flow</td>
            <td><span tal:content="concrete/mortar_flow"/></td>
          </tr>

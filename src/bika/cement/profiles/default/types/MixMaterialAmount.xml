@@ -1,37 +1,32 @@
 <?xml version="1.0"?>
 <object xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-    name="MixDesign"
+    name="MixMaterialAmount"
     meta_type="Dexterity FTI"
     i18n:domain="bika.cement">
 
   <!-- Basic properties -->
   <property
       i18n:translate=""
-      name="title">Mix Design</property>
+      name="title">Mix Material Amount</property>
   <property
       i18n:translate=""
-      name="description">Mix Design</property>
+      name="description">Mix Material Amounts</property>
 
   <property name="allow_discussion">False</property>
-  <property name="factory">MixDesign</property>
+  <property name="factory">MixMaterialAmount</property>
   <property name="icon_expr"></property>
   <property name="link_target"></property>
 
   <!-- Hierarchy control -->
   <property name="global_allow">False</property>
   <property name="filter_content_types">True</property>
-  <property name="allowed_content_types">
-    <element value="MixDesignConcrete" />
-    <element value="MixDesignMortarPaste" />
-    <element value="MixMaterial" />
-    <element value="MixMaterialAmount" />
-  </property>
   <!-- Schema, class and security -->
   <property name="add_permission">cmf.AddPortalContent</property>
   <property name="model_file"></property>
   <property name="model_source"></property>
-  <property name="schema">bika.cement.content.mixdesign.IMixDesignSchema</property>
-  <property name="klass">bika.cement.content.mixdesign.MixDesign</property>
+  <property name="schema">bika.cement.content.mixmaterialamount.IMixMaterialAmountSchema</property>
+  <property name="klass">bika.cement.content.mixmaterialamount.MixMaterialAmount</property>
+
 
   <!-- Enabled behaviors -->
   <property name="behaviors" purge="false">
@@ -41,7 +36,7 @@
   </property>
 
   <!-- View information -->
-  <property name="add_view_expr">string:${folder_url}/++add++MixDesign</property>
+  <property name="add_view_expr">string:${folder_url}/++add++MixMaterialAmount</property>
   <property name="default_view">view</property>
   <property name="default_view_fallback">False</property>
   <property name="immediate_view">view</property>

@@ -119,26 +119,34 @@ class MixSpreadsheetFileExtensionField(object):
 
     def getMutator(self, batch):
         def mutator(value, **kw):
+            pu = api.get_tool("plone_utils")
             self.set(batch, value)
             sheet_name = "SSD & Batch values"
             if batch.MixSpreadsheet:
                 blob = batch.MixSpreadsheet.blob
                 data = self.get_data_from_blob_file(blob, sheet_name)
+                mix_type = self.get_mix_type(data[0][4])
+                if not mix_type:
+                    msg = "Spreadsheet Mix Type {} not found".format(data[0][4])
+                    pu.addPortalMessage(msg, "error")
+                    return mutator
                 mix_design_data = self.parse_mix_design_data(data)
                 if not mix_design_data:
-                    pu = api.get_tool("plone_utils")
                     msg = "Spreadsheet Mix Design and Project are Required"
                     pu.addPortalMessage(msg, "error")
                     return mutator
                 mix_design = self.create_mix_design(batch, mix_design_data)
-                design_type = mix_design_data.get("type")
-                if "Mortar" in design_type or "Paste" in design_type:
+                design_type = data[0][4]
+                if design_type in ["Mortar", "Paste"]:
                     mortar_paste_data = self.parse_mix_design_mortar_paste_data(data)
                     self.create_mortar_paste_mix_design(mix_design, mortar_paste_data)
                 elif design_type == "Concrete":
                     concrete_data = self.parse_mix_design_concrete_data(data)
                     self.create_concrete_mix_design(mix_design, concrete_data)
                 else:
+                    lmsg = "Mix Type Interface {} does not exist"
+                    msg = lmsg.format(design_type)
+                    pu.addPortalMessage(msg, "error")
                     return mutator
                 self.mix_materials(mix_design, data)
 
@@ -154,6 +162,15 @@ class MixSpreadsheetFileExtensionField(object):
             raise ValueError("Bad index accessor value: %r", name)
         else:
             return getattr(instance, name)
+
+    def get_mix_type(self, mix_type):
+        query = {
+            "portal_type": "MixType",
+        }
+        # TODO: filter by title once the title index has been added
+        brains = api.search(query, SETUP_CATALOG)
+        brains = [md for md in brains if md.title == mix_type]
+        return brains
 
     def get_data_from_blob_file(self, blob, sheet_name=None):
         # Step 1: Open the blob
@@ -193,13 +210,16 @@ class MixSpreadsheetFileExtensionField(object):
         time = data[6][2]
         datetime = date
         if date and time:
-            datetime = date.replace(hour=time.hour,
-                                    minute=time.minute,
-                                    second=time.second,
-                                    microsecond=time.microsecond
-                    )
+            datetime = date.replace(
+                hour=time.hour,
+                minute=time.minute,
+                second=time.second,
+                microsecond=time.microsecond
+            )
         mix_design_data["date"] = datetime
-        mix_design_data["type"] = data[0][4]
+        mix_type = self.get_mix_type(data[0][4])
+        if mix_type:
+            mix_design_data["mix_type"] = mix_type[0].UID
         mix_design_data["additional_info"] = data[0][7]
         return mix_design_data
 
@@ -245,6 +265,7 @@ class MixSpreadsheetFileExtensionField(object):
         mix_design.project = data.get("project")
         mix_design.date = data.get("date")
         mix_design.additional_info = data.get("additional_info")
+        mix_design.mix_type = data.get("mix_type")
         # mix_design.mix_design_type = data.get("mix_design_type")
         # mix_design.edit(**data)
         return mix_design
@@ -300,10 +321,11 @@ class MixSpreadsheetFileExtensionField(object):
         setup = api.get_senaite_setup()
         folder = setup.get("mixmaterials")
         mix_mat_data = data[9:]
-        mix_materials = []
+        mix_materials_amounts_list = []
         errors = []
         query = {
             "portal_type": "MixMaterial",
+            "is_active": "True",
             "path": {
                 "query": api.get_path(folder),
             },
@@ -319,8 +341,15 @@ class MixSpreadsheetFileExtensionField(object):
             if not brains:
                 errors.append(m_name)
                 continue
-            mix_materials.append(brains[0].UID)
-        mix_design.mix_materials = mix_materials
+            mix_material_amount = api.create(mix_design, "MixMaterialAmount")
+            mix_material_amount.amounts = str(format(mx[5])) + " " + mx[6]
+            mix_material_amount.mix_material = brains[0].UID
+            mix_material_amount.mix_type_title = data[0][4]
+            if data[0][4] == "Concrete":
+                mix_material_amount.moisture_corrected_batch_amounts = str(format(mx[7])) + " " + mx[8]
+
+            mix_materials_amounts_list.append(mix_material_amount.UID())
+        mix_design.mix_materials = mix_materials_amounts_list
         if errors:
             msg = "Spreadsheet Mix Materials not found: %s" % ", ".join(errors)
             pu = api.get_tool("plone_utils")
