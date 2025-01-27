@@ -342,11 +342,19 @@ class MixSpreadsheetFileExtensionField(object):
                 errors.append(m_name)
                 continue
             mix_material_amount = api.create(mix_design, "MixMaterialAmount")
-            mix_material_amount.amounts = str(format(mx[5])) + " " + mx[6]
+
+            amount = mx[5]
+            unit = mx[6]
+
+            if amount is None:
+                amount = ""
+            else:
+                amount = format_number(amount)
+            if unit is None:
+                unit = ""
+            mix_material_amount.amounts = "{} {}".format(amount, unit)
             mix_material_amount.mix_material = brains[0].UID
             mix_material_amount.mix_type_title = data[0][4]
-            if data[0][4] == "Concrete":
-                mix_material_amount.moisture_corrected_batch_amounts = str(format(mx[7])) + " " + mx[8]
 
             mix_materials_amounts_list.append(mix_material_amount.UID())
         mix_design.mix_materials = mix_materials_amounts_list
