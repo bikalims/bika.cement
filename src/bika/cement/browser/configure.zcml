@@ -17,8 +17,8 @@
 
   <!-- Publish static files -->
   <plone:static
-      name="bika.cement"
       type="plone"
+      name="bika.cement.static"
       directory="static"
       />
 

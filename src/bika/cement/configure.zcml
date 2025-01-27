@@ -45,4 +45,6 @@
   <!-- -*- extra stuff goes here -*- -->
   <plone:static directory="reports" type="senaite.impress.reports"/>
 
+  <include package=".upgrade" />
+
 </configure>
