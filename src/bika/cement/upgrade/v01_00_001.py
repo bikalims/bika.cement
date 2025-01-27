@@ -33,8 +33,7 @@ def upgrade(tool):
     portal = tool.aq_inner.aq_parent
     setup = portal.portal_setup
     ut = UpgradeUtils(portal)
-    ver_from = ut.getInstalledVersion(PRODUCT_NAME)
-    import pdb; pdb.set_trace()  # fmt: skip
+    ver_from = "1000"
 
     if ut.isOlderVersion(PRODUCT_NAME, version):
         logger.info(
