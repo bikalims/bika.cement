@@ -325,6 +325,7 @@ class MixSpreadsheetFileExtensionField(object):
         errors = []
         query = {
             "portal_type": "MixMaterial",
+            "is_active": "True",
             "path": {
                 "query": api.get_path(folder),
             },
