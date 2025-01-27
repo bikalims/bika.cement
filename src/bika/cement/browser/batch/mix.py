@@ -15,7 +15,6 @@ from senaite.app.listing import ListingView
 from senaite.core.catalog import SETUP_CATALOG
 
 from bika.cement.config import _
-from bika.cement.config import is_installed
 
 
 class BatchMixView(BrowserView):
@@ -33,8 +32,9 @@ class BatchMixView(BrowserView):
         #
         batch = self.context
         mix_design = batch.get_mix_design()
+        # Mix tab only available if a mix design is created for the batch
         if not mix_design:
-            return self.template()
+            return
 
         # TODO: check sample view and just render the data regardless of type
         mix_design_type = mix_design.mix_design_type
@@ -141,9 +141,12 @@ class MixMaterialTable(ListingView):
             ("specific_gravity", {
                 "title": _("SG"),
                 "index": "specific_gravity"}),
-            ("absorption_rate", {
+            ("amounts", {
                 "title": _("Amount"),
-                "index": "absorption_rate"}),
+                "index": "amounts"}),
+            ("moisture_corrected_batch_amounts", {
+                "title": _("Moisture Corrected Batch Amounts"),
+                "index": "amounts"}),
         ))
 
         self.review_states = [
@@ -164,12 +167,18 @@ class MixMaterialTable(ListingView):
         :index: current index of the item
         """
         obj = api.get_object(obj)
-        item["replace"]["title"] = get_link_for(obj)
-        item["specific_gravity"] = obj.specific_gravity
-        item["absorption_rate"] = obj.absorption_rate
+        mix_obj = api.get_object_by_uid(obj.mix_material)
+        item["replace"]["title"] = get_link_for(mix_obj)
+        item["specific_gravity"] = mix_obj.specific_gravity
+        item["amounts"] = obj.amounts
+        if obj.mix_type_title == "Concrete":
+            item["moisture_corrected_batch_amounts"] = obj.moisture_corrected_batch_amounts
+        else:
+            if "moisture_corrected_batch_amounts" in self.columns.keys():
+                self.columns.pop("moisture_corrected_batch_amounts")
 
         # Material Type
-        material_type_list = obj.material_type
+        material_type_list = mix_obj.material_type
         if material_type_list:
             material_type = api.get_object_by_uid(material_type_list[0])
             material_type_title = material_type.title

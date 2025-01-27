@@ -462,14 +462,10 @@
             <td class="label bg-light" i18n:translate="">Type</td>
             <td class="field">
                     <div tal:content="python: view.get_mix_type(model) or ''"></div></td>
-            <td class="field">
-                    <div tal:content="python: view.get_mix_type(model) or ''"></div></td>
           </tr>
         </table>
     </div>
 
-    <div class="col-12" tal:define="concrete python:view.get_mix_design_concrete(model)"
-                        tal:condition="python:concrete">
     <div class="col-12" tal:define="concrete python:view.get_mix_design_concrete(model)"
                         tal:condition="python:concrete">
       <table class="table table-sm table-bordered">
@@ -545,7 +541,6 @@
       </table>
     </div>
     <!-- -->
-    <!-- -->
 
 
 <!-- Mortar and Paste table-->
@@ -568,7 +563,6 @@
          <tr>
            <td class="label bg-light">Mold Numbers</td>
            <td><span tal:content="mortar/mold_numbers|nothing"/></td>
-           <td><span tal:content="mortar/mold_numbers|nothing"/></td>
            <td class="label bg-light">Mortar Flow</td>
            <td><span tal:content="mortar/mortar_flow|nothing"/></td>
          </tr>
@@ -578,10 +572,90 @@
 <!-- -->
 
 
-<!-- Materials Listing View-->
+<!-- Materials Listing View for concrete-->
 
  <div class="col-12">
- <div class="w-100" tal:define="mix_design python:view.get_mix_design(model)">
+ <div class="w-100" tal:define="mix_design python:view.get_mix_design(model)"
+                    tal:condition="python:view.get_mix_design_concrete(model)">
+   <table class="table table-sm table-condensed">
+       <colgroup>
+         <!-- Class -->
+         <col style="width: 20%;">
+         <!-- Type -->
+         <col style="width: 20%;">
+         <!-- Title -->
+         <col style="width: 20%;">
+         <!-- SG -->
+         <col style="width: 10%">
+         <!-- Amounts -->
+         <col style="width: 15%">
+       </colgroup>
+       <thead tal:condition="python:True">
+         <tr>
+            <th class="text-center" colspan="5">
+                <span>Design and Batch Proportions (SSD/ cu ft)</span>
+            </th>
+         </tr>
+         <tr>
+            <th colspan="5">
+                <span>Materials</span>
+            </th>
+         </tr>
+         <tr class="small">
+           <th>
+             <span>Class</span>
+           </th>
+           <th class="text-left">
+             <span i18n:translate="">Type</span>
+           </th>
+           <th class="text-left">
+             <span i18n:translate="">Title</span>
+           </th>
+           <th class="text-left">
+             <span i18n:translate="">SG</span>
+           </th>
+           <th class="text-left">
+             <span i18n:translate="">Amount</span>
+           </th>
+         </tr>
+       </thead>
+       <tbody>
+           <tal:materials tal:repeat="mix_material python:view.get_mix_materials(model)">
+               <tr class="small">
+                 <td class="analysis">
+                   <span tal:condition="mix_material/material_type">
+                     <span class="font-normal" tal:content="mix_material/material_type/material_class|nothing"></span>
+                   </span>
+                 </td>
+                 <td class="analysis">
+                   <span tal:condition="mix_material/material_type">
+                     <span class="font-normal" tal:content="mix_material/material_type/title|nothing"></span>
+                   </span>
+                 </td>
+                 <td class="analysis">
+                     <span class="font-normal" tal:content="mix_material/title|nothing"></span>
+                 </td>
+                 <td class="analysis">
+                     <span class="font-normal" tal:content="mix_material/specific_gravity|nothing"></span>
+                 </td>
+                 <td class="analysis">
+                     <span class="font-normal" tal:content="mix_material/amounts|nothing"></span>
+                 </td>
+               </tr>
+           </tal:materials>
+       </tbody>
+   </table>
+ </div>
+ </div>
+
+
+<!-- -->
+
+<!-- Materials Listing View for mortar/paste-->
+
+ <div class="col-12">
+ <div class="w-100" tal:define="mix_design python:view.get_mix_design(model)"
+                    tal:condition="python:get_mix_design_mortar_paste(model)">
    <table class="table table-sm table-condensed">
        <colgroup>
          <!-- Class -->
@@ -592,10 +666,10 @@
          <col style="width: 25%;">
          <!-- SG -->
          <col style="width: 10%">
-         <!-- Amount -->
+         <!-- Amounts -->
          <col style="width: 15%">
        </colgroup>
-       <thead tal:condition="python:True">
+       <thead>
          <tr>
             <th class="text-center" colspan="5">
                 <span>Design and Batch Proportions (Per chosen volume)</span>
@@ -644,7 +718,7 @@
                      <span class="font-normal" tal:content="mix_material/specific_gravity|nothing"></span>
                  </td>
                  <td class="analysis">
-                     <span class="font-normal" tal:content="mix_material/absorption_rate|nothing"></span>
+                     <span class="font-normal" tal:content="mix_material/amounts|nothing"></span>
                  </td>
                </tr>
            </tal:materials>
@@ -670,13 +744,6 @@
 
 <!-- -->
 
-
-
-    <!-- This is the the listingview .... will have to make a a new table and pull. Viewlet manager: sample sections -->
-    <div class="col-12" id="sample-sections">
-      <!-- <div tal:replace="structure provider:senaite.samplesections"></div> -->
-    </div>
-    <!-- Should this be conditioned or no; I think so-->
     <div class="col-12" tal:define="concrete python:view.get_mix_design_concrete(model)"
                           tal:condition="python:concrete">
       <table class="sampleheader-table table table-sm table-bordered">
@@ -699,33 +766,6 @@
       </table>
     </div>
 
-
-    <!-- This is the the listingview .... will have to make a a new table and pull. Viewlet manager: sample sections -->
-    <div class="col-12" id="sample-sections">
-      <!-- <div tal:replace="structure provider:senaite.samplesections"></div> -->
-    </div>
-    <!-- Should this be conditioned or no; I think so-->
-    <div class="col-12" tal:define="concrete python:view.get_mix_design_concrete(model)"
-                          tal:condition="python:concrete">
-      <table class="sampleheader-table table table-sm table-bordered">
-        <tr>
-          <td class="label bg-light">Truck Vol</td>
-          <td tal:content="concrete/trucked_volume|nothing"></td>
-          <td class="label bg-light">Truck #</td>
-          <td><span tal:content="concrete/trucked_number|nothing"/> lb</td>
-          <td class="label bg-light">Ticket #</td>
-          <td><span tal:content="concrete/ticket_number|nothing"/> %</td>
-          <td class="label bg-light">Plan #</td>
-          <td><span tal:content="concrete/plant_number|nothing"/> %</td>
-        </tr>
-        <tr>
-          <td class="label bg-light" colspan="8">Additional info</td>
-        </tr>
-        <tr>
-          <td class="" colspan="8">&nbsp;</td>
-        </tr>
-      </table>
-    </div>
 
   <!--  REMARKS -->
   <tal:render condition="python:True">
