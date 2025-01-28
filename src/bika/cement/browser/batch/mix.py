@@ -20,9 +20,7 @@ from bika.cement.config import _
 class BatchMixView(BrowserView):
     implements(IViewView)
     template = ViewPageTemplateFile("templates/mix_view.pt")
-    mortar_p_template = ViewPageTemplateFile(
-        "templates/mix_mortar_paste_view.pt"
-    )
+    mortar_p_template = ViewPageTemplateFile("templates/mix_mortar_paste_view.pt")
 
     def __init__(self, context, request):
         super(BatchMixView, self).__init__(context, request)
@@ -67,7 +65,9 @@ class BatchMixView(BrowserView):
             return None
         query = {
             "portal_type": "MixDesignMortarPaste",
-            "path": {"query": api.get_path(mix_design), },
+            "path": {
+                "query": api.get_path(mix_design),
+            },
         }
         brains = api.search(query, SETUP_CATALOG)
         if len(brains) == 1:
@@ -110,17 +110,13 @@ class MixMaterialViewlet(ViewletBase):
 
 
 class MixMaterialTable(ListingView):
-
     """Displays all available sample containers in a table"""
 
     def __init__(self, context, request):
         super(MixMaterialTable, self).__init__(context, request)
         self.catalog = SETUP_CATALOG
         self.contentFilter = {
-            "UID": self.get_mix_design().mix_materials
-            if self.get_mix_design()
-            else [],
-            "sort_on": "material_class_sort_key",
+            "UID": self.get_mix_design().mix_materials if self.get_mix_design() else [],
             "sort_order": "ascending",
         }
         t = self.context.translate
@@ -130,23 +126,18 @@ class MixMaterialTable(ListingView):
         self.show_workflow_action_buttons = False
         self.show_select_column = False
         self.enable_ajax_transitions = None
-        self.columns = collections.OrderedDict((
-            ("material_class", {
-                "title": _("Class"),
-                "index": "material_class_sort_key"}),
-            ("material_type", {
-                "title": _("Type"),
-                "index": "material_type"}),
-            ("title", {
-                "title": _("Title"),
-                "index": "sortable_title"}),
-            ("specific_gravity", {
-                "title": _("SG"),
-                "index": "specific_gravity"}),
-            ("amounts", {
-                "title": _("Amount"),
-                "index": "amounts"}),
-        ))
+        self.columns = collections.OrderedDict(
+            (
+                (
+                    "material_class",
+                    {"title": _("Class"), "index": "material_class_sort_key"},
+                ),
+                ("material_type", {"title": _("Type"), "index": "material_type"}),
+                ("title", {"title": _("Title"), "index": "sortable_title"}),
+                ("specific_gravity", {"title": _("SG"), "index": "specific_gravity"}),
+                ("amounts", {"title": _("Amount"), "index": "amounts"}),
+            )
+        )
 
         self.review_states = [
             {
@@ -165,11 +156,11 @@ class MixMaterialTable(ListingView):
             the template
         :index: current index of the item
         """
-        obj = api.get_object(obj)
-        mix_obj = api.get_object_by_uid(obj.mix_material)
+        mix_mat_amt_obj = api.get_object(obj)
+        mix_obj = api.get_object_by_uid(mix_mat_amt_obj.mix_material)
         item["replace"]["title"] = get_link_for(mix_obj)
         item["specific_gravity"] = mix_obj.specific_gravity
-        item["amounts"] = obj.amounts
+        item["amounts"] = mix_mat_amt_obj.amounts
 
         # Material Type
         material_type_list = mix_obj.material_type
@@ -177,9 +168,7 @@ class MixMaterialTable(ListingView):
             material_type = api.get_object_by_uid(material_type_list[0])
             material_type_title = material_type.title
             material_type_url = material_type.absolute_url()
-            material_type_link = get_link(
-                material_type_url, material_type_title
-            )
+            material_type_link = get_link(material_type_url, material_type_title)
             item["material_type"] = material_type_title
             item["replace"]["material_type"] = material_type_link
             m_class = api.get_object_by_uid(material_type.material_class[0])
