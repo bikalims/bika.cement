@@ -56,4 +56,8 @@ def reindex_mix_materials(tool):
         obj = brain.getObject()
         logger.info("Reindex mix material: %r" % obj)
         obj.reindexObject()
+    for brain in cat(portal_type="MixMaterialAmount"):
+        obj = brain.getObject()
+        logger.info("Reindex mix material: %r" % obj)
+        obj.reindexObject()
     logger.info("Reindexing mix materials [DONE]")
