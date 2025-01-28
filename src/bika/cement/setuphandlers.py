@@ -13,6 +13,7 @@ from senaite.core.setuphandlers import (
 
 INDEXES = [
     (SETUP_CATALOG, "sort_key", "", "FieldIndex"),
+    (SETUP_CATALOG, "material_class_sort_key", "", "KeywordIndex"),
 ]
 
 COLUMNS = [

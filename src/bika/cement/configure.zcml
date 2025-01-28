@@ -16,6 +16,7 @@
   <include package=".browser" />
   <include package=".extenders" />
   <include package=".monkeys" />
+  <include package=".catalog" />
 
   <include file="permissions.zcml" />
 
