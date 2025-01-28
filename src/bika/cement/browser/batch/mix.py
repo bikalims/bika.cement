@@ -120,7 +120,7 @@ class MixMaterialTable(ListingView):
             "UID": self.get_mix_design().mix_materials
             if self.get_mix_design()
             else [],
-            "sort_on": "material_class_sort_key",
+            "sort_on": "material_amount_class_sort_key",
             "sort_order": "ascending",
         }
         t = self.context.translate
