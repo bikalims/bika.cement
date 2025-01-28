@@ -38,8 +38,8 @@ class MixMaterialsView(ListingView):
 
         self.contentFilter = {
             "portal_type": "MixMaterial",
-            "sort_on": "sortable_title",
-            "sort_order": "ascending"
+            "sort_on": "material_class_sort_key",
+            "sort_order": "ascending",
         }
 
         self.context_actions = {

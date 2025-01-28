@@ -120,6 +120,8 @@ class MixMaterialTable(ListingView):
             "UID": self.get_mix_design().mix_materials
             if self.get_mix_design()
             else [],
+            "sort_on": "material_class_sort_key",
+            "sort_order": "ascending",
         }
         t = self.context.translate
         self.title = t(_("Mix Materials"))
@@ -131,7 +133,7 @@ class MixMaterialTable(ListingView):
         self.columns = collections.OrderedDict((
             ("material_class", {
                 "title": _("Class"),
-                "index": "sortable_title"}),
+                "index": "material_class_sort_key"}),
             ("material_type", {
                 "title": _("Type"),
                 "index": "material_type"}),
