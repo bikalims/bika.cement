@@ -503,9 +503,6 @@
                                   <tal:block tal:define="OOR python: cell['val'] and cell['OOR'] and repeat.cell.index > 0">
                                     <td tal:condition="OOR" class="time-series-data time-series-oor">
                                       <span tal:content="python: cell['val']"/>
-                                      <img tal:attributes="src string:++plone++bika.cement.static/img/exclamation-circle.png"
-                                            title="Result out of range"
-                                            />
                                     </td>
                                     <td tal:condition="python: not OOR" class="time-series-data">
                                         <span tal:content="python: cell['val']"/>
