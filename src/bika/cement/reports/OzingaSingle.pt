@@ -421,6 +421,54 @@
               </tfoot>
             </table>
 
+
+          </tal:categories_in_poc>
+        </tal:poc>
+      </div>
+    </div>
+  </tal:render>
+
+  <!--  RESULTS INTERPRETATION -->
+  <tal:render condition="python:True">
+    <div class="row section-resultsinterpretation no-gutters"
+         tal:define="ris python:model.get_resultsinterpretation();
+                     has_ri python:any(map(lambda r: r.get('richtext'), ris));">
+      <div class="" tal:condition="has_ri">
+        <h2 class="notes-header">Notes</h2>
+        <tal:ri repeat="ri ris">
+          <h2 tal:condition="ri/richtext|nothing" class="notes-header" tal:content="string:${ri/title}" ></h2>
+          <div tal:content="structure ri/richtext|nothing"></div>
+        </tal:ri>
+      </div>
+    </div>
+  </tal:render>
+
+  <!--  APPLICABLE TEST METHODS -->
+  <tal:render condition="python:True">
+    <div class="row section-resultsinterpretation no-gutters"
+         tal:define="methods python: view.get_sample_methods(model);">
+      <div class="" tal:condition="methods">
+        <h2 class="notes-header">Applicable Test Methods</h2>
+        <tal:method_info repeat="method methods">
+            <div tal:content="structure method"></div>
+        </tal:method_info>
+      </div>
+    </div>
+  </tal:render>
+
+  <tal:render condition="python:True">
+    <div class="row section-results no-gutters">
+      <div class="w-100">
+        <h1 i18n:translate="">Results</h1>
+
+        <!-- Point of Capture -->
+        <tal:poc define="analyses_by_poc python:view.get_analyses_by_poc(model);"
+                 repeat="poc analyses_by_poc">
+
+          <!-- Analysis Category -->
+          <tal:categories_in_poc define="categories_by_poc python:view.get_categories_by_poc(model)"
+                                 repeat="category python:view.sort_items(categories_by_poc.get(poc))">
+
             <!--  TIMESERIES RESULTS -->
             <tal:render
               define="analyses python:[analysis for analysis in view.get_analyses_by(model, poc=poc, category=category) if analysis.ResultOptionsType=='timeseries']"
@@ -480,38 +528,8 @@
                   <br />
                 </div>
             </tal:render>
-
-
           </tal:categories_in_poc>
         </tal:poc>
-      </div>
-    </div>
-  </tal:render>
-
-  <!--  RESULTS INTERPRETATION -->
-  <tal:render condition="python:True">
-    <div class="row section-resultsinterpretation no-gutters"
-         tal:define="ris python:model.get_resultsinterpretation();
-                     has_ri python:any(map(lambda r: r.get('richtext'), ris));">
-      <div class="" tal:condition="has_ri">
-        <h2 class="notes-header">Notes</h2>
-        <tal:ri repeat="ri ris">
-          <h2 tal:condition="ri/richtext|nothing" class="notes-header" tal:content="string:${ri/title}" ></h2>
-          <div tal:content="structure ri/richtext|nothing"></div>
-        </tal:ri>
-      </div>
-    </div>
-  </tal:render>
-
-  <!--  APPLICABLE TEST METHODS -->
-  <tal:render condition="python:True">
-    <div class="row section-resultsinterpretation no-gutters"
-         tal:define="methods python: view.get_sample_methods(model);">
-      <div class="" tal:condition="methods">
-        <h2 class="notes-header">Applicable Test Methods</h2>
-        <tal:method_info repeat="method methods">
-            <div tal:content="structure method"></div>
-        </tal:method_info>
       </div>
     </div>
   </tal:render>
