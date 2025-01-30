@@ -543,11 +543,12 @@
 
 
   <!--  Mix Information-->
-  <div style="padding-top: 20px; padding-bottom: 10px;">
+  <div style="padding-top: 20px; padding-bottom: 10px;"
+       tal:define="mix_design python:view.get_mix_design(model)"
+       tal:condition="python:mix_design">
     <h2 class="notes-header" style= "padding-left:15px">Mix</h2>
   </div>
-    <div class="col-12"  tal:define="mix_design python:view.get_mix_design(model)"
-                         tal:condition="python:mix_design">
+    <div class="col-12">
         <table class="table table-sm table-bordered">
           <colgroup>
             <col style="width:25%"/>
