@@ -86,7 +86,7 @@ class TimeSeries
     line_configs = getLineConfigs(headers.length - 1)
     if col_types[col_types.length - 1] == "average"
       line_configs[line_configs.length - 1] = {
-        color: "#000000",
+        color: "red",
         dash: "",
         opacity: "1.0",
         symbol: d3.symbolCircle
