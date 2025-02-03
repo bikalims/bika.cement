@@ -43,7 +43,7 @@ class IMixDesignSchema(model.Schema):
     mix_materials = UIDReferenceField(
         title=_(u"title_mix_design_mix_material", default=u"Mix Materials"),
         relationship="MixDesignMixMaterialAmount",
-        allowed_types=("MixMaterialAmount", ),
+        allowed_types=("MixMaterialAmount",),
         multi_valued=True,
         required=False,
     )
@@ -51,7 +51,7 @@ class IMixDesignSchema(model.Schema):
     mix_type = UIDReferenceField(
         title=_(u"title_mix_type", default=u"Mix Type"),
         relationship="DesignMixType",
-        allowed_types=("MixType", ),
+        allowed_types=("MixType",),
         multi_valued=False,
         required=False,
     )
@@ -60,12 +60,14 @@ class IMixDesignSchema(model.Schema):
     date = DatetimeField(
         title=_(u"label_mix_design_date", default=u"Date"),
         description=_(
-            u"description_mix_design_date",
-            default=u"Mix Design Date"),
+            u"description_mix_design_date", default=u"Mix Design Date"
+        ),
         required=False,
     )
     additional_info = schema.Text(
-        title=_(u"title_mix_design_addtional_info", default=u"Additional Info"),
+        title=_(
+            u"title_mix_design_addtional_info", default=u"Additional Info"
+        ),
         required=False,
     )
 
@@ -128,7 +130,9 @@ class MixDesign(Container):
             return api.get_object(brains[0])
 
         values = mix_design.values()
-        mortar_paste = [md for md in values if md.portal_type == "MixDesignMortarPaste"]
+        mortar_paste = [
+            md for md in values if md.portal_type == "MixDesignMortarPaste"
+        ]
         if len(mortar_paste) == 1:
             return mortar_paste[0]
 

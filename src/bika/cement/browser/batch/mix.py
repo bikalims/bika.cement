@@ -20,7 +20,9 @@ from bika.cement.config import _
 class BatchMixView(BrowserView):
     implements(IViewView)
     template = ViewPageTemplateFile("templates/mix_view.pt")
-    mortar_p_template = ViewPageTemplateFile("templates/mix_mortar_paste_view.pt")
+    mortar_p_template = ViewPageTemplateFile(
+        "templates/mix_mortar_paste_view.pt"
+    )
 
     def __init__(self, context, request):
         super(BatchMixView, self).__init__(context, request)
@@ -116,7 +118,9 @@ class MixMaterialTable(ListingView):
         super(MixMaterialTable, self).__init__(context, request)
         self.catalog = SETUP_CATALOG
         self.contentFilter = {
-            "UID": self.get_mix_design().mix_materials if self.get_mix_design() else [],
+            "UID": self.get_mix_design().mix_materials
+            if self.get_mix_design()
+            else [],
             "sort_on": "material_amount_class_sort_key",
             "sort_order": "ascending",
         }
@@ -133,9 +137,15 @@ class MixMaterialTable(ListingView):
                     "material_class",
                     {"title": _("Class"), "index": "material_class_sort_key"},
                 ),
-                ("material_type", {"title": _("Type"), "index": "material_type"}),
+                (
+                    "material_type",
+                    {"title": _("Type"), "index": "material_type"},
+                ),
                 ("title", {"title": _("Title"), "index": "sortable_title"}),
-                ("specific_gravity", {"title": _("SG"), "index": "specific_gravity"}),
+                (
+                    "specific_gravity",
+                    {"title": _("SG"), "index": "specific_gravity"},
+                ),
                 ("amounts", {"title": _("Amount"), "index": "amounts"}),
             )
         )
@@ -169,7 +179,9 @@ class MixMaterialTable(ListingView):
             material_type = api.get_object_by_uid(material_type_list[0])
             material_type_title = material_type.title
             material_type_url = material_type.absolute_url()
-            material_type_link = get_link(material_type_url, material_type_title)
+            material_type_link = get_link(
+                material_type_url, material_type_title
+            )
             item["material_type"] = material_type_title
             item["replace"]["material_type"] = material_type_link
             m_class = api.get_object_by_uid(material_type.material_class[0])

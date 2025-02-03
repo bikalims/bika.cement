@@ -26,7 +26,6 @@ from bika.cement.setuphandlers import setup_catalogs
 
 from senaite.core.catalog import SETUP_CATALOG
 from senaite.core.upgrade import upgradestep
-from senaite.core.upgrade.utils import UpgradeUtils
 
 version = "1.0.2"
 
@@ -35,10 +34,11 @@ version = "1.0.2"
 def upgrade(tool):
     portal = tool.aq_inner.aq_parent
     setup = portal.portal_setup
-    ut = UpgradeUtils(portal)
     ver_from = "1000"
 
-    logger.info("Upgrading {0}: {1} -> {2}".format(PRODUCT_NAME, ver_from, version))
+    logger.info(
+        "Upgrading {0}: {1} -> {2}".format(PRODUCT_NAME, ver_from, version)
+    )
 
     # -------- ADD YOUR STUFF BELOW --------
 
