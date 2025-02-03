@@ -5,6 +5,9 @@
           client model/Client;
           contact model/Contact;
           reporter view/current_user;
+          mix_design python:view.get_mix_design(model);
+          concrete python:view.get_mix_design_concrete(model);
+          mortar python:view.get_mix_design_mortar_paste(model);
           report_images python:view.get_report_images();
           styles python:view.get_coa_styles();
           coa_num python:view.get_coa_number(model);
@@ -461,8 +464,7 @@
     <div style="padding-top: 20px; padding-bottom: 10px;">
       <h1 style= "padding-left:15px">Mix</h1>
     </div>
-      <div class="col-12"  tal:define="mix_design python:view.get_mix_design(model)"
-                          tal:condition="python:mix_design">
+      <div class="col-12" tal:condition="python:mix_design">
           <table class="table table-sm table-bordered">
             <colgroup>
               <col style="width:25%"/>
@@ -492,8 +494,7 @@
   <!-- -->
 
   <!-- Concrete table-->
-    <div class="col-12" tal:define="concrete python:view.get_mix_design_concrete(model)"
-                        tal:condition="python:concrete">
+    <div class="col-12" tal:condition="python:concrete">
       <table class="table table-sm table-bordered">
         <tr>
           <td class="label bg-light">Design W/CM</td>
@@ -569,8 +570,7 @@
   <!-- -->
 
   <!-- Mortar and Paste table-->
-    <div class="col-12" tal:define="mortar python:view.get_mix_design_mortar_paste(model)"
-                        tal:condition="python:mortar">
+    <div class="col-12" tal:condition="python:mortar">
         <table class="sampleheader-table table table-sm table-bordered">
           <tr>
             <td class="label bg-light">Design W/CM</td>
@@ -596,8 +596,7 @@
 
   <!-- Materials Listing View for concrete-->
     <div class="col-12">
-    <div class="w-100" tal:define="mix_design python:view.get_mix_design(model)"
-                        tal:condition="python:view.get_mix_design_concrete(model)">
+    <div class="w-100" tal:condition="python:concrete">
       <table class="table table-sm table-condensed">
           <colgroup>
             <!-- Class -->
@@ -676,8 +675,7 @@
 
   <!-- Materials Listing View for mortar/paste-->
     <div class="col-12">
-    <div class="w-100" tal:define="mix_design python:view.get_mix_design(model)"
-                        tal:condition="python:view.get_mix_design_mortar_paste(model)">
+    <div class="w-100" tal:condition="python:mortar">
       <table class="table table-sm table-condensed">
           <colgroup>
             <!-- Class -->
@@ -764,10 +762,8 @@
     </div>
   <!-- -->
 
-  <!-- Materials Listing View for concrete-->
-      <div class="col-12" tal:define="concrete python:view.get_mix_design_concrete(model);
-                                      mix_design python:view.get_mix_design(model)"
-                          tal:condition="python:concrete">
+  <!-- Concrete additional table-->
+      <div class="col-12" tal:condition="python:concrete">
         <table class="sampleheader-table table table-sm table-bordered">
           <tr>
            <td class="label bg-light">Truck Vol</td>
