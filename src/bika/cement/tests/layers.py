@@ -22,6 +22,7 @@ class BaseLayer(PloneSandboxLayer):
         import senaite.lims
         import bika.coa
         import bika.cement
+        import bika.extras
         import Products.TextIndexNG3
 
         self.loadZCML(package=bika.lims)
@@ -33,6 +34,7 @@ class BaseLayer(PloneSandboxLayer):
         self.loadZCML(package=senaite.lims)
         self.loadZCML(package=bika.coa)
         self.loadZCML(package=bika.cement)
+        self.loadZCML(package=bika.extras)
         self.loadZCML(package=Products.TextIndexNG3)
 
         zope.installProduct(app, "bika.lims")
@@ -44,6 +46,7 @@ class BaseLayer(PloneSandboxLayer):
         zope.installProduct(app, "senaite.lims")
         zope.installProduct(app, "bika.coa")
         zope.installProduct(app, "bika.cement")
+        zope.installProduct(app, "bika.extras")
         zope.installProduct(app, "Products.TextIndexNG3")
 
     def setUpPloneSite(self, portal):
