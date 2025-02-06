@@ -65,7 +65,9 @@ class IMixDesignSchema(model.Schema):
         required=False,
     )
     additional_info = schema.Text(
-        title=_(u"title_mix_design_addtional_info", default=u"Additional Info"),
+        title=_(
+            u"title_mix_design_addtional_info",
+            default=u"Additional Info"),
         required=False,
     )
 
@@ -128,7 +130,9 @@ class MixDesign(Container):
             return api.get_object(brains[0])
 
         values = mix_design.values()
-        mortar_paste = [md for md in values if md.portal_type == "MixDesignMortarPaste"]
+        mortar_paste = [
+            md for md in values if md.portal_type == "MixDesignMortarPaste"
+        ]
         if len(mortar_paste) == 1:
             return mortar_paste[0]
 

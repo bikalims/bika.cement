@@ -138,8 +138,12 @@ class MixSpreadsheetFileExtensionField(object):
                 mix_design = self.create_mix_design(batch, mix_design_data)
                 design_type = data[0][4]
                 if design_type in ["Mortar", "Paste"]:
-                    mortar_paste_data = self.parse_mix_design_mortar_paste_data(data)
-                    self.create_mortar_paste_mix_design(mix_design, mortar_paste_data)
+                    mortar_paste_data = self.parse_mix_design_mortar_paste_data(
+                        data
+                    )
+                    self.create_mortar_paste_mix_design(
+                        mix_design, mortar_paste_data
+                    )
                 elif design_type == "Concrete":
                     concrete_data = self.parse_mix_design_concrete_data(data)
                     self.create_concrete_mix_design(mix_design, concrete_data)
@@ -214,7 +218,7 @@ class MixSpreadsheetFileExtensionField(object):
                 hour=time.hour,
                 minute=time.minute,
                 second=time.second,
-                microsecond=time.microsecond
+                microsecond=time.microsecond,
             )
         mix_design_data["date"] = datetime
         mix_type = self.get_mix_type(data[0][4])
@@ -304,12 +308,16 @@ class MixSpreadsheetFileExtensionField(object):
     def create_mortar_paste_mix_design(self, mix_design, data):
         mortar_paste_mix_design = mix_design.get_mix_design_mortar_paste()
         if not mortar_paste_mix_design:
-            mortar_paste_mix_design = api.create(mix_design, "MixDesignMortarPaste")
+            mortar_paste_mix_design = api.create(
+                mix_design, "MixDesignMortarPaste"
+            )
 
         mortar_paste_mix_design.design = data.get("design")
         mortar_paste_mix_design.replacement = data.get("replacement")
         mortar_paste_mix_design.lab_temperature = data.get("lab_temperature")
-        mortar_paste_mix_design.mortar_temperature = data.get("mortar_temperature")
+        mortar_paste_mix_design.mortar_temperature = data.get(
+            "mortar_temperature"
+        )
         mortar_paste_mix_design.mold_numbers = data.get("mold_numbers")
         mortar_paste_mix_design.mortar_flow = data.get("mortar_flow")
 
