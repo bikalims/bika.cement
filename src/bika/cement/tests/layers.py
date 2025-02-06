@@ -20,6 +20,7 @@ class BaseLayer(PloneSandboxLayer):
         import senaite.app.supermodel
         import senaite.impress
         import senaite.lims
+        import senaite.instruments
         import bika.coa
         import bika.cement
         import bika.extras
@@ -32,6 +33,7 @@ class BaseLayer(PloneSandboxLayer):
         self.loadZCML(package=senaite.app.supermodel)
         self.loadZCML(package=senaite.impress)
         self.loadZCML(package=senaite.lims)
+        self.loadZCML(package=senaite.instruments)
         self.loadZCML(package=bika.coa)
         self.loadZCML(package=bika.cement)
         self.loadZCML(package=bika.extras)
