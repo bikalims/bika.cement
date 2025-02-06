@@ -10,8 +10,8 @@ from plone.app.testing import TEST_USER_ID
 from plone.app.testing import applyProfile
 from plone.app.testing import setRoles
 from plone.testing import zope
-from senaite.core.tests.base import BaseTestCase
-from senaite.core.tests.layers import BaseLayer
+from senaite.core.tests.base import DataTestCase as BaseTestCase
+from senaite.core.tests.layers import DataLayer as BaseLayer
 
 
 class SimpleTestLayer(BaseLayer):
