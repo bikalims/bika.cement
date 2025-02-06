@@ -5,6 +5,9 @@
           client model/Client;
           contact model/Contact;
           reporter view/current_user;
+          mix_design python:view.get_mix_design(model);
+          concrete python:view.get_mix_design_concrete(model);
+          mortar python:view.get_mix_design_mortar_paste(model);
           report_images python:view.get_report_images();
           styles python:view.get_coa_styles();
           coa_num python:view.get_coa_number(model);
@@ -456,128 +459,42 @@
     </div>
   </tal:render>
 
-  <tal:render condition="python:True">
-    <div class="row section-results no-gutters">
-      <div class="w-100">
-        <h1 i18n:translate="">Results</h1>
-
-        <!-- Point of Capture -->
-        <tal:poc define="analyses_by_poc python:view.get_analyses_by_poc(model);"
-                 repeat="poc analyses_by_poc">
-
-          <!-- Analysis Category -->
-          <tal:categories_in_poc define="categories_by_poc python:view.get_categories_by_poc(model)"
-                                 repeat="category python:view.sort_items(categories_by_poc.get(poc))">
-
-            <!--  TIMESERIES RESULTS -->
-            <tal:render
-              define="analyses python:[analysis for analysis in view.get_analyses_by(model, poc=poc, category=category) if analysis.ResultOptionsType=='timeseries']"
-              condition="python:analyses">
-                <div class="section section-timeseries no-gutters">
-                  <div class="">
-                    <h2 i18n:translate>TimeSeries Results</h2>
-                    <tal:block tal:repeat="analysis analyses">
-                      <div class="row"
-                           tal:define="columns python: analysis.TimeSeriesColumns;
-                                       columns_str python:view.json_dumps(columns);
-                                       graph_title python: analysis.GraphTitle;
-                                       graph_xaxis python: analysis.GraphXAxisTitle;
-                                       graph_yaxis python: analysis.GraphYAxisTitle;
-                                       results python:view.json_loads(view.get_timeseries_result(model, analysis));
-                                       results_str python:view.json_dumps(results)">
-
-                        <div class="col-12">
-                          <h3 tal:content="analysis/Title"/>
-
-                          <table class="time-series-matrix table table-sm ">
-                            <thead>
-                              <tr>
-                                <tal:head tal:repeat="col columns">
-                                  <th tal:content="python: col['ColumnTitle']"/>
-                                </tal:head>
-                              </tr>
-                            <thead>
-                            <tbody>
-                              <tr tal:repeat="row results">
-                                <tal:cell tal:repeat="cell row">
-                                  <tal:block tal:define="OOR python: cell['val'] and cell['OOR'] and repeat.cell.index > 0">
-                                    <td tal:condition="OOR" class="time-series-data time-series-oor">
-                                      <span tal:content="python: cell['val']"/>
-                                    </td>
-                                    <td tal:condition="python: not OOR" class="time-series-data">
-                                        <span tal:content="python: cell['val']"/>
-                                    </td>
-                                  </tal:block>
-                                </tal:cell>
-                              </tr>
-                            </tbody>
-                          </table>
-
-                          <div class="time-series-graph"
-                            tal:attributes="data-columns columns_str; data-results results_str; data-graph_title graph_title; data-graph_xaxis graph_xaxis; data-graph_yaxis graph_yaxis">
-                          </div>
-
-                        </div>
-                      </div>  
-                      <div class="clearfix"></div>
-                    </tal:block>
-                  </div>
-                  <br />
-                </div>
-            </tal:render>
-          </tal:categories_in_poc>
-        </tal:poc>
-      </div>
-    </div>
-  </tal:render>
-
-  <!-- QC RESULTS  condition set to False for now -->
-  <tal:render condition="python: False"
-              define="qcanalyses python:model.getQCAnalyses(['verified', 'published']);">
-    <div class="row section-results no-gutters" tal:condition="qcanalyses">
-      <div class="small">
-        <h1 i18n:translate="">QC Results</h1>
-      </div>
-    </div>
-  </tal:render>
-
-
   <!--  Mix Information-->
-  <div style="padding-top: 20px; padding-bottom: 10px;"
-       tal:define="mix_design python:view.get_mix_design(model)"
-       tal:condition="python:mix_design">
-    <h2 class="notes-header" style= "padding-left:15px">Mix</h2>
-  </div>
-    <div class="col-12">
-        <table class="table table-sm table-bordered">
-          <colgroup>
-            <col style="width:25%"/>
-            <col style="width:25%"/>
-            <col style="width:25%"/>
-            <col style="width:25%"/>
-          </colgroup>
-          <tr>
-            <td class="label bg-light" i18n:translate="">Design # </td>
-            <td class="label bg-light"><div tal:content="mix_design/title|nothing"/></td>
-            <td class="label bg-light" i18n:translate="">Curing Method</td>
-            <td class="field">
-                <span tal:condition="model/CuringMethod">
-                    <div tal:content="model/CuringMethod/title|nothing"/>
-                </span>
-            </td>
-          </tr>
-          <tr>
-            <td class="label bg-light" i18n:translate="">Date</td>
-            <td class="field"><div tal:content="mix_design/date|nothing"/></td>
-            <td class="label bg-light" i18n:translate="">Type</td>
-            <td class="field">
-                    <div tal:content="python: view.get_mix_type(model) or ''"></div></td>
-          </tr>
-        </table>
+    <div class="clearfix"></div>
+    <div style="padding-top: 20px; padding-bottom: 10px;">
+      <h1 style= "padding-left:15px">Mix</h1>
     </div>
+      <div class="col-12" tal:condition="python:mix_design">
+          <table class="table table-sm table-bordered">
+            <colgroup>
+              <col style="width:25%"/>
+              <col style="width:25%"/>
+              <col style="width:25%"/>
+              <col style="width:25%"/>
+            </colgroup>
+            <tr>
+              <td class="label bg-light" i18n:translate="">Design # </td>
+              <td class="label bg-light"><div tal:content="mix_design/title|nothing"/></td>
+              <td class="label bg-light" i18n:translate="">Curing Method</td>
+              <td class="field">
+                  <span tal:condition="model/CuringMethod">
+                      <div tal:content="model/CuringMethod/title|nothing"/>
+                  </span>
+              </td>
+            </tr>
+            <tr>
+              <td class="label bg-light" i18n:translate="">Date</td>
+              <td class="field"><div tal:content="mix_design/date|nothing"/></td>
+              <td class="label bg-light" i18n:translate="">Type</td>
+              <td class="field">
+                      <div tal:content="python: view.get_mix_type(model) or ''"></div></td>
+            </tr>
+          </table>
+      </div>
+  <!-- -->
 
-    <div class="col-12" tal:define="concrete python:view.get_mix_design_concrete(model)"
-                        tal:condition="python:concrete">
+  <!-- Concrete table-->
+    <div class="col-12" tal:condition="python:concrete">
       <table class="table table-sm table-bordered">
         <tr>
           <td class="label bg-light">Design W/CM</td>
@@ -650,236 +567,310 @@
         </tr>
       </table>
     </div>
-    <!-- -->
+  <!-- -->
 
+  <!-- Mortar and Paste table-->
+    <div class="col-12" tal:condition="python:mortar">
+        <table class="sampleheader-table table table-sm table-bordered">
+          <tr>
+            <td class="label bg-light">Design W/CM</td>
+            <td><span tal:content="mortar/design|nothing"/> %</td>
+            <td class="label bg-light">Replacement</td>
+            <td><span tal:content="mortar/replacement|nothing"/> %</td>
+          </tr>
+          <tr>
+            <td class="label bg-light">Lab Temperature</td>
+            <td><span tal:content="mortar/lab_temperature|nothing"/> °F</td>
+            <td class="label bg-light">Mortar Temperature</td>
+            <td><span tal:content="mortar/mortar_temperature|nothing"/> °F</td>
+          </tr>
+          <tr>
+            <td class="label bg-light">Mold Numbers</td>
+            <td><span tal:content="mortar/mold_numbers|nothing"/></td>
+            <td class="label bg-light">Mortar Flow</td>
+            <td><span tal:content="mortar/mortar_flow|nothing"/></td>
+          </tr>
+        </table>
+    </div>
+  <!-- -->
 
-<!-- Mortar and Paste table-->
-
-   <div class="col-12" tal:define="mortar python:view.get_mix_design_mortar_paste(model)"
-                       tal:condition="python:mortar">
-       <table class="sampleheader-table table table-sm table-bordered">
-         <tr>
-           <td class="label bg-light">Design W/CM</td>
-           <td><span tal:content="mortar/design|nothing"/> %</td>
-           <td class="label bg-light">Replacement</td>
-           <td><span tal:content="mortar/replacement|nothing"/> %</td>
-         </tr>
-         <tr>
-           <td class="label bg-light">Lab Temperature</td>
-           <td><span tal:content="mortar/lab_temperature|nothing"/> °F</td>
-           <td class="label bg-light">Mortar Temperature</td>
-           <td><span tal:content="mortar/mortar_temperature|nothing"/> °F</td>
-         </tr>
-         <tr>
-           <td class="label bg-light">Mold Numbers</td>
-           <td><span tal:content="mortar/mold_numbers|nothing"/></td>
-           <td class="label bg-light">Mortar Flow</td>
-           <td><span tal:content="mortar/mortar_flow|nothing"/></td>
-         </tr>
-       </table>
-   </div>
-
-<!-- -->
-
-
-<!-- Materials Listing View for concrete-->
-
- <div class="col-12">
- <div class="w-100" tal:define="mix_design python:view.get_mix_design(model)"
-                    tal:condition="python:view.get_mix_design_concrete(model)">
-   <table class="table table-sm table-condensed">
-       <colgroup>
-         <!-- Class -->
-         <col style="width: 20%;">
-         <!-- Type -->
-         <col style="width: 20%;">
-         <!-- Title -->
-         <col style="width: 20%;">
-         <!-- SG -->
-         <col style="width: 10%">
-         <!-- Amounts -->
-         <col style="width: 15%">
-       </colgroup>
-       <thead tal:condition="python:True">
-         <tr>
-            <th class="text-center" colspan="5">
-                <span>Design and Batch Proportions (SSD/ cu ft)</span>
-            </th>
-         </tr>
-         <tr>
-            <th colspan="5">
-                <span>Materials</span>
-            </th>
-         </tr>
-         <tr class="small">
-           <th>
-             <span>Class</span>
-           </th>
-           <th class="text-left">
-             <span i18n:translate="">Type</span>
-           </th>
-           <th class="text-left">
-             <span i18n:translate="">Title</span>
-           </th>
-           <th class="text-left">
-             <span i18n:translate="">SG</span>
-           </th>
-           <th class="text-left">
-             <span i18n:translate="">Amount</span>
-           </th>
-         </tr>
-       </thead>
-       <tbody>
-           <tal:materials tal:repeat="row_data python:view.get_mix_material_row_data(model)">
-               <tr class="small">
-                 <td class="analysis">
-                     <a class="font-normal" tal:condition="python: row_data[0]"
-                                            tal:content="python: row_data[0][0]"
-                                            tal:attributes="href python:row_data[0][1]">
-                     </a>
-                 </td>
-                 <td class="analysis">
-                     <a class="font-normal" tal:condition="python: row_data[1]"
-                                            tal:content="python: row_data[1][0]"
-                                            tal:attributes="href python:row_data[1][1]">
-                     </a>
-                 </td>
-                 <td class="analysis">
-                     <a class="font-normal" tal:content="python: row_data[2][0]"
-                                            tal:attributes="href python:row_data[2][1]">
-                     </a>
-                 </td>
-                 <td class="analysis">
-                     <span class="font-normal" tal:content="python: row_data[3]"></span>
-                 </td>
-                 <td class="analysis">
-                     <span class="font-normal" tal:content="python: row_data[4]"></span>
-                 </td>
-               </tr>
-          </tal:materials>
-       </tbody>
-   </table>
- </div>
- </div>
-
-
-<!-- -->
-
-<!-- Materials Listing View for mortar/paste-->
-
- <div class="col-12">
- <div class="w-100" tal:define="mix_design python:view.get_mix_design(model)"
-                    tal:condition="python:view.get_mix_design_mortar_paste(model)">
-   <table class="table table-sm table-condensed">
-       <colgroup>
-         <!-- Class -->
-         <col style="width: 20%;">
-         <!-- Type -->
-         <col style="width: 30%;">
-         <!-- Title -->
-         <col style="width: 25%;">
-         <!-- SG -->
-         <col style="width: 10%">
-         <!-- Amounts -->
-         <col style="width: 15%">
-       </colgroup>
-       <thead>
-         <tr>
-            <th class="text-center" colspan="5">
-                <span>Design and Batch Proportions (Per chosen volume)</span>
-            </th>
-         </tr>
-         <tr>
-            <th colspan="5">
-                <span>Materials</span>
-            </th>
-         </tr>
-         <tr class="small">
-           <th>
-             <span>Class</span>
-           </th>
-           <th class="text-left">
-             <span i18n:translate="">Type</span>
-           </th>
-           <th class="text-left">
-             <span i18n:translate="">Title</span>
-           </th>
-           <th class="text-left">
-             <span i18n:translate="">SG</span>
-           </th>
-           <th class="text-left">
-             <span i18n:translate="">Amount</span>
-           </th>
-         </tr>
-       </thead>
-       <tbody>
-           <tal:materials tal:repeat="row_data python:view.get_mix_material_row_data(model)">
-               <tr class="small">
-                 <td class="analysis">
-                     <a class="font-normal" tal:condition="python: row_data[0]"
-                                            tal:content="python: row_data[0][0]"
-                                            tal:attributes="href python:row_data[0][1]">
-                     </a>
-                 </td>
-                 <td class="analysis">
-                     <a class="font-normal" tal:condition="python: row_data[1]"
-                                            tal:content="python: row_data[1][0]"
-                                            tal:attributes="href python:row_data[1][1]">
-                     </a>
-                 </td>
-                 <td class="analysis">
-                     <a class="font-normal" tal:content="python: row_data[2][0]"
-                                            tal:attributes="href python:row_data[2][1]">
-                     </a>
-                 </td>
-                 <td class="analysis">
-                     <span class="font-normal" tal:content="python: row_data[3]"></span>
-                 </td>
-                 <td class="analysis">
-                     <span class="font-normal" tal:content="python: row_data[4]"></span>
-                 </td>
-               </tr>
-           </tal:materials>
-           <tr>
-               <th colspan="5">
-                    <span>Additional Info</span>
-               </th>
-           </tr>
-           <tr>
-               <td colspan="5">
-                    <span class="font-normal" tal:content="mix_design/additional_info|nothing"></span>
-               </td>
-           </tr>
-       </tbody>
-   </table>
- </div>
- </div>
-
-
-<!-- -->
-
-    <div class="col-12" tal:define="concrete python:view.get_mix_design_concrete(model);
-                                    mix_design python:view.get_mix_design(model)"
-                        tal:condition="python:concrete">
-      <table class="sampleheader-table table table-sm table-bordered">
-        <tr>
-          <td class="label bg-light">Truck Vol</td>
-          <td tal:content="concrete/trucked_volume|nothing"></td>
-          <td class="label bg-light">Truck #</td>
-          <td><span tal:content="concrete/trucked_number|nothing"/> lb</td>
-          <td class="label bg-light">Ticket #</td>
-          <td><span tal:content="concrete/ticket_number|nothing"/> %</td>
-          <td class="label bg-light">Plan #</td>
-          <td><span tal:content="concrete/plant_number|nothing"/> %</td>
-        </tr>
-        <tr>
-          <td class="label bg-light" colspan="8">Additional info</td>
-        </tr>
-        <tr>
-          <td class="" colspan="8"><span tal:content="mix_design/additional_info|nothing"/></td>
-        </tr>
+  <!-- Materials Listing View for concrete-->
+    <div class="col-12">
+    <div class="w-100" tal:condition="python:concrete">
+      <table class="table table-sm table-condensed">
+          <colgroup>
+            <!-- Class -->
+            <col style="width: 20%;">
+            <!-- Type -->
+            <col style="width: 20%;">
+            <!-- Title -->
+            <col style="width: 20%;">
+            <!-- SG -->
+            <col style="width: 10%">
+            <!-- Amounts -->
+            <col style="width: 15%">
+          </colgroup>
+          <thead tal:condition="python:True">
+            <tr>
+                <th class="text-center" colspan="5">
+                    <span>Design and Batch Proportions (SSD/ cu ft)</span>
+                </th>
+            </tr>
+            <tr>
+                <th colspan="5">
+                    <span>Materials</span>
+                </th>
+            </tr>
+            <tr class="small">
+              <th>
+                <span>Class</span>
+              </th>
+              <th class="text-left">
+                <span i18n:translate="">Type</span>
+              </th>
+              <th class="text-left">
+                <span i18n:translate="">Title</span>
+              </th>
+              <th class="text-left">
+                <span i18n:translate="">SG</span>
+              </th>
+              <th class="text-left">
+                <span i18n:translate="">Amount</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+              <tal:materials tal:repeat="row_data python:view.get_mix_material_row_data(model)">
+                  <tr class="small">
+                    <td class="analysis">
+                        <a class="font-normal" tal:condition="python: row_data[0]"
+                                                tal:content="python: row_data[0][0]"
+                                                tal:attributes="href python:row_data[0][1]">
+                        </a>
+                    </td>
+                    <td class="analysis">
+                        <a class="font-normal" tal:condition="python: row_data[1]"
+                                                tal:content="python: row_data[1][0]"
+                                                tal:attributes="href python:row_data[1][1]">
+                        </a>
+                    </td>
+                    <td class="analysis">
+                        <a class="font-normal" tal:content="python: row_data[2][0]"
+                                                tal:attributes="href python:row_data[2][1]">
+                        </a>
+                    </td>
+                    <td class="analysis">
+                        <span class="font-normal" tal:content="python: row_data[3]"></span>
+                    </td>
+                    <td class="analysis">
+                        <span class="font-normal" tal:content="python: row_data[4]"></span>
+                    </td>
+                  </tr>
+              </tal:materials>
+          </tbody>
       </table>
     </div>
+    </div>
+  <!-- -->
+
+  <!-- Materials Listing View for mortar/paste-->
+    <div class="col-12">
+    <div class="w-100" tal:condition="python:mortar">
+      <table class="table table-sm table-condensed">
+          <colgroup>
+            <!-- Class -->
+            <col style="width: 20%;">
+            <!-- Type -->
+            <col style="width: 30%;">
+            <!-- Title -->
+            <col style="width: 25%;">
+            <!-- SG -->
+            <col style="width: 10%">
+            <!-- Amounts -->
+            <col style="width: 15%">
+          </colgroup>
+          <thead>
+            <tr>
+                <th class="text-center" colspan="5">
+                    <span>Design and Batch Proportions (Per chosen volume)</span>
+                </th>
+            </tr>
+            <tr>
+                <th colspan="5">
+                    <span>Materials</span>
+                </th>
+            </tr>
+            <tr class="small">
+              <th>
+                <span>Class</span>
+              </th>
+              <th class="text-left">
+                <span i18n:translate="">Type</span>
+              </th>
+              <th class="text-left">
+                <span i18n:translate="">Title</span>
+              </th>
+              <th class="text-left">
+                <span i18n:translate="">SG</span>
+              </th>
+              <th class="text-left">
+                <span i18n:translate="">Amount</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+              <tal:materials tal:repeat="row_data python:view.get_mix_material_row_data(model)">
+                  <tr class="small">
+                    <td class="analysis">
+                        <a class="font-normal" tal:condition="python: row_data[0]"
+                                                tal:content="python: row_data[0][0]"
+                                                tal:attributes="href python:row_data[0][1]">
+                        </a>
+                    </td>
+                    <td class="analysis">
+                        <a class="font-normal" tal:condition="python: row_data[1]"
+                                                tal:content="python: row_data[1][0]"
+                                                tal:attributes="href python:row_data[1][1]">
+                        </a>
+                    </td>
+                    <td class="analysis">
+                        <a class="font-normal" tal:content="python: row_data[2][0]"
+                                                tal:attributes="href python:row_data[2][1]">
+                        </a>
+                    </td>
+                    <td class="analysis">
+                        <span class="font-normal" tal:content="python: row_data[3]"></span>
+                    </td>
+                    <td class="analysis">
+                        <span class="font-normal" tal:content="python: row_data[4]"></span>
+                    </td>
+                  </tr>
+              </tal:materials>
+              <tr>
+                  <th colspan="5">
+                        <span>Additional Info</span>
+                  </th>
+              </tr>
+              <tr>
+                  <td colspan="5">
+                        <span class="font-normal" tal:content="mix_design/additional_info|nothing"></span>
+                  </td>
+              </tr>
+          </tbody>
+      </table>
+    </div>
+    </div>
+  <!-- -->
+
+  <!-- Concrete additional table-->
+      <div class="col-12" tal:condition="python:concrete">
+        <table class="sampleheader-table table table-sm table-bordered">
+          <tr>
+           <td class="label bg-light">Truck Vol</td>
+           <td>
+             <span tal:content="concrete/trucked_volume|nothing"/>
+             <span tal:condition="concrete/trucked_volume|nothing"> cu ft</span>
+           </td>
+           <td class="label bg-light">Truck #</td>
+           <td><span tal:content="concrete/trucked_number|nothing"/></td>
+           <td class="label bg-light">Ticket #</td>
+           <td><span tal:content="concrete/ticket_number|nothing"/></td>
+           <td class="label bg-light">Plant #</td>
+           <td><span tal:content="concrete/plant_number|nothing"/></td>
+         </tr>
+          <tr>
+            <td class="label bg-light" colspan="8">Additional info</td>
+          </tr>
+          <tr>
+            <td class="" colspan="8"><span tal:content="mix_design/additional_info|nothing"/></td>
+          </tr>
+        </table>
+      </div>
+  <!-- -->
+
+  <tal:render condition="python:True">
+    <div class="row section-results no-gutters">
+      <div class="w-100">
+
+        <!-- Point of Capture -->
+        <tal:poc define="analyses_by_poc python:view.get_analyses_by_poc(model);"
+                 repeat="poc analyses_by_poc">
+
+          <!-- Analysis Category -->
+          <tal:categories_in_poc define="categories_by_poc python:view.get_categories_by_poc(model)"
+                                 repeat="category python:view.sort_items(categories_by_poc.get(poc))">
+
+            <!--  TIMESERIES RESULTS -->
+            <tal:render
+              define="analyses python:[analysis for analysis in view.get_analyses_by(model, poc=poc, category=category) if analysis.ResultOptionsType=='timeseries']"
+              condition="python:analyses">
+                <div class="section section-timeseries no-gutters">
+                  <div class="">
+                    <h1 i18n:translate="">TimeSeries Results</h1>
+                    <tal:block tal:repeat="analysis analyses">
+                      <div class="row"
+                           tal:define="columns python: analysis.TimeSeriesColumns;
+                                       columns_str python:view.json_dumps(columns);
+                                       graph_title python: analysis.GraphTitle;
+                                       graph_xaxis python: analysis.GraphXAxisTitle;
+                                       graph_yaxis python: analysis.GraphYAxisTitle;
+                                       results python:view.json_loads(view.get_timeseries_result(model, analysis));
+                                       results_str python:view.json_dumps(results)">
+
+                        <div class="col-12">
+                          <h3 tal:content="analysis/Title"/>
+
+                          <table class="time-series-matrix table table-sm ">
+                            <thead>
+                              <tr>
+                                <tal:head tal:repeat="col columns">
+                                  <th tal:content="python: col['ColumnTitle']"/>
+                                </tal:head>
+                              </tr>
+                            <thead>
+                            <tbody>
+                              <tr tal:repeat="row results">
+                                <tal:cell tal:repeat="cell row">
+                                  <tal:block tal:define="OOR python: cell['val'] and cell['OOR'] and repeat.cell.index > 0">
+                                    <td tal:condition="OOR" class="time-series-data time-series-oor">
+                                      <span tal:content="python: cell['val']"/>
+                                    </td>
+                                    <td tal:condition="python: not OOR" class="time-series-data">
+                                        <span tal:content="python: cell['val']"/>
+                                    </td>
+                                  </tal:block>
+                                </tal:cell>
+                              </tr>
+                            </tbody>
+                          </table>
+
+                          <div class="time-series-graph"
+                            tal:attributes="data-columns columns_str; data-results results_str; data-graph_title graph_title; data-graph_xaxis graph_xaxis; data-graph_yaxis graph_yaxis">
+                          </div>
+
+                        </div>
+                      </div>  
+                      <div class="clearfix"></div>
+                    </tal:block>
+                  </div>
+                  <br />
+                </div>
+            </tal:render>
+          </tal:categories_in_poc>
+        </tal:poc>
+      </div>
+    </div>
+  </tal:render>
+
+  <!-- QC RESULTS  condition set to False for now -->
+  <tal:render condition="python: False"
+              define="qcanalyses python:model.getQCAnalyses(['verified', 'published']);">
+    <div class="row section-results no-gutters" tal:condition="qcanalyses">
+      <div class="small">
+        <h1 i18n:translate="">QC Results</h1>
+      </div>
+    </div>
+  </tal:render>
 
   <!--  REMARKS -->
   <tal:render condition="python:True">

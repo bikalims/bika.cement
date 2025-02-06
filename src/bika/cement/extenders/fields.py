@@ -127,8 +127,9 @@ class MixSpreadsheetFileExtensionField(object):
                 data = self.get_data_from_blob_file(blob, sheet_name)
                 mix_type = self.get_mix_type(data[0][4])
                 if not mix_type:
-                    msg = "Spreadsheet Mix Type {} not found."
-                    msg = msg.format(data[0][4])
+                    msg = "Spreadsheet Mix Type {} not found".format(
+                        data[0][4]
+                    )
                     pu.addPortalMessage(msg, "error")
                     return mutator
                 mix_design_data = self.parse_mix_design_data(data)
@@ -139,11 +140,11 @@ class MixSpreadsheetFileExtensionField(object):
                 mix_design = self.create_mix_design(batch, mix_design_data)
                 design_type = data[0][4]
                 if design_type in ["Mortar", "Paste"]:
-                    m_paste_data = self.parse_mix_design_mortar_paste_data(
-                        data
+                    mortar_paste_data = (
+                        self.parse_mix_design_mortar_paste_data(data)
                     )
                     self.create_mortar_paste_mix_design(
-                        mix_design, m_paste_data
+                        mix_design, mortar_paste_data
                     )
                 elif design_type == "Concrete":
                     concrete_data = self.parse_mix_design_concrete_data(data)
