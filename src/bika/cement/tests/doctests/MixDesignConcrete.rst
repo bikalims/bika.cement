@@ -14,11 +14,13 @@ Needed imports::
 
     >>> import os
     >>> import cStringIO
+    >>> from six import StringIO
     >>> from bika.lims import api
     >>> from DateTime import DateTime
 
     >>> from bika.cement.tests import test_setup
     >>> from zope.publisher.browser import FileUpload, TestRequest
+    >>> from Products.statusmessages.interfaces import IStatusMessage
 
 Functional helpers::
 
@@ -55,12 +57,14 @@ A `MixDesign` can only be created inside a `Batch`, a `MixDesignConcrete` is
 is created on a `MixDesign`::
 
     >>> clients = self.portal.clients
-    >>> client = api.create(clients, "Client", Name="NARALABS", ClientID="NLABS")
+    >>> client = clients.values()[0]
     >>> client
     <Client at /plone/clients/client-1>
-    >>> contact = api.create(client, "Contact", Firstname="Juan", Surname="Gallostra")
-    >>> contact
-    <Contact at /plone/clients/client-1/contact-1>
-    >>> batch = api.create(client, "Batch")
+    >>> data = open(os.path.dirname( __file__ )+"/../files/ConcreteMix.xlsm", 'r').read()
+    >>> import_file = FileUpload(TestFile(StringIO(data)))
+    >>> batch = api.create(client, "Batch", MixSpreadsheet=data)
     >>> batch
     <Batch at /plone/clients/client-1/B-001>
+    >>> messages = IStatusMessage(self.request).show()
+    >>> [m.message for m in messages]
+    [u'Spreadsheet Mix Type Concrete not found']
