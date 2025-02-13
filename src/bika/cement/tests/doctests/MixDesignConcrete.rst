@@ -14,6 +14,7 @@ Needed imports::
 
     >>> import os
     >>> import cStringIO
+    >>> import transaction
     >>> from six import StringIO
     >>> from bika.lims import api
     >>> from DateTime import DateTime
@@ -38,6 +39,9 @@ Variables::
     >>> date_now = timestamp()
     >>> portal = self.portal
     >>> request = self.request
+    >>> setup = portal.setup
+    >>> bikasetup = portal.bika_setup
+    >>> current_file = os.path.dirname( __file__ )
 
 We need certain permissions to create and access objects used in this test,
 so here we will assume the role of Lab Manager::
@@ -56,15 +60,37 @@ Required steps: Create Batch and upload concrete mix spreadsheet
 A `MixDesign` can only be created inside a `Batch`, a `MixDesignConcrete` is 
 is created on a `MixDesign`::
 
-    >>> clients = self.portal.clients
+    >>> mixtypes = setup.mixtypes
+    >>> concrete = api.create(mixtypes, "MixType", title="Concrete")
+    >>> concrete
+    <MixType at /plone/setup/mixtypes/mixtype-1>
+    >>> clients = portal.clients
     >>> client = clients.values()[0]
     >>> client
     <Client at /plone/clients/client-1>
-    >>> data = open(os.path.dirname( __file__ )+"/../files/ConcreteMix.xlsm", 'r').read()
+    >>> spreadsheet_concrete = "files/ConcreteMix.xlsm"
+    >>> file_path = os.path.join(current_file, '..', spreadsheet_concrete)
+    >>> data = open(file_path, 'r').read()
     >>> import_file = FileUpload(TestFile(StringIO(data)))
     >>> batch = api.create(client, "Batch", MixSpreadsheet=data)
     >>> batch
     <Batch at /plone/clients/client-1/B-001>
     >>> messages = IStatusMessage(self.request).show()
     >>> [m.message for m in messages]
-    [u'Spreadsheet Mix Type Concrete not found']
+    [u'Spreadsheet Mix Materials not found: CEM-HCM1L, SLG-SKY, OZ-FE, 22CM11BLC, 27FM02MA, WR-82, LQFIBER, W1, W2']
+    >>> mix_design = batch.values()[0]
+    >>> mix_design
+    <MixDesign at /plone/clients/client-1/B-001/mixdesign-1>
+    >>> mix_design.title
+    'Test-1'
+    >>> mix_design.project
+    'Test-0'
+    >>> mix_design_concrete = mix_design.values()[0]
+    >>> mix_design_concrete
+    <MixDesignConcrete at /plone/clients/client-1/B-001/mixdesign-1/mixdesignconcrete-1>
+    >>> mix_design_concrete.design
+    0.43
+    >>> mix_design_concrete.lab_temperature
+    73
+    >>> mix_design_concrete.design_slump
+    4.5
