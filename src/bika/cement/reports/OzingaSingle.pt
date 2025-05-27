@@ -806,11 +806,12 @@
               condition="python:analyses">
                 <div class="section section-timeseries no-gutters">
                   <div class="">
-                    <h1 i18n:translate="">TimeSeries Results</h1>
+                    <h1 i18n:translate="">Graphs</h1>
                     <tal:block tal:repeat="analysis analyses">
                       <div class="row"
                            tal:define="columns python: analysis.TimeSeriesColumns;
                                        columns_str python:view.json_dumps(columns);
+                                       graph_interpolation python: analysis.GraphInterpolation;
                                        graph_title python: analysis.GraphTitle;
                                        graph_xaxis python: analysis.GraphXAxisTitle;
                                        graph_yaxis python: analysis.GraphYAxisTitle;
@@ -845,7 +846,7 @@
                           </table>
 
                           <div class="time-series-graph"
-                            tal:attributes="data-columns columns_str; data-results results_str; data-graph_title graph_title; data-graph_xaxis graph_xaxis; data-graph_yaxis graph_yaxis">
+                            tal:attributes="data-columns columns_str; data-results results_str; data-graph_interpolation graph_interpolation; data-graph_title graph_title; data-graph_xaxis graph_xaxis; data-graph_yaxis graph_yaxis">
                           </div>
 
                         </div>
@@ -1087,6 +1088,7 @@
           container.selectAll("img").remove();  // Clear existing SVGs
           
           let columns = element.getAttribute('data-columns');
+          let graph_interpolation = element.getAttribute('data-graph_interpolation');
           let graph_title = element.getAttribute('data-graph_title');
           let graph_xaxis = element.getAttribute('data-graph_xaxis');
           let graph_yaxis = element.getAttribute('data-graph_yaxis');
@@ -1116,6 +1118,7 @@
           data = {
             results: new_results,
             time_series_columns: columns,
+            time_series_graph_interpolation: graph_interpolation,
             time_series_graph_title: graph_title,
             time_series_graph_xaxis: graph_xaxis,
             time_series_graph_yaxis: graph_yaxis,
@@ -1126,6 +1129,7 @@
           this.props = {
             item: {
               time_series_columns: columns,
+              time_series_graph_interpolation: graph_interpolation,
               time_series_graph_title: graph_title,
               time_series_graph_xaxis: graph_xaxis,
               time_series_graph_yaxis: graph_yaxis,
