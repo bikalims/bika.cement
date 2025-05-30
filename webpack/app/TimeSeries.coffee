@@ -22,6 +22,31 @@ class TimeSeries
     # console.log('constructor complete')
 
   ###
+   * Calculate Y range
+  ###
+  get_Y_range: (minY, maxY) ->
+    diffY = maxY - minY
+    interval = 0
+    if diffY > 70
+      interval = 10
+    else if diffY > 50
+      interval = 5
+    else if diffY > 20
+      interval = 2
+    else if diffY > 10
+      interval = 1
+
+    if interval > 0
+      minTicks = minY - (minY % interval) + interval
+      maxTicks = maxY + (maxY % interval) + interval
+      y_range = d3.range(minTicks, maxTicks, interval)
+    else
+      y_range = d3.range(minY, maxY)
+
+    console.log "Y Axis: min: ", minY, " max: ", maxY, " diffY: ", diffY, " interval: ", interval
+    y_range
+
+  ###
    * Converts the string value to an array
   ###
   to_matrix: (listString, headers) ->
@@ -98,7 +123,8 @@ class TimeSeries
 
     # Set up Y scale with trimmed domain
     absoluteMinY = d3.min(data.flatMap((row) -> headers.slice(1).map((header) -> parseFloat(row[header]))))
-    minY = absoluteMinY- (absoluteMinY * 0.1)
+    minY_factor = 0.05; # 20%
+    minY = absoluteMinY - absoluteMinY * minY_factor;
     maxY = d3.max(data.flatMap((row) -> headers.slice(1).map((header) -> parseFloat(row[header]))))
 
     y = d3.scaleLinear()
@@ -143,18 +169,10 @@ class TimeSeries
       .text(this.props.item.time_series_graph_xaxis)
 
     # Y-axis
-      interval = 5
-      if maxY - minY < 50
-        interval = 2
-      console.log "Y Axis: minY: ", minY, " absoluteMinY: ", absoluteMinY
-      console.log "Y Axis: min: ", minY, " max: ", maxY
-      minTicks = minY - (minY % interval) + interval
-      maxTicks = maxY + (maxY % interval) + interval
-      console.log "Y Axis: min: ", minTicks, " max: ", maxTicks
-      yTicks = d3.range(minTicks, maxTicks, interval)
-      yAxis = d3.axisLeft(y)
-        .tickValues(yTicks)
-        .tickSize(-width)  # Extend ticks across the chart width
+    y_range = @get_Y_range(minY, maxY)
+    yAxis = d3.axisLeft(y)
+      .tickValues(y_range)
+      .tickSize(-width)  # Extend ticks across the chart width
 
     # Y-axis label
     svg.append("text")
