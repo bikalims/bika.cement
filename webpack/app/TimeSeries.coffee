@@ -13,7 +13,7 @@ class TimeSeries
     @container = config.container  # DOM element
     @state = config.state
     @props = config.props
-    console.log('constructor complete')
+    # console.log('constructor complete')
 
   ###
    * Calculate Y range
@@ -37,7 +37,7 @@ class TimeSeries
     else
       y_range = d3.range(minY, maxY)
 
-    console.log "Y Axis: min: ", minY, " max: ", maxY, " diffY: ", diffY, " interval: ", interval
+    # console.log "Y Axis: min: ", minY, " max: ", maxY, " diffY: ", diffY, " interval: ", interval
     y_range
 
   ###
@@ -84,9 +84,9 @@ class TimeSeries
    * Inputs table builder. Generates a table of  inputs as matrix
   ###
   build_graph: ->
-    console.log "TimeSeries::build_graph: entered"
+    # console.log "TimeSeries::build_graph: entered"
     try
-      console.log("Data being used for rendering:", this.state.value)  # Log the data
+      # console.log("Data being used for rendering:", this.state.value)  # Log the data
       values = this.state.value
 
       if values == ""
@@ -209,7 +209,7 @@ class TimeSeries
 
       # Get interpolation
       interp = this.props.item.time_series_graph_interpolation
-      console.log(interp)
+      # console.log(interp)
       curve_val = d3[interp]
 
       headers.slice(1).forEach((key, i) ->

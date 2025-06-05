@@ -28,9 +28,9 @@ TimeSeries = function () {
       this.container = config.container; // DOM element
       this.state = config.state;
       this.props = config.props;
-      console.log('constructor complete');
     }
 
+    // console.log('constructor complete')
     /*
      * Calculate Y range
      */
@@ -56,7 +56,7 @@ TimeSeries = function () {
         } else {
           y_range = d3.range(minY, maxY);
         }
-        console.log("Y Axis: min: ", minY, " max: ", maxY, " diffY: ", diffY, " interval: ", interval);
+        // console.log "Y Axis: min: ", minY, " max: ", maxY, " diffY: ", diffY, " interval: ", interval
         return y_range;
       }
 
@@ -101,9 +101,9 @@ TimeSeries = function () {
       key: "build_graph",
       value: function build_graph() {
         var absoluteMinY, col_colors, col_types, columns, curve_val, data, error, headers, height, index, interp, legend, legendItems, line_configs, margin, maxY, minY, minY_factor, svg, values, width, x, y, yAxis, y_range;
-        console.log("TimeSeries::build_graph: entered");
         try {
-          console.log("Data being used for rendering:", this.state.value); // Log the data
+          // console.log("Data being used for rendering:", this.state.value)  # Log the data
+          // console.log "TimeSeries::build_graph: entered"
           values = this.state.value;
           if (values === "") {
             console.log("TimeSeries::build_graph: exit because no data");
@@ -181,7 +181,7 @@ TimeSeries = function () {
           svg.append("g").attr("transform", "translate(0,".concat(height, ")")).call(d3.axisBottom(x));
           // Get interpolation
           interp = this.props.item.time_series_graph_interpolation;
-          console.log(interp);
+          // console.log(interp)
           curve_val = d3[interp];
           headers.slice(1).forEach(function (key, i) {
             var lineGen, validData;
