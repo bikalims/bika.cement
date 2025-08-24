@@ -1,5 +1,4 @@
-import * as d3 from "d3"
-import { Canvg } from 'canvg';
+window.d3 = d3
 
 class TimeSeries 
 
@@ -10,24 +9,43 @@ class TimeSeries
    * listing view, e.g.  `self.columns = {"Result": {"type": "timeseries"}, ... }`
    *
   ###
-  constructor: (element) ->
-  
-    @container = element;
-    # remember the initial value
-    this.state =
-      value: element.state.value
-
-    this.props = element.props
-
+  constructor: (config) ->
+    @container = config.container  # DOM element
+    @state = config.state
+    @props = config.props
     # console.log('constructor complete')
+
+  ###
+   * Calculate Y range
+  ###
+  get_Y_range: (minY, maxY) ->
+    diffY = maxY - minY
+    interval = 0
+    if diffY > 70
+      interval = 10
+    else if diffY > 50
+      interval = 5
+    else if diffY > 20
+      interval = 2
+    else if diffY > 10
+      interval = 1
+
+    if interval > 0
+      minTicks = minY - (minY % interval) + interval
+      maxTicks = maxY + (maxY % interval) + interval
+      y_range = d3.range(minTicks, maxTicks, interval)
+    else
+      y_range = d3.range(minY, maxY)
+
+    # console.log "Y Axis: min: ", minY, " max: ", maxY, " diffY: ", diffY, " interval: ", interval
+    y_range
 
   ###
    * Converts the string value to an array
   ###
   to_matrix: (listString, headers) ->
     # No values yet
-    if listString == ""
-      return ""
+    return [] if !listString || listString.length == 0
 
     # Parse the string version of the list of lists into an array
     # list = JSON.parse(listString)
@@ -51,11 +69,11 @@ class TimeSeries
 
   getLineConfigs = (count) ->
     configs = [
-      {color: "#666666", opacity: 1.0, symbol: d3.symbolStar, dash: ""}
-      {color: "#666666", opacity: 0.8, symbol: d3.symbolSquare, dash: ""}
-      {color: "#666666", opacity: 0.6, symbol: d3.symbolTriangle, dash: ""}
-      {color: "#666666", opacity: 0.4, symbol: d3.symbolDiamond, dash: ""}
-      {color: "#666666", opacity: 0.2, symbol: d3.symbolCross, dash: ""}
+      {symbol: d3.symbolStar, dash: ""}
+      {symbol: d3.symbolSquare, dash: ""}
+      {symbol: d3.symbolTriangle, dash: ""}
+      {symbol: d3.symbolDiamond, dash: ""}
+      {symbol: d3.symbolCross, dash: ""}
     ]
     configs.slice(0, count)
 
@@ -66,216 +84,212 @@ class TimeSeries
    * Inputs table builder. Generates a table of  inputs as matrix
   ###
   build_graph: ->
-    console.log "TimeSeries::build_graph: entered"
+    # console.log "TimeSeries::build_graph: entered"
+    try
+      # console.log("Data being used for rendering:", this.state.value)  # Log the data
+      values = this.state.value
 
-    values = this.state.value
+      if values == ""
+        console.log "TimeSeries::build_graph: exit because no data"
+        @container.current.appendChild([])
+        return
 
-    if values == ""
-      console.log "TimeSeries::build_graph: exit because no data"
-      @container.current.appendChild([])
-      return
+      # Get datasets
+      columns = this.props.item.time_series_columns
+      col_types = columns.map (i) -> i.ColumnType
+      col_colors = columns.map (i) -> i.ColumnColor
+      headers = columns.map (i) -> i.ColumnTitle
+      index = headers[0]
+      data = @to_matrix(values, headers)
 
-    # Get datasets
-    columns = this.props.item.time_series_columns
-    col_types = columns.map (i) -> i.ColumnType
-    headers = columns.map (i) -> i.ColumnTitle
-    index = headers[0]
-    data = @to_matrix(values, headers)
+      # Generate the line colors (exclude index)
+      line_configs = getLineConfigs(headers.length - 1)
 
-    # Generate the line colors (exclude index)
-    line_configs = getLineConfigs(headers.length - 1)
-    if col_types[col_types.length - 1] == "average"
-      line_configs[line_configs.length - 1] = {
-        color: "red",
-        dash: "",
-        opacity: "1.0",
-        symbol: d3.symbolCircle
-      }
-    # console.debug(line_configs)
+      # Set up dimensions
+      margin = {top: 40, right: 80, bottom: 50, left: 60}
+      width = 700 - margin.left - margin.right
+      height = 400 - margin.top - margin.bottom + 50
 
-    # Set up dimensions
-    margin = {top: 40, right: 80, bottom: 50, left: 60}
-    width = 700 - margin.left - margin.right
-    height = 400 - margin.top - margin.bottom + 50
+      # Set up scales
+      x = d3.scaleLinear()
+        .domain(d3.extent(data, (d) -> parseFloat(d[index])))
+        .range([0, width])
 
-    # Set up scales
-    x = d3.scaleLinear()
-      .domain(d3.extent(data, (d) -> parseFloat(d[index])))
-      .range([0, width])
+      # Set up Y scale with trimmed domain
+      absoluteMinY = d3.min(data.flatMap((row) -> headers.slice(1).map((header) -> parseFloat(row[header]))))
+      minY_factor = 0.05; # 20%
+      minY = absoluteMinY - absoluteMinY * minY_factor;
 
-    # Set up Y scale with trimmed domain
-    minY = d3.min(data.flatMap((row) -> headers.slice(1).map((header) -> parseFloat(row[header]))))
-    minY = minY- (minY * 0.1)
-    maxY = d3.max(data.flatMap((row) -> headers.slice(1).map((header) -> parseFloat(row[header]))))
-    # maxY = maxY + (maxY * 0.1)
+      maxY = d3.max(data.flatMap((row) -> headers.slice(1).map((header) -> parseFloat(row[header]))))
 
-    y = d3.scaleLinear()
-      .domain([Math.floor(minY), Math.ceil(maxY)])  # Trim domain to just cover data range
-      .range([height, 0])
+      y = d3.scaleLinear()
+        .domain([Math.floor(minY), Math.ceil(maxY)])  # Trim domain to just cover data range
+        .range([height, 0])
 
-    # Create SVG container
-    svg = d3.select(@container)
-      .append('svg')
-      .style("height", "#{height+120}px")
+      # Create SVG container
+      svg = d3.select(@container)
+        .append('svg')
+        .attr("id", "timeseries-svg")  # Add unique ID
+        .style("height", "#{height+140}px")
 
-    # Remove any previous SVG content
-    svg.selectAll('*').remove()
+      # Remove any previous SVG content
+      svg.selectAll('*').remove()
 
-    svg = svg
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
-      .attr('xmlns', 'http://www.w3.org/2000/svg')
-      .append("g")
-      .attr("transform", "translate(#{margin.left},#{margin.top})")
+      svg = svg
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .attr('xmlns', 'http://www.w3.org/2000/svg')
+        .append("g")
+        .attr("transform", "translate(#{margin.left},#{margin.top})")
 
-    # Graph title
-    svg.append("text")
-      .attr("x", width / 2)
-      .attr("y", -margin.top / 2)
-      .attr("text-anchor", "middle")
-      .style("font-size", "16px")
-      .style("font-weight", "bold")
-      .text(this.props.item.time_series_graph_title)
+      # Graph title
+      svg.append("text")
+        .attr("x", width / 2)
+        .attr("y", -margin.top / 2)
+        .attr("text-anchor", "middle")
+        .style("font-size", "16px")
+        .style("font-weight", "bold")
+        .text(this.props.item.time_series_graph_title)
 
-    # X-axis
-    svg.append("g")
-      .attr("transform", "translate(0,#{height})")
-      .call(d3.axisBottom(x))
+      # X-axis
+      svg.append("g")
+        .attr("transform", "translate(0,#{height})")
+        .call(d3.axisBottom(x))
 
-    # X-axis label
-    svg.append("text")
-      .attr("x", width / 2)
-      .attr("y", height + margin.bottom - 10)
-      .attr("text-anchor", "middle")
-      .style("font-size", "12px")
-      .text(this.props.item.time_series_graph_xaxis)
+      # X-axis label
+      svg.append("text")
+        .attr("x", width / 2)
+        .attr("y", height + margin.bottom - 10)
+        .attr("text-anchor", "middle")
+        .style("font-size", "12px")
+        .text(this.props.item.time_series_graph_xaxis)
 
-    # Y-axis
-    svg.append("g")
-      .call(d3.axisLeft(y))
+      # Y-axis
+      y_range = @get_Y_range(minY, maxY)
+      yAxis = d3.axisLeft(y)
+        .tickValues(y_range)
+        .tickSize(-width)  # Extend ticks across the chart width
 
-    # Y-axis label
-    svg.append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("x", -height / 2)
-      .attr("y", -margin.left + 15)
-      .attr("text-anchor", "middle")
-      .style("font-size", "12px")
-      .text(this.props.item.time_series_graph_yaxis)
+      # Y-axis label
+      svg.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("x", -height / 2)
+        .attr("y", -margin.left + 15)
+        .attr("text-anchor", "middle")
+        .style("font-size", "12px")
+        .text(this.props.item.time_series_graph_yaxis)
 
-    # Add horizontal grid lines
-    svg.append("g")
-      .attr("class", "grid horizontal")
-      .attr("transform", "translate(0, 0)")
-      .call(
-        d3.axisLeft(y)
-          .tickSize(-width)  # Extend ticks across the chart width
-          .tickFormat("")    # Remove tick labels
-      )
-      .selectAll("line")
-      .style("stroke", "#999")  # Lighter gray
-      # .style("stroke-dasharray", "2,2")
-      .style("opacity", 0.8)       # Adjust transparency
+      # Add horizontal grid lines
+      svg.append("g")
+          .attr("class", "grid horizontal")
+          .attr("transform", "translate(0, 0)")
+          .call(yAxis)
+          .selectAll("line")
+          .style("stroke", "#999")  # Lighter gray
+          .style("opacity", 0.4)       # Adjust transparency
 
-    # Add vertical grid lines
-    svg.append("g")
-      .attr("class", "grid vertical")
-      .attr("transform", "translate(0, #{height})")
-      .call(
-        d3.axisBottom(x)
-          .tickSize(-height)  # Extend ticks across the chart height
-          .tickFormat("")     # Remove tick labels
-      )
-      .selectAll("line")
-      .style("stroke", "#999")  # Lighter gray
-      .style("stroke-dasharray", "2,2")
-      .style("opacity", 0.8)       # Adjust transparency
-
-    # Draw axes
-    svg.append("g")
-      .attr("transform", "translate(0,#{height})")
-      .call(d3.axisBottom(x))
-
-    svg.append("g")
-      .call(d3.axisLeft(y))
-
-    headers.slice(1).forEach((key, i) ->
-      # console.debug "Main loop: " + key + "  " + i
-
-      # Filter data to exclude rows with null, undefined, or non-numeric values for the current key
-      validData = data.filter((d) ->
-        d[key]? and not isNaN(d[key]) # Ensure value exists and is numeric
-      )
-
-      # Line generator
-      lineGen = d3.line()
-        .x((d) ->
-          x(d[index])
+      # Add vertical grid lines
+      svg.append("g")
+        .attr("class", "grid vertical")
+        .attr("transform", "translate(0, #{height})")
+        .call(
+          d3.axisBottom(x)
+            .tickSize(-height)  # Extend ticks across the chart height
+            .tickFormat("")     # Remove tick labels
         )
-        .y((d) ->
-          y(d[key])
+        .selectAll("line")
+        .style("stroke", "#999")  # Lighter gray
+        .style("stroke-dasharray", "2,2")
+        .style("opacity", 0.8)       # Adjust transparency
+
+      # Draw axes
+      svg.append("g")
+        .attr("transform", "translate(0,#{height})")
+        .call(d3.axisBottom(x))
+
+      # Get interpolation
+      interp = this.props.item.time_series_graph_interpolation
+      # console.log(interp)
+      curve_val = d3[interp]
+
+      headers.slice(1).forEach((key, i) ->
+        # console.debug "Main loop: " + key + "  " + i
+
+        # Filter data to exclude rows with null, undefined, or non-numeric values for the current key
+        validData = data.filter((d) ->
+          d[key]? and not isNaN(d[key]) # Ensure value exists and is numeric
         )
 
-      svg.append("path")
-        .datum(validData) # Use filtered data
-        .attr("fill", "none")
-        .attr("stroke-width", 2)
-        .attr("stroke", line_configs[i].color)
-        .attr("opacity", line_configs[i].opacity)
-        .attr("stroke-dasharray", line_configs[i].dash)
-        .attr("d", lineGen)
+        # Line generator
+        lineGen = d3.line()
+          .curve(curve_val)
+          .x((d) ->
+            x(d[index])
+          )
+          .y((d) ->
+            y(d[key])
+          )
 
-      # Add data points with different symbols
-      svg.selectAll(".symbol-#{i}")
-        .data(validData) # Use filtered data
-        .enter().append("path")
-        .attr("class", "symbol symbol-#{i}")
-        .attr("d", symbolGenerator.type(line_configs[i].symbol))
-        .attr("transform", (d) ->
-          # Ensure valid x and y before applying transform
-          xVal = parseFloat(d[index])
-          yVal = parseFloat(d[key])
-          if not isNaN(xVal) and not isNaN(yVal)
-            "translate(#{x(xVal)}, #{y(yVal)})"
-          else
-            null # Skip invalid points
+        svg.append("path")
+          .datum(validData) # Use filtered data
+          .attr("fill", "none")
+          .attr("stroke-width", 2)
+          .attr("stroke", col_colors[i+1])
+          .attr("stroke-dasharray", line_configs[i].dash)
+          .attr("d", lineGen)
+
+        # Add data points with different symbols
+        svg.selectAll(".symbol-#{i}")
+          .data(validData) # Use filtered data
+          .enter().append("path")
+          .attr("class", "symbol symbol-#{i}")
+          .attr("d", symbolGenerator.type(line_configs[i].symbol))
+          .attr("transform", (d) ->
+            # Ensure valid x and y before applying transform
+            xVal = parseFloat(d[index])
+            yVal = parseFloat(d[key])
+            if not isNaN(xVal) and not isNaN(yVal)
+              "translate(#{x(xVal)}, #{y(yVal)})"
+            else
+              null # Skip invalid points
+          )
+          .style("fill", col_colors[i+1])
+      )
+
+      # Add legend
+      legend = svg.append("g")
+        .attr("class", "legend")
+        .attr("transform", "translate(50, #{height + 50})")  # Move legend below the graph
+
+      # Add legend items
+      legendItems = legend.selectAll("g")
+        .data(headers.slice(1))
+        .enter().append("g")
+        .attr("transform", (d, i) ->
+          xOffset = parseFloat((i % Math.floor(width / 100)) * 100)  # Horizontal spacing
+          yOffset = parseFloat(Math.floor(i / Math.floor(width / 100)) * 20)  # Vertical spacing
+          "translate(#{xOffset}, #{yOffset})"
         )
-        .style("fill", line_configs[i].color)
-        .style("opacity", line_configs[i].opacity)
-    )
 
-    # Add legend
-    legend = svg.append("g")
-      .attr("class", "legend")
-      .attr("transform", "translate(50, #{height + 50})")  # Move legend below the graph
+      # Add legend color symbols
+      legendItems.append("path")
+        .attr("d", (d, i) ->
+          d3.symbol().type(line_configs[i].symbol).size(100)()
+        )
+        .attr("transform", "translate(9, 9)")  # Center the symbol within the legend item
+        .style("fill", (d, i) -> col_colors[i+1])
 
-    # Add legend items
-    legendItems = legend.selectAll("g")
-      .data(headers.slice(1))
-      .enter().append("g")
-      .attr("transform", (d, i) ->
-        xOffset = parseFloat((i % Math.floor(width / 100)) * 100)  # Horizontal spacing
-        yOffset = parseFloat(Math.floor(i / Math.floor(width / 100)) * 20)  # Vertical spacing
-        "translate(#{xOffset}, #{yOffset})"
-      )
+      # Add legend text
+      legendItems.append("text")
+        .attr("x", 24)
+        .attr("y", 9)
+        .attr("dy", "0.35em")
+        .style("font-size", "12px")
+        .text((d) -> d)
 
-    # Add legend color symbols
-    legendItems.append("path")
-      .attr("d", (d, i) ->
-        d3.symbol().type(line_configs[i].symbol).size(100)()
-      )
-      .attr("transform", "translate(9, 9)")  # Center the symbol within the legend item
-      .style("fill", (d, i) -> line_configs[i].color)
-      .style("opacity", (d, i) -> line_configs[i].opacity)
+      console.log "TimeSeries::build_graph: ended"
 
-    # Add legend text
-    legendItems.append("text")
-      .attr("x", 24)
-      .attr("y", 9)
-      .attr("dy", "0.35em")
-      .style("font-size", "12px")
-      .text((d) -> d)
-
-    # console.debug "TimeSeries::build_graph: svg done"
+    catch error
+      console.error("Error in build_graph:", error)
 
 window.TimeSeries = TimeSeries

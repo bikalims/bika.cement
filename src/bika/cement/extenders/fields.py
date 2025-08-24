@@ -170,12 +170,16 @@ class MixSpreadsheetFileExtensionField(object):
             return getattr(instance, name)
 
     def get_mix_type(self, mix_type):
+        folder = api.get_senaite_setup().mixtypes
         query = {
             "portal_type": "MixType",
+            "title": mix_type,
+            "path": {
+                "query": api.get_path(folder),
+            },
         }
         # TODO: filter by title once the title index has been added
         brains = api.search(query, SETUP_CATALOG)
-        brains = [md for md in brains if md.title == mix_type]
         return brains
 
     def get_data_from_blob_file(self, blob, sheet_name=None):
