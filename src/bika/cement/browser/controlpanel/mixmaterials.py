@@ -77,6 +77,8 @@ class MixMaterialsView(ListingView):
             ("absorption_rate", {
                 "title": _("Absorption Rate"),
                 "index": "absorption_rate"}),
+            ("brand", {
+                "title": _("Brand"), }),
         ))
 
         self.review_states = [
@@ -149,5 +151,18 @@ class MixMaterialsView(ListingView):
             )
             item["material_type"] = material_type_title
             item["replace"]["material_type"] = material_type_link
+
+        # Brand
+        brand_list = obj.brand
+        if brand_list:
+            brand_obj = api.get_object_by_uid(brand_list[0])
+            brand_title = brand_obj.title
+            brand_url = brand_obj.absolute_url()
+            brand_link = get_link(
+                brand_url, brand_title
+            )
+            item["brand"] = brand_title
+            item["replace"]["brand"] = brand_link
+
 
         return item

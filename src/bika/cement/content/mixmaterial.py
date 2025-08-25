@@ -85,6 +85,26 @@ class IMixMaterialSchema(model.Schema):
         required=False,
     )
 
+    directives.widget(
+        "brand",
+        UIDReferenceWidgetFactory,
+        catalog=SETUP_CATALOG,
+        query={
+            "portal_type": "Brand",
+            "is_active": True,
+            "sort_on": "sortable_title",
+            "sort_order": "ascending",
+        },
+        limit=5,
+    )
+
+    brand = UIDReferenceField(
+        title=u"Brand",
+        allowed_types=("Brand", ),
+        multi_valued=False,
+        required=False,
+    )
+
 
 @implementer(IMixMaterial, IMixMaterialSchema, IDeactivable)
 class MixMaterial(Container):
