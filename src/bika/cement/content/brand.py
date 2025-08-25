@@ -4,21 +4,17 @@
 from AccessControl import ClassSecurityInfo
 from bika.cement.interfaces import IBrand
 from bika.lims.interfaces import IDeactivable
-from plone.autoform import directives
 from plone.dexterity.content import Container
 from plone.supermodel import model
 from senaite.core.catalog import SETUP_CATALOG
-from senaite.core.z3cform.widgets.uidreference import UIDReferenceWidgetFactory
 from bika.lims import api
 from zope.interface import implementer
 from zope import schema
-from senaite.core.schema import UIDReferenceField
 
 
 class IBrandSchema(model.Schema):
     """Marker interface and Dexterity Python Schema for Brand"""
 
-    # add basic things here
     title = schema.TextLine(
         title=u"Title",
         required=True,
@@ -28,7 +24,6 @@ class IBrandSchema(model.Schema):
         title=u"Description",
         required=False,
     )
-
 
 
 @implementer(IBrand, IBrandSchema, IDeactivable)

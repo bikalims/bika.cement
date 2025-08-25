@@ -164,5 +164,4 @@ class MixMaterialsView(ListingView):
             item["brand"] = brand_title
             item["replace"]["brand"] = brand_link
 
-
         return item

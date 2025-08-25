@@ -5,7 +5,7 @@ import collections
 from bika.cement.config import _
 from bika.lims import api
 from bika.lims.api import to_utf8
-from bika.lims.utils import get_link, get_link_for
+from bika.lims.utils import get_link
 from senaite.app.listing import ListingView
 from senaite.core.catalog import SETUP_CATALOG
 
