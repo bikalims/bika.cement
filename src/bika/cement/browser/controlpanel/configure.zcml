@@ -53,4 +53,12 @@
       permission="senaite.core.permissions.ManageBika"
       layer="bika.cement.interfaces.IBikaCementLayer"/>
 
+  <!-- Supplier Folder -->
+  <browser:page
+      for="senaite.core.interfaces.ISupplier"
+      name="supplierlocations"
+      class=".supplierlocations.SupplierLocationsView"
+      permission="senaite.core.permissions.ManageBika"
+      layer="bika.cement.interfaces.IBikaCementLayer"/>
+
 </configure>

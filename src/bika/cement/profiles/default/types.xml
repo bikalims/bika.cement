@@ -38,4 +38,7 @@
   <object name="Brands" meta_type="Dexterity FTI" />
   <object name="Brand" meta_type="Dexterity FTI" />
 
+  <!-- Supplier Location -->
+  <object name="SupplierLocation" meta_type="Dexterity FTI" />
+
 </object>

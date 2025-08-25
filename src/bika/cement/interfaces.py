@@ -88,3 +88,8 @@ class IBrand(Interface):
 class IBrands(Interface):
     """Marker interface for brands setup folder
     """
+
+
+class ISupplierLocation(Interface):
+    """Marker interface for supplier location
+    """

@@ -29,6 +29,14 @@ ID_FORMATTING = [
         "sequence_type": "generated",
         "counter_type": "",
         "split_length": 1,
+    },
+    {
+        "portal_type": "SupplierLocation",
+        "form": "SL{seq:06d}",
+        "prefix": "supplierlocation",
+        "sequence_type": "generated",
+        "counter_type": "",
+        "split_length": 1,
     }
 ]
 
@@ -53,6 +61,7 @@ def post_install(context):
     setup_catalogs(portal)
     add_mix_tab_to_batch(portal)
     setup_id_formatting(portal)
+    add_location_to_supplier(portal)
 
 
 def uninstall(context):
@@ -140,3 +149,32 @@ def add_mix_tab_to_batch(portal):
             allowed_types.append("MixDesign")
             fti.allowed_content_types = tuple(allowed_types)
             logger.info("Add MixDesign on Batches allowed types")
+
+
+def add_location_to_supplier(portal):
+    pt = api.get_tool("portal_types", context=portal)
+    fti = pt.get("Supplier")
+    # Added location listing
+    actions = fti.listActions()
+    action_ids = [a.id for a in actions]
+    if "supplierlocations" not in action_ids:
+        fti.addAction(
+            id="supplierlocations",
+            name="Locations",
+            permission="View",
+            category="object",
+            visible=True,
+            icon_expr="string:${portal_url}/images/supplierlocation.png",
+            action="string:${object_url}/supplierlocations",
+            condition="",
+            link_target="",
+        )
+
+    # add to allowed types
+    allowed_types = fti.allowed_content_types
+    if isinstance(allowed_types, tuple) or isinstance(allowed_types, list):
+        allowed_types = list(allowed_types)
+        if "SupplierLocation" not in allowed_types:
+            allowed_types.append("SupplierLocation")
+            fti.allowed_content_types = tuple(allowed_types)
+            logger.info("Add SupplierLocation on Supplier allowed types")

@@ -20,6 +20,9 @@
         <type type_id="Brand">
             <bound-workflow workflow_id="senaite_deactivable_type_workflow"/>
         </type>
+        <type type_id="SupplierLocation">
+            <bound-workflow workflow_id="senaite_deactivable_type_workflow"/>
+        </type>
     </bindings>
 </object>
 
