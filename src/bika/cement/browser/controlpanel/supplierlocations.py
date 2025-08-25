@@ -77,7 +77,7 @@ class SupplierLocationsView(ListingView):
         obj = api.get_object(obj)
 
         location_link = get_link(
-            obj.absolute_url(), obj.getId()
+            obj.absolute_url(), obj.supplier_location_title
         )
         item["replace"]["supplier_location_title"] = location_link
         address_lst = []
