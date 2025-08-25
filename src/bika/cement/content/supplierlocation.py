@@ -2,6 +2,7 @@
 
 from AccessControl import ClassSecurityInfo
 from Products.CMFCore import permissions
+from plone.autoform import directives
 from plone.dexterity.content import Container
 from plone.supermodel import model
 from zope.interface import implementer
@@ -12,18 +13,43 @@ from bika.cement.interfaces import ISupplierLocation
 from bika.lims import api
 from bika.lims.interfaces import IDeactivable
 from senaite.core.catalog import SETUP_CATALOG
+from senaite.core.catalog import CONTACT_CATALOG
 from senaite.core.schema import AddressField
 from senaite.core.schema.addressfield import PHYSICAL_ADDRESS
+from senaite.core.schema import UIDReferenceField
+from senaite.core.z3cform.widgets.uidreference import UIDReferenceWidgetFactory
 
 
 class ISupplierLocationSchema(model.Schema):
     """Marker interface and Dexterity Python Schema for SupplierLocation"""
 
     supplier_location_title = TextLine(
-        title=_("Name"),
+        title=_("Title"),
         required=True,
     )
 
+    directives.widget(
+        "supplier_location_contact",
+        UIDReferenceWidgetFactory,
+        catalog=CONTACT_CATALOG,
+        query="get_contacts_query",
+        columns=[
+            {
+                "name": "title",
+                "width": "30",
+                "align": "left",
+                "label": _(u"Title"),
+            },
+        ],
+        limit=4,
+    )
+    supplier_location_contact = UIDReferenceField(
+        title=_(u"Supplier Location Contact"),
+        allowed_types=("SupplierContact",),
+        multi_valued=False,
+        description=_(u"Supplier Location Contact"),
+        required=False,
+    )
     address = AddressField(
         title=_("Address"),
         address_types=[PHYSICAL_ADDRESS],
@@ -70,10 +96,13 @@ class SupplierLocation(Container):
 
     @security.private
     def get_contacts_query(self):
-        """Return the query for the account managers field"""
+        """Return the query for the supplier contact field"""
         return {
-            "portal_type": "LabContact",
+            "portal_type": "SupplierContact",
             "is_active": True,
             "sort_on": "title",
             "sort_order": "asscending",
+            "path": {
+                "query": api.get_path(self.aq_parent),
+            },
         }

@@ -22,6 +22,9 @@ class SupplierLocationsView(ListingView):
         self.contentFilter = {
             "portal_type": "SupplierLocation",
             "sort_order": "ascending",
+            "path": {
+                "query": api.get_path(self.context),
+            },
         }
 
         self.context_actions = {
