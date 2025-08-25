@@ -61,3 +61,11 @@ def reindex_mix_materials(tool):
         logger.info("Reindex mix material: %r" % obj)
         obj.reindexObject()
     logger.info("Reindexing mix materials [DONE]")
+
+
+def add_brands(tool):
+    portal = tool.aq_inner.aq_parent
+    setup = portal.portal_setup
+    # -------- ADD YOUR STUFF BELOW --------
+
+    setup.runImportStepFromProfile(PROFILE_ID, "typeinfo")

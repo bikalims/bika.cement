@@ -78,3 +78,13 @@ class IMixDesignMortarPaste(Interface):
 class IMixMaterialAmount(Interface):
     """Marker interface for mix material amount setup folder
     """
+
+
+class IBrand(Interface):
+    """Marker interface for brand
+    """
+
+
+class IBrands(Interface):
+    """Marker interface for brands setup folder
+    """

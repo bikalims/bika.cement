@@ -45,4 +45,12 @@
       permission="senaite.core.permissions.ManageBika"
       layer="bika.cement.interfaces.IBikaCementLayer"/>
 
+  <!-- Brands Folder -->
+  <browser:page
+      for="bika.cement.interfaces.IBrands"
+      name="view"
+      class=".brands.BrandsView"
+      permission="senaite.core.permissions.ManageBika"
+      layer="bika.cement.interfaces.IBikaCementLayer"/>
+
 </configure>

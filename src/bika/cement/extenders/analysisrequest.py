@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
 
+from Products.CMFCore.permissions import View
 from archetypes.schemaextender.interfaces import IBrowserLayerAwareExtender
 from archetypes.schemaextender.interfaces import ISchemaExtender
 from zope.component import adapts
 from zope.interface import implementer
 
-from bika.extras.extenders.fields import ExtDateTimeField
-from bika.lims.interfaces import IAnalysisRequest
 from bika.cement.config import _
 from bika.cement.interfaces import IBikaCementLayer
+from bika.extras.extenders.fields import ExtDateTimeField
+from bika.lims.interfaces import IAnalysisRequest
 from senaite.core.browser.widgets import DateTimeWidget
-from Products.CMFCore.permissions import View
-from bika.lims.permissions import FieldEditBatch
 from senaite.core.browser.widgets import ReferenceWidget
+from senaite.core.permissions import FieldEditBatch
 from .fields import ExtUIDReferenceField
 
 

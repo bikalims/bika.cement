@@ -21,6 +21,17 @@ COLUMNS = [
     (SETUP_CATALOG, "sort_key"),
 ]
 
+ID_FORMATTING = [
+    {
+        "portal_type": "Brand",
+        "form": "BR{seq:06d}",
+        "prefix": "brand",
+        "sequence_type": "generated",
+        "counter_type": "",
+        "split_length": 1,
+    }
+]
+
 
 @implementer(INonInstallable)
 class HiddenProfiles(object):
@@ -41,6 +52,7 @@ def post_install(context):
     add_dexterity_setup_items(portal)
     setup_catalogs(portal)
     add_mix_tab_to_batch(portal)
+    setup_id_formatting(portal)
 
 
 def uninstall(context):
@@ -61,9 +73,39 @@ def add_dexterity_setup_items(portal):
         ("curingmethods", "Curing Methods", "CuringMethods"),
         ("mixtypes", "Mix Types", "MixTypes"),
         ("mixmaterials", "Mix Materials", "MixMaterials"),
+        ("brands", "Brands", "Brands"),
     ]
     setup = api.get_senaite_setup()
     add_dexterity_items(setup, items)
+
+
+def setup_id_formatting(portal, format_definition=None):
+    """Setup default ID formatting"""
+    if not format_definition:
+        logger.info("Setting up ID formatting ...")
+        for formatting in ID_FORMATTING:
+            setup_id_formatting(portal, format_definition=formatting)
+        logger.info("Setting up ID formatting [DONE]")
+        return
+
+    bs = portal.bika_setup
+    p_type = format_definition.get("portal_type", None)
+    if not p_type:
+        return
+
+    form = format_definition.get("form", "")
+    if not form:
+        logger.info("Param 'form' for portal type {} not set [SKIP")
+        return
+
+    logger.info("Applying format '{}' for {}".format(form, p_type))
+    ids = list()
+    for record in bs.getIDFormatting():
+        if record.get("portal_type", "") == p_type:
+            continue
+        ids.append(record)
+    ids.append(format_definition)
+    bs.setIDFormatting(ids)
 
 
 def setup_catalogs(portal):

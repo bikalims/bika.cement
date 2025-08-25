@@ -19,4 +19,13 @@
        handler="bika.cement.upgrade.v01_00_001.reindex_mix_materials"
        profile="bika.cement:default"/>
 
+    <genericsetup:upgradeStep
+       title="Upgrade to BIKA.CEMENT 1.0.2.1"
+       description="Reindex Mix Class by sortable_title for all Mix Materials"
+       source="1002"
+       destination="1.0.2"
+       handler="bika.cement.upgrade.v01_00_001.add_brands"
+       profile="bika.cement:default"/>
+
+
 </configure>
