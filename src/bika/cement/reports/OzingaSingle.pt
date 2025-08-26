@@ -461,7 +461,7 @@
 
   <!--  Mix Information-->
     <div class="clearfix"></div>
-    <div style="padding-top: 20px; padding-bottom: 10px;">
+    <div style="padding-top: 20px; padding-bottom: 10px;" tal:condition="python:mix_design">
       <h1 style= "padding-left:15px">Mix</h1>
     </div>
       <div class="col-12" tal:condition="python:mix_design">
