@@ -4,9 +4,12 @@
 
     <include package="archetypes.schemaextender"/>
 
-    <adapter name='bika.cement'
+    <adapter name='bika.cement.analysisrequest'
              provides="archetypes.schemaextender.interfaces.ISchemaExtender"
              factory=".analysisrequest.AnalysisRequestSchemaExtender"/>
+    <adapter name='bika.cement.analysisrequest.schemamodifier'
+             provides="archetypes.schemaextender.interfaces.ISchemaModifier"
+             factory=".analysisrequest.AnalysisRequestSchemaModifier" />
 
     <adapter name="bika.cement.batch"
              provides="archetypes.schemaextender.interfaces.ISchemaExtender"

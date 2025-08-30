@@ -380,3 +380,11 @@ class MixSpreadsheetFileExtensionField(object):
 
 class ExtMixSpreadsheetFileField(MixSpreadsheetFileExtensionField, FileField):
     "Field extender"
+
+
+class ExtStringField(ExtensionField, public.StringField):
+    "Field extender"
+
+
+class ExtTextField(ExtensionField, public.TextField):
+    "Field extender"

@@ -1,10 +1,14 @@
 # -*- coding: utf-8 -*-
 
+from Products.Archetypes.Widget import StringWidget
+from Products.Archetypes.Widget import TextAreaWidget
 from Products.CMFCore.permissions import View
 from archetypes.schemaextender.interfaces import IBrowserLayerAwareExtender
 from archetypes.schemaextender.interfaces import ISchemaExtender
+from archetypes.schemaextender.interfaces import ISchemaModifier
 from zope.component import adapts
 from zope.interface import implementer
+from zope.interface import implements
 
 from bika.cement.config import _
 from bika.cement.interfaces import IBikaCementLayer
@@ -15,6 +19,8 @@ from senaite.core.browser.widgets import ReferenceWidget
 from senaite.core.catalog import CONTACT_CATALOG
 from senaite.core.permissions import FieldEditBatch
 from .fields import ExtUIDReferenceField
+from .fields import ExtStringField
+from .fields import ExtTextField
 
 
 cast_date_field = ExtDateTimeField(
@@ -141,6 +147,40 @@ supplier_location_field = ExtUIDReferenceField(
     ),
 )
 
+sample_name_field = ExtStringField(
+    'SampleName',
+    mode="rw",
+    write_permission=FieldEditBatch,
+    read_permission=View,
+    widget=StringWidget(
+        label=_(u"Name"),
+        description=_(u""),
+        visible={
+            'add': 'edit',
+            'secondary': 'disabled',
+        },
+        render_own_label=True,
+    ),
+)
+
+description_field = ExtTextField(
+    "SampleDescription",
+    widget=TextAreaWidget(
+        label=_("Description"),
+        description=_(""),
+        visible={
+            'add': 'edit',
+            'secondary': 'disabled',
+        },
+        size=10,
+        allow_file_upload=False,
+        default_mime_type='text/x-rst',
+        output_mime_type='text/x-html',
+        rows=3,
+        render_own_label=True,
+    ),
+)
+
 
 @implementer(ISchemaExtender, IBrowserLayerAwareExtender)
 class AnalysisRequestSchemaExtender(object):
@@ -148,12 +188,14 @@ class AnalysisRequestSchemaExtender(object):
     layer = IBikaCementLayer
 
     fields = [
+        sample_name_field,
         cast_date_field,
         curing_method_field,
         mix_material_field,
         supplier_field,
         supplier_contact_field,
         supplier_location_field,
+        description_field,
     ]
 
     def __init__(self, context):
@@ -164,3 +206,20 @@ class AnalysisRequestSchemaExtender(object):
 
     def getFields(self):
         return self.fields
+
+
+class AnalysisRequestSchemaModifier(object):
+    adapts(IAnalysisRequest)
+    implements(ISchemaModifier)
+    layer = IBikaCementLayer
+
+    def __init__(self, context):
+        self.context = context
+
+    def fiddle(self, schema):
+        """
+        """
+        schema.moveField('SampleName', after='Contact')
+        schema.moveField('SampleDescription', after='SampleName')
+
+        return schema
