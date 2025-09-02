@@ -152,9 +152,9 @@
         <!-- Client Info -->
         <table class="table table-sm table-condensed">
           <colgroup>
-            <col style="width:40%"/>
-            <col style="width:10%"/>
-            <col style="width: 40%">
+            <col style="width:auto"/>
+            <col style="width:1%"/>
+            <col style="width: auto">
           </colgroup>
           <tr>
             <td style="border:none;" class="align-top pr-2">
@@ -164,27 +164,22 @@
                 <tr>
                   <td class="label" i18n:translate="">Brand</td>
                   <td class="field">
-                    <tal:by_client repeat="client python:view.group_items_by('Client', collection)">
-                      <div tal:content="client/Name"/>
-                    </tal:by_client>
+                      <div tal:content="primarymodel/MixMaterial/brand/title|nothing"/>
                   </td>
                 </tr>
                 <!-- Contact Name(s) -->
                 <tr>
                   <td class="label" i18n:translate="">Material</td>
                   <td class="field">
-                    <tal:by_contact repeat="contact python:view.group_items_by('Contact', collection)">
-                      <div tal:content="contact/Fullname"/>
-                    </tal:by_contact>
+                      <div tal:content="primarymodel/MixMaterial/title|nothing"/>
                   </td>
                 </tr>
                 <!-- Physical Address -->
                 <tr>
                   <td class="label" i18n:translate="">Type/Class</td>
                   <td class="field">
-                    <tal:by_client repeat="client python:view.group_items_by('Client', collection)">
-                      <div tal:content="client/PhysicalAddress/address"/>
-                    </tal:by_client>
+                      <span tal:content="primarymodel/MixMaterial/material_type/title|nothing"/>/
+                      <span tal:content="primarymodel/MixMaterial/material_type/material_class/title|nothing"/>
                   </td>
                 </tr>
               </table>
@@ -242,27 +237,28 @@
                 <tr>
                   <td class="label" i18n:translate="">Supplier</td>
                   <td class="field">
-                    <tal:by_client repeat="client python:view.group_items_by('Client', collection)">
-                      <div tal:content="client/Name"/>
-                    </tal:by_client>
+                      <div tal:content="primarymodel/Supplier/title|nothing"/>
                   </td>
                 </tr>
                 <!-- Contact Name(s) -->
                 <tr>
                   <td class="label" i18n:translate="">Address</td>
                   <td class="field">
-                    <tal:by_contact repeat="contact python:view.group_items_by('Contact', collection)">
-                      <div tal:content="contact/Fullname"/>
-                    </tal:by_contact>
+                      <div>
+                          <span tal:content="primarymodel/Supplier/PhysicalAddress/address|nothing"
+                          />,<span tal:content="primarymodel/Supplier/PhysicalAddress/city|nothing"/>
+                      </div>
+                      <div>
+                          <span tal:content="primarymodel/Supplier/PhysicalAddress/country|nothing"
+                          />,<span tal:content="primarymodel/Supplier/PhysicalAddress/zip|nothing"/>
+                      <div>
                   </td>
                 </tr>
                 <!-- Physical Address -->
                 <tr>
                   <td class="label" i18n:translate="">Contact</td>
                   <td class="field">
-                    <tal:by_client repeat="client python:view.group_items_by('Client', collection)">
-                      <div tal:content="client/PhysicalAddress/address"/>
-                    </tal:by_client>
+                      <div tal:content="primarymodel/SupplierContact/Fullname|nothing"/>
                   </td>
                 </tr>
               </table>
@@ -283,27 +279,27 @@
                 <tr>
                   <td class="label" i18n:translate="">Source Location</td>
                   <td class="field">
-                    <tal:by_client repeat="client python:view.group_items_by('Client', collection)">
-                      <div tal:content="client/Name"/>
-                    </tal:by_client>
+                      <div tal:content="primarymodel/SupplierLocation/supplier_location_title|nothing"/>
                   </td>
                 </tr>
-                <!-- Contact Name(s) -->
                 <tr>
                   <td class="label" i18n:translate=""></td>
                   <td class="field">
-                    <tal:by_contact repeat="contact python:view.group_items_by('Contact', collection)">
-                      <div tal:content="contact/Fullname"/>
-                    </tal:by_contact>
+                      <div>
+                          <span tal:content="python: primarymodel.SupplierLocation.address[0]['address']" />,
+                          <span tal:content="python: primarymodel.SupplierLocation.address[0]['city']" />
+                      </div>
+                      <div>
+                          <span tal:content="python: primarymodel.SupplierLocation.address[0]['country']" />,
+                          <span tal:content="python: primarymodel.SupplierLocation.address[0]['zip']" />
+                      <div>
                   </td>
                 </tr>
                 <!-- Physical Address -->
                 <tr>
                   <td class="label" i18n:translate="">Contact</td>
                   <td class="field">
-                    <tal:by_client repeat="client python:view.group_items_by('Client', collection)">
-                      <div tal:content="client/PhysicalAddress/address"/>
-                    </tal:by_client>
+                      <div tal:content="primarymodel/SupplierLocation/supplier_location_contact/title|nothing"/>
                   </td>
                 </tr>
               </table>
@@ -342,55 +338,20 @@
       </div>
     </div>
   </tal:render>
-  <table class="listing"
+  <table class="table table-sm table-condensed small"
        tal:define="
-           categories python: [
-               {'title': 'Chemistry', 'analyses': [
-                   ['Glucose', '5.2', 'mmol/L', '3.5–7.8'],
-                   ['Cholesterol', '4.8', 'mmol/L', '< 5.2'],
-                   ['Triglycerides', '1.5', 'mmol/L', '< 1.7'],
-                   ['HDL', '1.1', 'mmol/L', '> 1.0'],
-               ]},
-               {'title': 'Hematology', 'analyses': [
-                   ['Hemoglobin', '13.5', 'g/dL', '12–16'],
-                   ['WBC', '6.2', '10^9/L', '4–11'],
-                   ['Platelets', '250', '10^9/L', '150–400'],
-               ]},
-               {'title': 'Renal Function', 'analyses': [
-                   ['Urea', '6.0', 'mmol/L', '2.5–8.0'],
-                   ['Creatinine', '88', 'µmol/L', '60–110'],
-                   ['eGFR', '90', 'mL/min', '> 60'],
-               ]},
-               {'title': 'Liver Function', 'analyses': [
-                   ['ALT', '28', 'U/L', '0–41'],
-                   ['AST', '22', 'U/L', '0–40'],
-                   ['ALP', '75', 'U/L', '30–120'],
-                   ['Bilirubin', '12', 'µmol/L', '0–21'],
-               ]},
-           ];
-
-           total python: sum([len(cat['analyses']) for cat in categories]);
-           half  python: total // 2;
-
-           col1 python: [];
-           col2 python: [];
-           count python:0;
-
-           dummy python: [ (col1.append(cat) or setattr(globals(),'count',count+len(cat['analyses'])))
-                           if count+len(cat['analyses']) <= half else col2.append(cat)
-                           for cat in categories ];
-       ">
-
+           col1 python:view.split_categories(collection)[0];
+           col2 python:view.split_categories(collection)[1];">
   <thead>
     <tr>
-      <th>Analysis</th>
-      <th>Result</th>
-      <th>Unit</th>
-      <th>Specification</th>
-      <th>Analysis</th>
-      <th>Result</th>
-      <th>Unit</th>
-      <th>Specification</th>
+      <th class="small">Analysis</th>
+      <th class="small">Result</th>
+      <th class="small">Unit</th>
+      <th class="small">Specification</th>
+      <th class="small">Analysis</th>
+      <th class="small">Result</th>
+      <th class="small">Unit</th>
+      <th class="small">Specification</th>
     </tr>
   </thead>
 
@@ -399,26 +360,30 @@
 
       <!-- Left column -->
       <td colspan="4" tal:condition="python: row < len(col1)">
-        <div class="category" tal:content="col1[row]['title']"></div>
         <table>
-          <tr tal:repeat="ana col1[row]['analyses']">
-            <td tal:content="ana[0]"></td>
-            <td tal:content="ana[1]"></td>
-            <td tal:content="ana[2]"></td>
-            <td tal:content="ana[3]"></td>
+        <tr>
+        <td class="no-border category font-weight-bold" tal:content="python: col1[row]['title']"></td>
+        <tr/>
+          <tr tal:repeat="ana python: col1[row]['analyses']">
+            <td tal:content="ana/title"></td>
+            <td tal:content="ana/Result"></td>
+            <td tal:content="ana/getUnit"></td>
+            <td tal:content="ana/getSpecification"></td>
           </tr>
         </table>
       </td>
 
       <!-- Right column -->
       <td colspan="4" tal:condition="python: row < len(col2)">
-        <div class="category" tal:content="col2[row]['title']"></div>
         <table>
-          <tr tal:repeat="ana col2[row]['analyses']">
-            <td tal:content="ana[0]"></td>
-            <td tal:content="ana[1]"></td>
-            <td tal:content="ana[2]"></td>
-            <td tal:content="ana[3]"></td>
+        <tr>
+        <td class="category font-weight-bold" tal:content="python: col2[row]['title']"></td>
+        <tr/>
+          <tr tal:repeat="ana python: col2[row]['analyses']">
+            <td tal:content="ana/title"></td>
+            <td tal:content="ana/Result"></td>
+            <td tal:content="ana/getUnit"></td>
+            <td tal:content="ana/getSpecification"></td>
           </tr>
         </table>
       </td>
@@ -429,168 +394,7 @@
 
 
 
-  <!-- RESULTS -->
-  <tal:render condition="python:True"
-              define="analyses_by_poc python:view.get_analyses_by_poc(collection);
-                      categories_by_poc python:view.get_categories_by_poc(collection)">
-    <div class="row section-results no-gutters">
-      <div class="w-100">
-        <h1 i18n:translate="">Results</h1>
 
-        <tal:page tal:repeat="page pages">
-        <!-- Point of Captures -->
-        <tal:poc tal:repeat="poc analyses_by_poc">
-          <h2 tal:content="python:view.points_of_capture.get(poc)"></h2>
-
-          <!-- Results table per PoC -->
-          <table class="table table-sm table-condensed small">
-              <tr>
-                <th colspan="4" style="word-wrap:normal;">Sample ID</th>
-                <tal:ar repeat="model page">
-                  <th colspan="2" class="font-weight-normal">
-                    <div class="text-primary text-center"
-                         tal:content="model/Title"/>
-                  </th>
-                </tal:ar>
-              </tr>
-              <tr class="noborder" style="border:none !important">
-                <tal:ar repeat="model page">
-                  <th colspan="4" tal:condition="python: repeat['model'].start or page.index(model) == 0" class="noborder">
-                        Client Sample ID
-                  </th>
-                  <th colspan="2" class="font-weight-normal text-center noborder">
-                      <div class="text-center" tal:content="python:model.ClientSampleID or '-'"/>
-                  </th>
-                </tal:ar>
-              </tr>
-              <tr class="noborder">
-                <tal:ar repeat="model page">
-                  <th colspan="4" tal:condition="python: repeat['model'].start or page.index(model) == 0" class="noborder">
-                        <div class="text-left">Sample Type</div>
-                  </th>
-                  <th colspan="2" class="font-weight-normal text-center noborder">
-                      <div class="text-center"
-                           tal:content="python:model.SampleTypeTitle or '-'"/>
-                  </th>
-                </tal:ar>
-              </tr>
-              <tr class="noborder">
-                <tal:ar repeat="model page">
-                <th colspan="4" tal:condition="python: repeat['model'].start or page.index(model) == 0" class="noborder">
-                    <div class="text-left">Sample Point</div>
-                </th>
-                 <th colspan="2" class="font-weight-normal text-center noborder">
-                    <div class="text-center"
-                         tal:content="python:model.SamplePointTitle or '-'"/>
-                </th>
-                </tal:ar>
-              </tr>
-              <tr class="noborder">
-                <tal:ar repeat="model page">
-                <th colspan="4" tal:condition="python: repeat['model'].start or page.index(model) == 0" class="noborder">
-                    <div class="text-left">Date Sampled</div>
-                </th>
-                 <th colspan="2" class="font-weight-normal text-center noborder">
-                    <div class="text-center"
-                         tal:content="python:model.DateSampled and view.to_localized_date(model.DateSampled) or '-'"></div>
-                </th>
-                </tal:ar>
-              </tr>
-              <tr class="noborder">
-                <tal:ar repeat="model page">
-                <th colspan="4" tal:condition="python: repeat['model'].start or page.index(model) == 0" class="noborder">
-                    <div class="text-left">Date Received</div>
-                </th>
-                 <th colspan="2" class="font-weight-normal text-center noborder">
-                    <div class="text-center"
-                         tal:content="python:model.DateReceived and view.to_localized_date(model.DateReceived) or '-'"></div>
-                </th>
-                </tal:ar>
-              </tr>
-              <tr>
-                <tal:ar repeat="model page">
-                <th colspan="4" tal:condition="python: repeat['model'].start or page.index(model) == 0" class="noborder">
-                    <div class="text-left">Date Verified</div>
-                </th>
-                 <th colspan="2" class="font-weight-normal text-center" style="border-top: none;">
-                    <div class="text-center"
-                         tal:content="python:model.getDateVerified() and view.to_localized_date(model.getDateVerified()) or '-'"></div>
-                </th>
-                </tal:ar>
-               </tr>
-              <!-- Categories in PoC -->
-              <tal:categories_in_poc tal:repeat="category python:view.sort_items(categories_by_poc.get(poc))">
-                <tr tal:condition="python:view.get_analyses_by(collection, poc=poc, category=category) and view.get_common_row_data(page, poc=poc, category=category)">
-                   <td class="font-weight-bold table-warning padded-col"
-                       style="border: none" colspan="4">
-                       <span class="font-size-140" tal:content="category/Title">Category</span>
-                   </td>
-                </tr>
-                <tr tal:condition="python:view.get_analyses_by(collection, poc=poc, category=category) and view.get_common_row_data(page, poc=poc, category=category)">
-                   <td class="font-weight-bold table-warning padded-col">
-                       Analysis
-                   </td> 
-                   <td class="font-weight-bold padded-col">Method</td>
-                   <td class="font-weight-bold padded-col">Verifier</td>
-                   <td class="font-weight-bold padded-col">Unit</td>
-                   <tal:results repeat="model page">
-                       <td class="font-weight-bold text-center" colspan="2">Result</td> 
-                   </tal:results>
-                </tr> 
-
-                <tr tal:define="common_row_data python:view.get_common_row_data_updated(page, poc=poc, category=category)"
-                    tal:repeat="row_data python:common_row_data">
-                  <td class="text-secondary">
-                    <span tal:condition="python: row_data[4]">
-                      <img tal:attributes="src python:report_images['accredited_symbol_url']"/>
-                    </span>
-                    <span tal:content="python: row_data[0]"/>
-                  </td>
-                  <td class="text-secondary">
-                    <span tal:content="python: row_data[1]"/>
-                  </td>
-                  <td class="text-secondary">
-                    <span tal:content="python: row_data[5]">
-                  </td>
-                  <td class="text-secondary">
-                    <span tal:content="python: row_data[2]"/>
-                  </td>
-                  <tal:results repeat="model page">
-                    <tal:analyses tal:define="analyses python:view.get_analyses_by(model, title=row_data[0]);">
-                      <tal:analysis tal:repeat="analysis analyses">
-                        <td colspan="2" class="text-center"
-                            tal:define="result python:model.get_formatted_result(analysis);
-                                        verified python:analysis.review_state in ['published', 'verified']">
-                          <span class="font-weight-normal"
-                                tal:condition="python:result and verified"
-                                tal:content="structure result" />
-                          <span class="font-weight-normal"
-                                tal:condition="python:result and not verified">-</span>
-                          <span class="font-weight-normal"
-                                tal:condition="not:result"></span>
-                          <span tal:condition="python:model.is_out_of_range(analysis)"
-                                class="font-weight-normal">
-                            <span class="outofrange text-danger">
-                                  <img tal:attributes="src python:report_images['outofrange_symbol_url']"/>
-                            </span>
-                          </span>
-                        </td>
-                      </tal:analysis>
-                      <tal:analysis condition="not:analyses">
-                        <td></td>
-                        <td></td>
-                      </tal:analysis>
-                    </tal:analyses>
-                  </tal:results>
-                </tr>
-              </tal:categories_in_poc>
-          </table>
-          <div class="clearfix"></div>
-        </tal:poc>
-        </tal:page>
-      </div>
-    </div>
-  </tal:render>
 
   <!--  RESULTS INTERPRETATIONS -->
   <tal:render condition="python:True">
