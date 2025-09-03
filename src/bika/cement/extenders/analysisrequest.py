@@ -181,6 +181,23 @@ description_field = ExtTextField(
     ),
 )
 
+lot_number_field = ExtStringField(
+    'LotNumber',
+    mode="rw",
+    write_permission=FieldEditBatch,
+    read_permission=View,
+    widget=StringWidget(
+        label=_(u"Lot Number"),
+        description=_(u""),
+        visible={
+            'add': 'edit',
+            'secondary': 'disabled',
+        },
+        render_own_label=True,
+    ),
+)
+
+
 
 @implementer(ISchemaExtender, IBrowserLayerAwareExtender)
 class AnalysisRequestSchemaExtender(object):
@@ -196,6 +213,7 @@ class AnalysisRequestSchemaExtender(object):
         supplier_contact_field,
         supplier_location_field,
         description_field,
+        lot_number_field,
     ]
 
     def __init__(self, context):
