@@ -70,7 +70,7 @@
         width:100%;
         table-layout:fixed;
         margin-bottom: 2px}
-     .report .table-sm td {padding: 0}
+     .report .table-sm th,.table-sm td { padding: 0;}
      .report .table td {border-top: none}
      .report table.noborder td, .report table.noborder th { border: none; }
      .report table.nopadding td { padding: 0; }
@@ -302,6 +302,7 @@
                 <tr>
                   <td class="label" i18n:translate=""></td>
                   <td class="field">
+                  <tal:block tal:condition="python: primarymodel.SupplierLocation">
                       <div>
                           <span tal:content="python: primarymodel.SupplierLocation.address[0]['address']" />,
                           <span tal:content="python: primarymodel.SupplierLocation.address[0]['city']" />
@@ -310,6 +311,7 @@
                           <span tal:content="python: primarymodel.SupplierLocation.address[0]['country']" />,
                           <span tal:content="python: primarymodel.SupplierLocation.address[0]['zip']" />
                       <div>
+                  </tal:block>
                   </td>
                 </tr>
                 <!-- Physical Address -->
@@ -358,6 +360,16 @@
   <table class="table table-sm table-condensed small"
        tal:define="col1 python:view.split_categories(collection)[0];
                    col2 python:view.split_categories(collection)[1];">
+  <colgroup>
+    <col style="width:20%"/>
+    <col style="width:10%"/>
+    <col style="width:5%">
+    <col style="width:10%">
+    <col style="width:20%"/>
+    <col style="width:10%"/>
+    <col style="width:5%">
+    <col style="width:10%">
+  </colgroup>
   <thead>
       <tr>
           <td colspan="8" class="text-center" style="background-color:#FF0000">
@@ -381,19 +393,27 @@
 
   <tbody>
     <tr>
-
       <!-- Left column -->
       <td colspan="4">
-        <table>
+        <table class="table table-sm table-condensed small">
+          <colgroup>
+            <col style="width:40%"/>
+            <col style="width:20%"/>
+            <col style="width:10%">
+            <col style="width:20%">
+          </colgroup>
           <tal:row repeat="row python:range(len(col1))">
             <tr>
-               <td class="no-border category font-weight-bold" tal:content="python: col1[row]['title']"></td>
+               <td class="no-border category font-weight-bold text-nowrap" tal:content="python: col1[row]['title']"></td>
+               <td class="no-border"></td>
+               <td class="no-border"></td>
+               <td class="no-border"></td>
             <tr/>
             <tr tal:repeat="ana python: col1[row]['analyses']">
-              <td tal:content="ana/title"></td>
-              <td tal:content="ana/Result"></td>
-              <td tal:content="ana/getUnit"></td>
-              <td tal:content="ana/getSpecification"></td>
+              <td class="text-ce" tal:content="ana/title"></td>
+              <td class="" tal:content="structure python:primarymodel.get_formatted_result(ana)"></td>
+              <td tal:content="structure python:primarymodel.get_formatted_unit(ana)"></td>
+              <td tal:content="structure python:primarymodel.get_formatted_specs(ana)"></td>
             </tr>
           </tal:row>
         </table>
@@ -401,79 +421,25 @@
 
       <!-- Right column -->
       <td colspan="4">
-        <table>
+        <table class="table table-sm table-condensed small">
+          <colgroup>
+            <col style="width:40%"/>
+            <col style="width:20%"/>
+            <col style="width:10%">
+            <col style="width:20%">
+          </colgroup>
           <tal:row repeat="row python:range(len(col2))">
             <tr>
-               <td class="no-border category font-weight-bold" tal:content="python: col2[row]['title']"></td>
+               <td class="no-border category font-weight-bold text-nowrap" tal:content="python: col2[row]['title']"></td>
+               <td class="no-border"></td>
+               <td class="no-border"></td>
+               <td class="no-border"></td>
             <tr/>
             <tr tal:repeat="ana python: col2[row]['analyses']">
-              <td tal:content="ana/title"></td>
-              <td tal:content="ana/Result"></td>
-              <td tal:content="ana/getUnit"></td>
-              <td tal:content="ana/getSpecification"></td>
-            </tr>
-          </tal:row>
-        </table>
-      </td>
-
-    </tr>
-  </tbody>
-</table>
-  <table class="table table-sm table-condensed small"
-       tal:define="col1 python:view.split_categories(collection)[0];
-                   col2 python:view.split_categories(collection)[1];">
-  <thead>
-  <tr>
-      <td colspan="8" class="text-center" style="background-color:#FF0000">
-        <div class="text-center" style="background-color:red; color: white">
-             Test Data on Reference
-         </div>
-      </td>
-  </tr>
-    <tr>
-      <th class="small">Analysis</th>
-      <th class="small">Result</th>
-      <th class="small">Unit</th>
-      <th class="small">Specification</th>
-      <th class="small">Analysis</th>
-      <th class="small">Result</th>
-      <th class="small">Unit</th>
-      <th class="small">Specification</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <tr>
-
-      <!-- Left column -->
-      <td colspan="4">
-        <table>
-          <tal:row repeat="row python:range(len(col1))">
-            <tr>
-               <td class="no-border category font-weight-bold" tal:content="python: col1[row]['title']"></td>
-            <tr/>
-            <tr tal:repeat="ana python: col1[row]['analyses']">
-              <td tal:content="ana/title"></td>
-              <td tal:content="ana/Result"></td>
-              <td tal:content="ana/getUnit"></td>
-              <td tal:content="ana/getSpecification"></td>
-            </tr>
-          </tal:row>
-        </table>
-      </td>
-
-      <!-- Right column -->
-      <td colspan="4">
-        <table>
-          <tal:row repeat="row python:range(len(col2))">
-            <tr>
-               <td class="no-border category font-weight-bold" tal:content="python: col2[row]['title']"></td>
-            <tr/>
-            <tr tal:repeat="ana python: col2[row]['analyses']">
-              <td tal:content="ana/title"></td>
-              <td tal:content="ana/Result"></td>
-              <td tal:content="ana/getUnit"></td>
-              <td tal:content="ana/getSpecification"></td>
+              <td class="" tal:content="ana/title"></td>
+              <td class="" tal:content="structure python:primarymodel.get_formatted_result(ana)"></td>
+              <td tal:content="structure python:primarymodel.get_formatted_unit(ana)"></td>
+              <td tal:content="structure python:primarymodel.get_formatted_specs(ana)"></td>
             </tr>
           </tal:row>
         </table>
