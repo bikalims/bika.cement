@@ -198,7 +198,6 @@ lot_number_field = ExtStringField(
 )
 
 
-
 @implementer(ISchemaExtender, IBrowserLayerAwareExtender)
 class AnalysisRequestSchemaExtender(object):
     adapts(IAnalysisRequest)
