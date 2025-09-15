@@ -10,6 +10,7 @@ from zope.component import adapts
 from zope.interface import implementer
 from zope.interface import implements
 
+from bika.cement import is_installed
 from bika.cement.config import _
 from bika.cement.interfaces import IBikaCementLayer
 from bika.extras.extenders.fields import ExtDateTimeField
@@ -236,7 +237,8 @@ class AnalysisRequestSchemaModifier(object):
     def fiddle(self, schema):
         """
         """
-        schema.moveField('SampleName', after='Contact')
-        schema.moveField('SampleDescription', after='SampleName')
+        if is_installed():
+            schema.moveField('SampleName', after='Contact')
+            schema.moveField('SampleDescription', after='SampleName')
 
         return schema
