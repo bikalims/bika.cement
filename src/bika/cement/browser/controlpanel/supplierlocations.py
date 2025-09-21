@@ -44,6 +44,7 @@ class SupplierLocationsView(ListingView):
             ("supplier_location_title", {
                 "title": _("Name"),
                 "index": "sortable_title"}),
+            ("contact", {"title": _("Contact")}),
             ("address", {
                 "title": _("Address"),
                 "index": "description"}),
@@ -102,4 +103,10 @@ class SupplierLocationsView(ListingView):
                 href=api.get_url(obj), value=", ".join(address_lst)
             )
 
+        supplier_location_contact = obj.supplier_location_contact
+        if supplier_location_contact:
+            contact = api.get_object_by_uid(supplier_location_contact[0])
+            name = contact.getFullname()
+            url = contact.absolute_url()
+            item["replace"]["contact"] = get_link(url, value=name)
         return item
