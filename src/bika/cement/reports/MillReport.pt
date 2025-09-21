@@ -1,7 +1,6 @@
 <tal:report
   i18n:domain="bika.cement"
-  define="collection view/collection;
-          primarymodel python:collection[0];
+  define="model python:view.model;
           laboratory view/laboratory;
           coa_num view/get_coa_number;
           reporter view/current_user;
@@ -15,11 +14,10 @@
           page_height options/page_height|nothing;
           content_width options/content_width|nothing;
           content_height options/content_height|nothing;
-          pages python:view.get_pages(options);
           report_images python:view.get_report_images();
           styles python:view.get_coa_styles();
-          specification primarymodel/Specification;
-          publication_specification primarymodel/PublicationSpecification;
+          specification model/Specification;
+          publication_specification model/PublicationSpecification;
           spec python:publication_specification or specification;
       ">
 
@@ -123,18 +121,7 @@
     </style>
   </tal:css>
 
-<tal:define_verifiers define="verifier_pair python:view.is_verifier_unique(collection)">
- <tal:not_unique_verifier condition="python:not verifier_pair[0]"
- 			  define="kw_list python:verifier_pair[1]">
-  <div>
-	<h1 tal:content="string: Multiple Verifiers are found for the analysis with keyword ${kw_list} to use this COA the same user has to verify an
-    	Analysis for all samples included"/>
-  </div> 
- </tal:not_unique_verifier>
-</tal:define_verifiers>
-
   <!-- HEADER -->
- <tal:same_verifier condition="python:view.is_verifier_unique(collection)[0]">
   <tal:render condition="python:True">
     <div class="row section-header no-gutters">
       <!-- Header Table -->
@@ -153,8 +140,6 @@
   <!-- /HEADER -->
 
   <!-- INFO -->
-  <tal:render condition="python:len(collection)>0"
-              define="primarymodel python:collection[0];">
 
     <div class="row section-info no-gutters">
       <div class="w-100">
@@ -173,21 +158,21 @@
                 <tr>
                   <td class="label" i18n:translate="">Brand</td>
                   <td class="field">
-                      <div tal:content="primarymodel/MixMaterial/brand/title|nothing"/>
+                      <div tal:content="model/MixMaterial/brand/title|nothing"/>
                   </td>
                 </tr>
                 <!-- Contact Name(s) -->
                 <tr>
                   <td class="label" i18n:translate="">Material</td>
                   <td class="field">
-                      <div tal:content="primarymodel/MixMaterial/title|nothing"/>
+                      <div tal:content="model/MixMaterial/title|nothing"/>
                   </td>
                 </tr>
                 <tr>
                   <td class="label" i18n:translate="">Type/Class</td>
                   <td class="field">
-                      <span tal:content="primarymodel/MixMaterial/material_type/title|nothing"/>/
-                      <span tal:content="primarymodel/MixMaterial/material_type/material_class/title|nothing"/>
+                      <span tal:content="model/MixMaterial/material_type/title|nothing"/>/
+                      <span tal:content="model/MixMaterial/material_type/material_class/title|nothing"/>
                   </td>
                 </tr>
               </table>
@@ -207,21 +192,21 @@
                 <!-- Client Name(s) -->
                 <tr>
                   <td class="label" i18n:translate="">Lot Number</td>
-                  <td class="field" tal:content="primarymodel/LotNumber|nothing">
+                  <td class="field" tal:content="model/LotNumber|nothing">
                   </td>
                 </tr>
                 <!-- Contact Name(s) -->
                 <tr>
                   <td class="label" i18n:translate="">Date Range</td>
                   <td class="field">
-                      <span tal:content="python:view.get_date_analysed(primarymodel)[0] or ''"/>
+                      <span tal:content="python:view.get_date_analysed(model)[0] or ''"/>
                       -
-                      <span tal:content="python:view.get_date_analysed(primarymodel)[0] or ''"/>
+                      <span tal:content="python:view.get_date_analysed(model)[0] or ''"/>
                   </td>
                 </tr>
                 <tr>
                   <td class="label" i18n:translate="">Date Issued</td>
-                  <td class="field" tal:content="python:view.to_custom_date(primarymodel.DatePublished or view.timestamp)"></td>
+                  <td class="field" tal:content="python:view.to_custom_date(model.DatePublished or view.timestamp)"></td>
                 </tr>
               </table>
           </td>
@@ -235,8 +220,8 @@
             <td colspan="3" class="text-center">
                 We certify this sample was tested in accordance with
                 <span tal:content="spec/title|nothing"/> specifications
-                for <span tal:content="primarymodel/MixMaterial/material_type/title|nothing"/>
-                <span tal:content="primarymodel/MixMaterial/title|nothing"/>.
+                for <span tal:content="model/MixMaterial/material_type/title|nothing"/>
+                <span tal:content="model/MixMaterial/title|nothing"/>.
             </td>
           </tr>
           <tr>
@@ -252,7 +237,7 @@
                 <tr>
                   <td class="label" i18n:translate="">Supplier</td>
                   <td class="field">
-                      <div tal:content="primarymodel/Supplier/title|nothing"/>
+                      <div tal:content="model/Supplier/title|nothing"/>
                   </td>
                 </tr>
                 <!-- Contact Name(s) -->
@@ -260,14 +245,14 @@
                   <td class="label" i18n:translate="">Address</td>
                   <td class="field">
                       <div>
-                          <span tal:content="primarymodel/Supplier/PhysicalAddress/address|nothing"/>
-                          <span tal:condition="primarymodel/Supplier/PhysicalAddress/address">,</span>
-                          <span tal:content="primarymodel/Supplier/PhysicalAddress/city|nothing"/>
+                          <span tal:content="model/Supplier/PhysicalAddress/address|nothing"/>
+                          <span tal:condition="model/Supplier/PhysicalAddress/address">,</span>
+                          <span tal:content="model/Supplier/PhysicalAddress/city|nothing"/>
                       </div>
                       <div>
-                          <span tal:content="primarymodel/Supplier/PhysicalAddress/country|nothing"/>
-                          <span tal:condition="primarymodel/Supplier/PhysicalAddress/country">,</span>
-                          <span tal:content="primarymodel/Supplier/PhysicalAddress/zip|nothing"/>
+                          <span tal:content="model/Supplier/PhysicalAddress/country|nothing"/>
+                          <span tal:condition="model/Supplier/PhysicalAddress/country">,</span>
+                          <span tal:content="model/Supplier/PhysicalAddress/zip|nothing"/>
                       <div>
                   </td>
                 </tr>
@@ -275,7 +260,7 @@
                 <tr>
                   <td class="label" i18n:translate="">Contact</td>
                   <td class="field">
-                      <div tal:content="primarymodel/SupplierContact/Fullname|nothing"/>
+                      <div tal:content="model/SupplierContact/Fullname|nothing"/>
                   </td>
                 </tr>
               </table>
@@ -296,20 +281,20 @@
                 <tr>
                   <td class="label" i18n:translate="">Source Location</td>
                   <td class="field">
-                      <div tal:content="primarymodel/SupplierLocation/supplier_location_title|nothing"/>
+                      <div tal:content="model/SupplierLocation/supplier_location_title|nothing"/>
                   </td>
                 </tr>
                 <tr>
                   <td class="label" i18n:translate=""></td>
                   <td class="field">
-                  <tal:block tal:condition="python: primarymodel.SupplierLocation">
+                  <tal:block tal:condition="python: model.SupplierLocation">
                       <div>
-                          <span tal:content="python: primarymodel.SupplierLocation.address[0]['address']" />,
-                          <span tal:content="python: primarymodel.SupplierLocation.address[0]['city']" />
+                          <span tal:content="python: model.SupplierLocation.address[0]['address']" />,
+                          <span tal:content="python: model.SupplierLocation.address[0]['city']" />
                       </div>
                       <div>
-                          <span tal:content="python: primarymodel.SupplierLocation.address[0]['country']" />,
-                          <span tal:content="python: primarymodel.SupplierLocation.address[0]['zip']" />
+                          <span tal:content="python: model.SupplierLocation.address[0]['country']" />,
+                          <span tal:content="python: model.SupplierLocation.address[0]['zip']" />
                       <div>
                   </tal:block>
                   </td>
@@ -318,7 +303,7 @@
                 <tr>
                   <td class="label" i18n:translate="">Contact</td>
                   <td class="field">
-                      <div tal:content="primarymodel/SupplierLocation/supplier_location_contact/title|nothing"/>
+                      <div tal:content="model/SupplierLocation/supplier_location_contact/title|nothing"/>
                   </td>
                 </tr>
               </table>
@@ -331,13 +316,11 @@
       -->
       <div class="clearfix"></div>
     </div>
-  </tal:render>
 
   <!-- ALERTS -->
   <tal:render condition="python:True">
     <div class="row section-alerts no-gutters">
       <div class="w-100">
-        <tal:model repeat="model collection">
           <div class="alert alert-danger" tal:condition="model/is_invalid">
             <h2 class="alert-heading"><span tal:replace="model/getId"/></h2>
             <div i18n:translate="">This Analysis Request has been invalidated due to erroneously published results</div>
@@ -353,7 +336,6 @@
             <h2 class="alert-heading"><span tal:replace="model/getId"/></h2>
             <div i18n:translate="">Provisional report</div>
           </div>
-        </tal:model>
       </div>
     </div>
   </tal:render>
@@ -361,8 +343,8 @@
     <div class="row section-info no-gutters">
       <div class="w-100">
   <table class="table table-sm table-condensed small"
-       tal:define="col1 python:view.split_categories(collection)[0];
-                   col2 python:view.split_categories(collection)[1];">
+       tal:define="col1 python:view.split_categories(model)[0];
+                   col2 python:view.split_categories(model)[1];">
   <colgroup>
     <col style="width:20%"/>
     <col style="width:10%"/>
@@ -413,9 +395,9 @@
             <tr/>
             <tr tal:repeat="ana python: col1[row]['analyses']">
               <td class="text-ce" tal:content="ana/title"></td>
-              <td class="" tal:content="structure python:primarymodel.get_formatted_result(ana)"></td>
-              <td tal:content="structure python:primarymodel.get_formatted_unit(ana)"></td>
-              <td tal:content="structure python:primarymodel.get_formatted_specs(ana)"></td>
+              <td class="" tal:content="structure python:model.get_formatted_result(ana)"></td>
+              <td tal:content="structure python:model.get_formatted_unit(ana)"></td>
+              <td tal:content="structure python:model.get_formatted_specs(ana)"></td>
             </tr>
           </tal:row>
         </table>
@@ -439,9 +421,9 @@
             <tr/>
             <tr tal:repeat="ana python: col2[row]['analyses']">
               <td class="" tal:content="ana/title"></td>
-              <td class="" tal:content="structure python:primarymodel.get_formatted_result(ana)"></td>
-              <td tal:content="structure python:primarymodel.get_formatted_unit(ana)"></td>
-              <td tal:content="structure python:primarymodel.get_formatted_specs(ana)"></td>
+              <td class="" tal:content="structure python:model.get_formatted_result(ana)"></td>
+              <td tal:content="structure python:model.get_formatted_unit(ana)"></td>
+              <td tal:content="structure python:model.get_formatted_specs(ana)"></td>
             </tr>
           </tal:row>
         </table>
@@ -457,8 +439,8 @@
     <div class="row section-info no-gutters">
       <div class="w-100">
   <table class="table table-sm table-condensed small"
-       tal:define="col1 python:view.split_categories_qc(primarymodel)[0];
-                   col2 python:view.split_categories_qc(primarymodel)[1];">
+       tal:define="col1 python:view.split_categories_qc(model)[0];
+                   col2 python:view.split_categories_qc(model)[1];">
   <colgroup>
     <col style="width:20%"/>
     <col style="width:10%"/>
@@ -510,9 +492,9 @@
             <tr/>
             <tr tal:repeat="qc python: col1[row]['analyses']">
                   <td class="" tal:content="python: qc.getReferenceDefinition().Title() if qc.getReferenceDefinition() else ''"/>
-                  <td class="" tal:content="structure python:primarymodel.get_formatted_result(qc)"></td>
-                  <td tal:content="structure python:primarymodel.get_formatted_unit(qc)"></td>
-                  <td tal:content="structure python:primarymodel.get_formatted_specs(qc)"></td>
+                  <td class="" tal:content="structure python:model.get_formatted_result(qc)"></td>
+                  <td tal:content="structure python:model.get_formatted_unit(qc)"></td>
+                  <td tal:content="structure python:model.get_formatted_specs(qc)"></td>
             </tr>
           </tal:row>
         </table>
@@ -536,9 +518,9 @@
             <tr/>
             <tr tal:repeat="qc python: col2[row]['analyses']">
                   <td class="" tal:content="python: qc.getReferenceDefinition().Title() if qc.getReferenceDefinition() else ''"/>
-                  <td class="" tal:content="structure python:primarymodel.get_formatted_result(qc)"></td>
-                  <td tal:content="structure python:primarymodel.get_formatted_unit(qc)"></td>
-                  <td tal:content="structure python:primarymodel.get_formatted_specs(qc)"></td>
+                  <td class="" tal:content="structure python:model.get_formatted_result(qc)"></td>
+                  <td tal:content="structure python:model.get_formatted_unit(qc)"></td>
+                  <td tal:content="structure python:model.get_formatted_specs(qc)"></td>
             </tr>
           </tal:row>
         </table>
@@ -552,7 +534,6 @@
 
   <!--  RESULTS INTERPRETATIONS -->
   <tal:render condition="python:True">
-    <tal:model repeat="model collection">
       <div class="row section-resultsinterpretation no-gutters"
            tal:define="ris python:model.get_resultsinterpretation();
                        has_ri python:any(map(lambda r: r.get('richtext'), ris));">
@@ -564,7 +545,6 @@
           </tal:ri>
         </div>
       </div>
-    </tal:model>
   </tal:render>
 
 
@@ -609,5 +589,4 @@
       <div tal:replace="structure footer"/>
     </div>
   </tal:render>
- </tal:same_verifier>
 </tal:report>
