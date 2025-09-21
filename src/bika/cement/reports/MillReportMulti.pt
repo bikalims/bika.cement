@@ -183,7 +183,6 @@
                       <div tal:content="primarymodel/MixMaterial/title|nothing"/>
                   </td>
                 </tr>
-                <!-- Physical Address -->
                 <tr>
                   <td class="label" i18n:translate="">Type/Class</td>
                   <td class="field">
@@ -220,7 +219,6 @@
                       <span tal:content="python:view.get_date_analysed(primarymodel)[0] or ''"/>
                   </td>
                 </tr>
-                <!-- Physical Address -->
                 <tr>
                   <td class="label" i18n:translate="">Date Issued</td>
                   <td class="field" tal:content="python:view.to_localized_date(primarymodel.DatePublished or view.timestamp)"></td>
@@ -262,12 +260,14 @@
                   <td class="label" i18n:translate="">Address</td>
                   <td class="field">
                       <div>
-                          <span tal:content="primarymodel/Supplier/PhysicalAddress/address|nothing"
-                          />,<span tal:content="primarymodel/Supplier/PhysicalAddress/city|nothing"/>
+                          <span tal:content="primarymodel/Supplier/PhysicalAddress/address|nothing"/>
+                          <span tal:condition="primarymodel/Supplier/PhysicalAddress/address">,</span>
+                          <span tal:content="primarymodel/Supplier/PhysicalAddress/city|nothing"/>
                       </div>
                       <div>
-                          <span tal:content="primarymodel/Supplier/PhysicalAddress/country|nothing"
-                          />,<span tal:content="primarymodel/Supplier/PhysicalAddress/zip|nothing"/>
+                          <span tal:content="primarymodel/Supplier/PhysicalAddress/country|nothing"/>
+                          <span tal:condition="primarymodel/Supplier/PhysicalAddress/country">,</span>
+                          <span tal:content="primarymodel/Supplier/PhysicalAddress/zip|nothing"/>
                       <div>
                   </td>
                 </tr>
@@ -357,6 +357,9 @@
       </div>
     </div>
   </tal:render>
+  <tal:render condition="python:True">
+    <div class="row section-info no-gutters">
+      <div class="w-100">
   <table class="table table-sm table-condensed small"
        tal:define="col1 python:view.split_categories(collection)[0];
                    col2 python:view.split_categories(collection)[1];">
@@ -374,8 +377,7 @@
       <tr>
           <td colspan="8" class="text-center" style="background-color:#FF0000">
             <div class="text-center" style="background-color:red; color: white">
-                <span tal:content="spec/title|nothing"/>
-                Test Results
+                <span tal:content="spec/title|nothing"/> Test Results
             </div>
           </td>
       </tr>
@@ -394,7 +396,7 @@
   <tbody>
     <tr>
       <!-- Left column -->
-      <td colspan="4">
+      <td colspan="4" tal:condition="python: col1">
         <table class="table table-sm table-condensed small">
           <colgroup>
             <col style="width:40%"/>
@@ -420,7 +422,7 @@
       </td>
 
       <!-- Right column -->
-      <td colspan="4">
+      <td colspan="4" tal:condition="python: col2">
         <table class="table table-sm table-condensed small">
           <colgroup>
             <col style="width:40%"/>
@@ -448,6 +450,12 @@
     </tr>
   </tbody>
 </table>
+  </div>
+  </div>
+  </tal:render>
+  <tal:render condition="python:True">
+    <div class="row section-info no-gutters">
+      <div class="w-100">
   <table class="table table-sm table-condensed small"
        tal:define="col1 python:view.split_categories_qc(primarymodel)[0];
                    col2 python:view.split_categories_qc(primarymodel)[1];">
@@ -485,7 +493,7 @@
   <tbody>
     <tr>
       <!-- Left column -->
-      <td colspan="4">
+      <td colspan="4" tal:condition="python: col1">
         <table class="table table-sm table-condensed small">
           <colgroup>
             <col style="width:40%"/>
@@ -501,20 +509,17 @@
                <td class="no-border"></td>
             <tr/>
             <tr tal:repeat="qc python: col1[row]['analyses']">
-              <tal:qc_data condition= "python: view.is_unique_qc(qc)"
-                        define="qc_data python:view.duplicate_analysis_data(qc)">
                   <td class="" tal:content="python: qc.getReferenceDefinition().Title() if qc.getReferenceDefinition() else ''"/>
-                  <td class="" tal:content="python:qc.Result"/>
-                  <td tal:content="python:qc.getUncertainty()"/>
-                  <td tal:content="python:view.within_uncertainty(qc.Result,qc_data[1],qc_data[2])"/>
-              </tal:qc_data>
+                  <td class="" tal:content="structure python:primarymodel.get_formatted_result(qc)"></td>
+                  <td tal:content="structure python:primarymodel.get_formatted_unit(qc)"></td>
+                  <td tal:content="structure python:primarymodel.get_formatted_specs(qc)"></td>
             </tr>
           </tal:row>
         </table>
       </td>
 
       <!-- Right column -->
-      <td colspan="4">
+      <td colspan="4" tal:condition="python: col2">
         <table class="table table-sm table-condensed small">
           <colgroup>
             <col style="width:40%"/>
@@ -524,19 +529,16 @@
           </colgroup>
           <tal:row repeat="row python:range(len(col2))">
             <tr>
-               <td class="no-border category font-weight-bold text-nowrap" tal:content="python: col1[row]['title']"></td>
+               <td class="no-border category font-weight-bold text-nowrap" tal:content="python: col2[row]['title']"></td>
                <td class="no-border"></td>
                <td class="no-border"></td>
                <td class="no-border"></td>
             <tr/>
-            <tr tal:repeat="qc python: col1[row]['analyses']">
-              <tal:qc_data condition= "python: view.is_unique_qc(qc)"
-                        define="qc_data python:view.qc_analyses_data(qc)">
+            <tr tal:repeat="qc python: col2[row]['analyses']">
                   <td class="" tal:content="python: qc.getReferenceDefinition().Title() if qc.getReferenceDefinition() else ''"/>
-                  <td class="" tal:content="python:qc.Result"/>
-                  <td tal:content="python:qc.getUncertainty()"/>
-                  <td tal:content="python:view.within_uncertainty(qc.Result,qc_data[1],qc_data[2])"/>
-              </tal:qc_data>
+                  <td class="" tal:content="structure python:primarymodel.get_formatted_result(qc)"></td>
+                  <td tal:content="structure python:primarymodel.get_formatted_unit(qc)"></td>
+                  <td tal:content="structure python:primarymodel.get_formatted_specs(qc)"></td>
             </tr>
           </tal:row>
         </table>
@@ -544,6 +546,9 @@
     </tr>
   </tbody>
 </table>
+  </div>
+  </div>
+  </tal:render>
 
   <!--  RESULTS INTERPRETATIONS -->
   <tal:render condition="python:True">
@@ -565,42 +570,33 @@
 
   <!--  SIGNATURES -->
   <tal:render condition="python:True">
-    <tal:responsibles define="managers python:view.uniquify_items(reduce(lambda a1, a2: a1+a2, map(lambda m: m.managers, collection)))">
+    <tal:responsibles define="supervisor laboratory/getSupervisor">
       <div class="row section-signatures no-gutters">
-        <div class="w-100">
-          <h1 i18n:translate="">Managers Responsible</h1>
-          <table class="table table-sm table-condensed">
+          <table class="table table-sm table-condensed" style="width:50%">
             <tr>
-              <tal:manager repeat="manager managers">
-                <td style="border:none">
-                  <div>
-                    <img tal:condition="manager/getSignature"
-                         tal:attributes="src string:${manager/absolute_url}/Signature" style="height:75px"/>
-                  </div>
+                <td>
                   <div class="font-weight-bold">
-                    <span tal:content="manager/getSalutation"></span>
-                    <span tal:condition="manager/getSalutation">&nbsp;</span>
-                    <span tal:content="manager/getFullname"></span>
-                  </div>
-                  <div>
-                    <span tal:content="manager/JobTitle"></span>
-                  </div>
-                  <div>
-                    <span tal:content="manager/DefaultDepartment/title|nothing"></span>
+                    <span tal:content="supervisor/getSalutation"></span>
+                    <span tal:condition="supervisor/getSalutation">&nbsp;</span>
+                    <span tal:content="supervisor/getFullname"></span>
                   </div>
                 </td>
-              </tal:manager>
-              <tal:reporter define="reporter python:view.current_user" condition="reporter">
-                <td style="border:none">
-                  <div class="label" i18n:translate="">Published by</div>
+                <td>
                   <div>
-                    <span tal:content="reporter/fullname|reporter/username"></span>
+                    <span tal:content="supervisor/JobTitle"></span>
                   </div>
                 </td>
-              </tal:reporter>
+            </tr>
+            <tr>
+                <td>
+                  <div>
+                    <img tal:condition="supervisor/getSignature"
+                         tal:attributes="src string:${supervisor/absolute_url}/Signature" style="height:30px"/>
+                  </div>
+                </td>
+                <td></td>
             </tr>
           </table>
-        </div>
       </div>
     </tal:responsibles>
   </tal:render>
