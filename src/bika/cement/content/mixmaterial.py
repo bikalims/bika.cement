@@ -84,6 +84,7 @@ class IMixMaterialSchema(model.Schema):
         multi_valued=False,
         required=False,
     )
+    directives.order_after(material_type='description')
 
     directives.widget(
         "brand",
