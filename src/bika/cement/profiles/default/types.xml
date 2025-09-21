@@ -34,4 +34,11 @@
   <!-- Mix Material Amount -->
   <object name="MixMaterialAmount" meta_type="Dexterity FTI" />
 
+  <!-- Brands -->
+  <object name="Brands" meta_type="Dexterity FTI" />
+  <object name="Brand" meta_type="Dexterity FTI" />
+
+  <!-- Supplier Location -->
+  <object name="SupplierLocation" meta_type="Dexterity FTI" />
+
 </object>

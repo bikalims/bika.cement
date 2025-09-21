@@ -23,6 +23,8 @@ from bika.cement import PRODUCT_NAME
 from bika.cement import PROFILE_ID
 from bika.cement import logger
 from bika.cement.setuphandlers import setup_catalogs
+from bika.cement.setuphandlers import add_location_to_supplier
+from bika.cement.setuphandlers import setup_id_formatting
 
 from senaite.core.catalog import SETUP_CATALOG
 from senaite.core.upgrade import upgradestep
@@ -61,3 +63,13 @@ def reindex_mix_materials(tool):
         logger.info("Reindex mix material: %r" % obj)
         obj.reindexObject()
     logger.info("Reindexing mix materials [DONE]")
+
+
+def add_brands(tool):
+    portal = tool.aq_inner.aq_parent
+    setup = portal.portal_setup
+    # -------- ADD YOUR STUFF BELOW --------
+
+    setup.runImportStepFromProfile(PROFILE_ID, "typeinfo")
+    setup_id_formatting(portal)
+    add_location_to_supplier(portal)

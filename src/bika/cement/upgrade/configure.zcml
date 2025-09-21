@@ -19,4 +19,13 @@
        handler="bika.cement.upgrade.v01_00_001.reindex_mix_materials"
        profile="bika.cement:default"/>
 
+    <genericsetup:upgradeStep
+       title="Upgrade to BIKA.CEMENT 1.0.2"
+       description="Add content type Brand and Supplier Locations"
+       source="1002"
+       destination="1.0.2"
+       handler="bika.cement.upgrade.v01_00_001.add_brands"
+       profile="bika.cement:default"/>
+
+
 </configure>

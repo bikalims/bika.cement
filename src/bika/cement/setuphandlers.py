@@ -21,6 +21,25 @@ COLUMNS = [
     (SETUP_CATALOG, "sort_key"),
 ]
 
+ID_FORMATTING = [
+    {
+        "portal_type": "Brand",
+        "form": "BR{seq:06d}",
+        "prefix": "brand",
+        "sequence_type": "generated",
+        "counter_type": "",
+        "split_length": 1,
+    },
+    {
+        "portal_type": "SupplierLocation",
+        "form": "SL{seq:06d}",
+        "prefix": "supplierlocation",
+        "sequence_type": "generated",
+        "counter_type": "",
+        "split_length": 1,
+    }
+]
+
 
 @implementer(INonInstallable)
 class HiddenProfiles(object):
@@ -41,6 +60,8 @@ def post_install(context):
     add_dexterity_setup_items(portal)
     setup_catalogs(portal)
     add_mix_tab_to_batch(portal)
+    setup_id_formatting(portal)
+    add_location_to_supplier(portal)
 
 
 def uninstall(context):
@@ -61,9 +82,39 @@ def add_dexterity_setup_items(portal):
         ("curingmethods", "Curing Methods", "CuringMethods"),
         ("mixtypes", "Mix Types", "MixTypes"),
         ("mixmaterials", "Mix Materials", "MixMaterials"),
+        ("brands", "Brands", "Brands"),
     ]
     setup = api.get_senaite_setup()
     add_dexterity_items(setup, items)
+
+
+def setup_id_formatting(portal, format_definition=None):
+    """Setup default ID formatting"""
+    if not format_definition:
+        logger.info("Setting up ID formatting ...")
+        for formatting in ID_FORMATTING:
+            setup_id_formatting(portal, format_definition=formatting)
+        logger.info("Setting up ID formatting [DONE]")
+        return
+
+    bs = portal.bika_setup
+    p_type = format_definition.get("portal_type", None)
+    if not p_type:
+        return
+
+    form = format_definition.get("form", "")
+    if not form:
+        logger.info("Param 'form' for portal type {} not set [SKIP")
+        return
+
+    logger.info("Applying format '{}' for {}".format(form, p_type))
+    ids = list()
+    for record in bs.getIDFormatting():
+        if record.get("portal_type", "") == p_type:
+            continue
+        ids.append(record)
+    ids.append(format_definition)
+    bs.setIDFormatting(ids)
 
 
 def setup_catalogs(portal):
@@ -98,3 +149,32 @@ def add_mix_tab_to_batch(portal):
             allowed_types.append("MixDesign")
             fti.allowed_content_types = tuple(allowed_types)
             logger.info("Add MixDesign on Batches allowed types")
+
+
+def add_location_to_supplier(portal):
+    pt = api.get_tool("portal_types", context=portal)
+    fti = pt.get("Supplier")
+    # Added location listing
+    actions = fti.listActions()
+    action_ids = [a.id for a in actions]
+    if "supplierlocations" not in action_ids:
+        fti.addAction(
+            id="supplierlocations",
+            name="Locations",
+            permission="View",
+            category="object",
+            visible=True,
+            icon_expr="string:${portal_url}/images/supplierlocation.png",
+            action="string:${object_url}/supplierlocations",
+            condition="",
+            link_target="",
+        )
+
+    # add to allowed types
+    allowed_types = fti.allowed_content_types
+    if isinstance(allowed_types, tuple) or isinstance(allowed_types, list):
+        allowed_types = list(allowed_types)
+        if "SupplierLocation" not in allowed_types:
+            allowed_types.append("SupplierLocation")
+            fti.allowed_content_types = tuple(allowed_types)
+            logger.info("Add SupplierLocation on Supplier allowed types")

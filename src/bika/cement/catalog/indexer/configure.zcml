@@ -1,6 +1,6 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
-    i18n_domain="senaite.core">
+    i18n_domain="bika.cement">
 
   <!-- MixMaterial Indexer -->
   <adapter name="material_class_sort_key" factory=".mixmaterial.material_class_sort_key"/>
