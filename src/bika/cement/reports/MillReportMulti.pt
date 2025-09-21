@@ -221,7 +221,7 @@
                 </tr>
                 <tr>
                   <td class="label" i18n:translate="">Date Issued</td>
-                  <td class="field" tal:content="python:view.to_localized_date(primarymodel.DatePublished or view.timestamp)"></td>
+                  <td class="field" tal:content="python:view.to_custom_date(primarymodel.DatePublished or view.timestamp)"></td>
                 </tr>
               </table>
           </td>
