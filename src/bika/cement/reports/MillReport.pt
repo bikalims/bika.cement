@@ -556,14 +556,14 @@
             <tr>
                 <td>
                   <div class="font-weight-bold">
-                    <span tal:content="supervisor/getSalutation"></span>
-                    <span tal:condition="supervisor/getSalutation">&nbsp;</span>
-                    <span tal:content="supervisor/getFullname"></span>
+                    <span tal:content="supervisor/getSalutation|nothing"></span>
+                    <span tal:condition="supervisor/getSalutation|nothing">&nbsp;</span>
+                    <span tal:content="supervisor/getFullname|nothing"></span>
                   </div>
                 </td>
                 <td>
                   <div>
-                    <span tal:content="supervisor/JobTitle"></span>
+                    <span tal:content="supervisor/JobTitle|nothing"></span>
                   </div>
                 </td>
             </tr>
