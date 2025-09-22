@@ -570,7 +570,7 @@
             <tr>
                 <td>
                   <div>
-                    <img tal:condition="supervisor/getSignature"
+                    <img tal:condition="supervisor/getSignature|nothing"
                          tal:attributes="src string:${supervisor/absolute_url}/Signature" style="height:30px"/>
                   </div>
                 </td>
