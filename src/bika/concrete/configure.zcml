@@ -22,7 +22,7 @@
 
   <genericsetup:registerProfile
       name="default"
-      title="BIKA CEMENT"
+      title="BIKA CONCRETE"
       directory="profiles/default"
       description="Installs the bika.concrete add-on."
       provides="Products.GenericSetup.interfaces.EXTENSION"

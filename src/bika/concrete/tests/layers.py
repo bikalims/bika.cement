@@ -59,4 +59,4 @@ class BaseLayer(PloneSandboxLayer):
 
 BASE_LAYER_FIXTURE = BaseLayer()
 BASE_TESTING = FunctionalTesting(
-    bases=(BASE_LAYER_FIXTURE,), name="BIKA.CEMENT:BaseTesting")
+    bases=(BASE_LAYER_FIXTURE,), name="BIKA.CONCRETE:BaseTesting")

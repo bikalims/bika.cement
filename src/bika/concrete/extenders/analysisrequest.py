@@ -12,7 +12,7 @@ from zope.interface import implements
 
 from bika.concrete import is_installed
 from bika.concrete.config import _
-from bika.concrete.interfaces import IBikaCementLayer
+from bika.concrete.interfaces import IBikaConcreteLayer
 from bika.extras.extenders.fields import ExtDateTimeField
 from bika.lims.interfaces import IAnalysisRequest
 from senaite.core.browser.widgets import DateTimeWidget
@@ -202,7 +202,7 @@ lot_number_field = ExtStringField(
 @implementer(ISchemaExtender, IBrowserLayerAwareExtender)
 class AnalysisRequestSchemaExtender(object):
     adapts(IAnalysisRequest)
-    layer = IBikaCementLayer
+    layer = IBikaConcreteLayer
 
     fields = [
         sample_name_field,
@@ -229,7 +229,7 @@ class AnalysisRequestSchemaExtender(object):
 class AnalysisRequestSchemaModifier(object):
     adapts(IAnalysisRequest)
     implements(ISchemaModifier)
-    layer = IBikaCementLayer
+    layer = IBikaConcreteLayer
 
     def __init__(self, context):
         self.context = context

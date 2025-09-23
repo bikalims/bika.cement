@@ -2,6 +2,6 @@
 <layers>
   <layer
       name="bika.concrete"
-      interface="bika.concrete.interfaces.IBikaCementLayer"
+      interface="bika.concrete.interfaces.IBikaConcreteLayer"
       />
 </layers>

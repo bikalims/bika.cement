@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 #
-# This file is part of BIKA.CEMENT
+# This file is part of BIKA.CONCRETE
 #
 # Copyright 2025 by it's authors.
 
 import logging
 from bika.lims.api import get_request
-from bika.concrete.interfaces import IBikaCementLayer
+from bika.concrete.interfaces import IBikaConcreteLayer
 from zope.i18nmessageid import MessageFactory
 
 PRODUCT_NAME = "bika.concrete"
@@ -18,10 +18,10 @@ _ = MessageFactory(PRODUCT_NAME)
 def initialize(context):
     """Initializer called when used as a Zope 2 product."""
 
-    logger.info("*** Initializing BIKA.CEMENT ***")
+    logger.info("*** Initializing BIKA.CONCRETE ***")
 
 
 def is_installed():
     """Returns whether the product is installed or not"""
     request = get_request()
-    return IBikaCementLayer.providedBy(request)
+    return IBikaConcreteLayer.providedBy(request)

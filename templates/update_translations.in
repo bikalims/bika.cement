@@ -2,8 +2,8 @@
 
 BASE=${buildout:directory}
 I18N=$BASE/bin/i18ndude
-SRC=$BASE/src/bika/cement
-SRC_BIKA=$BASE/src/bika/cement
+SRC=$BASE/src/bika/concrete
+SRC_BIKA=$BASE/src/bika/concrete
 LOCALES=$SRC/locales
 EXCLUDE="build *.html"
 

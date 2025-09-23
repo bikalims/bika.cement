@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# This file is part of BIKA.CEMENT
+# This file is part of BIKA.CONCRETE
 #
 # Copyright 2018 by it's authors.
 
@@ -18,7 +18,7 @@ from plone.app.testing import login
 from plone.app.testing import setRoles
 
 
-TITLE = "BIKA CEMENT NEW CONTENT TYPE TESTS"
+TITLE = "BIKA CONCRETE NEW CONTENT TYPE TESTS"
 
 
 class TestContentTypes(SimpleTestCase):

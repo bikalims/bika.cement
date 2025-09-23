@@ -11,7 +11,7 @@
       name="view"
       class=".materialtypes.MaterialTypesView"
       permission="senaite.core.permissions.ManageBika"
-      layer="bika.concrete.interfaces.IBikaCementLayer"/>
+      layer="bika.concrete.interfaces.IBikaConcreteLayer"/>
       
   <!-- Curing Method Folder -->
   <browser:page
@@ -19,7 +19,7 @@
       name="view"
       class=".curingmethods.CuringMethodsView"
       permission="senaite.core.permissions.ManageBika"
-      layer="bika.concrete.interfaces.IBikaCementLayer"/>
+      layer="bika.concrete.interfaces.IBikaConcreteLayer"/>
 
   <!-- Material Class Folder -->
   <browser:page
@@ -27,7 +27,7 @@
       name="view"
       class=".materialclasses.MaterialClassesView"
       permission="senaite.core.permissions.ManageBika"
-      layer="bika.concrete.interfaces.IBikaCementLayer"/>
+      layer="bika.concrete.interfaces.IBikaConcreteLayer"/>
 
   <!-- Mix Type Folder -->
   <browser:page
@@ -35,7 +35,7 @@
       name="view"
       class=".mixtypes.MixTypesView"
       permission="senaite.core.permissions.ManageBika"
-      layer="bika.concrete.interfaces.IBikaCementLayer"/>
+      layer="bika.concrete.interfaces.IBikaConcreteLayer"/>
 
   <!-- Mix Material Folder -->
   <browser:page
@@ -43,7 +43,7 @@
       name="view"
       class=".mixmaterials.MixMaterialsView"
       permission="senaite.core.permissions.ManageBika"
-      layer="bika.concrete.interfaces.IBikaCementLayer"/>
+      layer="bika.concrete.interfaces.IBikaConcreteLayer"/>
 
   <!-- Brands Folder -->
   <browser:page
@@ -51,7 +51,7 @@
       name="view"
       class=".brands.BrandsView"
       permission="senaite.core.permissions.ManageBika"
-      layer="bika.concrete.interfaces.IBikaCementLayer"/>
+      layer="bika.concrete.interfaces.IBikaConcreteLayer"/>
 
   <!-- Supplier Folder -->
   <browser:page
@@ -59,6 +59,6 @@
       name="supplierlocations"
       class=".supplierlocations.SupplierLocationsView"
       permission="senaite.core.permissions.ManageBika"
-      layer="bika.concrete.interfaces.IBikaCementLayer"/>
+      layer="bika.concrete.interfaces.IBikaConcreteLayer"/>
 
 </configure>

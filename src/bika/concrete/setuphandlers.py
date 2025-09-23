@@ -53,7 +53,7 @@ class HiddenProfiles(object):
 def post_install(context):
     """Post install script"""
     # Do something at the end of the installation of this package.
-    logger.info("BIKA.CEMENT post install handler [BEGIN]")
+    logger.info("BIKA.CONCRETE post install handler [BEGIN]")
     profile_id = PROFILE_ID
     context = context._getImportContext(profile_id)
     portal = context.getSite()

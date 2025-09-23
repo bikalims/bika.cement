@@ -8,7 +8,7 @@
       name="mix"
       class="bika.concrete.browser.batch.mix.BatchMixView"
       permission="senaite.core.permissions.ManageAnalysisRequests"
-      layer="bika.concrete.interfaces.IBikaCementLayer"
+      layer="bika.concrete.interfaces.IBikaConcreteLayer"
     />
 
   <!-- Table Lab Analyses -->
@@ -17,7 +17,7 @@
       name="table_mix_material"
       class=".mix.MixMaterialTable"
       permission="senaite.core.permissions.ManageAnalysisRequests"
-      layer="bika.concrete.interfaces.IBikaCementLayer"
+      layer="bika.concrete.interfaces.IBikaConcreteLayer"
       />
 
   <!-- Sample section viewlet: lab analyses lisiting -->

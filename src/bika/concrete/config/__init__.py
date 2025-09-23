@@ -2,7 +2,7 @@
 
 from bika.lims.api import get_request
 import logging
-from bika.concrete.interfaces import IBikaCementLayer
+from bika.concrete.interfaces import IBikaConcreteLayer
 from zope.i18nmessageid import MessageFactory
 
 PRODUCT_NAME = "bika.concrete"
@@ -14,7 +14,7 @@ _ = MessageFactory(PRODUCT_NAME)
 def is_installed():
     """Returns whether the product is installed or not"""
     request = get_request()
-    return IBikaCementLayer.providedBy(request)
+    return IBikaConcreteLayer.providedBy(request)
 
 
 def check_installed(default_return):

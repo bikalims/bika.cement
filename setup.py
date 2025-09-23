@@ -15,7 +15,7 @@ long_description = '\n\n'.join([
 setup(
     name='bika.concrete',
     version='1.0.2',
-    description="BIKA CEMENT",
+    description="BIKA CONCRETE",
     long_description=long_description,
     # Get more from https://pypi.org/classifiers/
     classifiers=[

@@ -1,4 +1,4 @@
-BIKA CEMENT CONCRETE MIX
+BIKA CONCRETE CONCRETE MIX
 ========================
 
 Import and export instrument adapters for SENAITE

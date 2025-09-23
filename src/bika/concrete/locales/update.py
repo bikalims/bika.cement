@@ -8,7 +8,7 @@ import subprocess
 domain = 'bika.concrete'
 os.chdir(pkg_resources.resource_filename(domain, ''))
 os.chdir('../../../')
-target_path = 'src/bika/cement/'
+target_path = 'src/bika/concrete/'
 locale_path = target_path + 'locales/'
 i18ndude = './bin/i18ndude'
 
