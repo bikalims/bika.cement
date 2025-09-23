@@ -1,4 +1,4 @@
-name: build bika.cement
+name: build bika.concrete
 on:
   - push
   - pull_request
@@ -31,4 +31,4 @@ jobs:
           bin/flake8 --config ci_flake8.cfg src/bika/
           #      - name: test
           #        run: |
-          #          bin/test -s bika.cement.tests
+          #          bin/test -s bika.concrete.tests

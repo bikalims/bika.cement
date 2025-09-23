@@ -1,0 +1,10 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    i18n_domain="bika.concrete">
+
+  <!-- MixMaterial Indexer -->
+  <adapter name="material_class_sort_key" factory=".mixmaterial.material_class_sort_key"/>
+  <!-- MixMaterialAmount Indexer -->
+  <adapter name="material_amount_class_sort_key" factory=".mixmaterialamount.material_amount_class_sort_key"/>
+
+</configure>

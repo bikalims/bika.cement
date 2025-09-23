@@ -42,7 +42,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'bika.cement'
+project = u'bika.concrete'
 copyright = u'Lunga Baliwe (lunga001@gmail.com)'
 author = u'Lunga Baliwe (lunga001@gmail.com)'
 

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Installer for the bika.cement package."""
+"""Installer for the bika.concrete package."""
 
 from setuptools import find_packages
 from setuptools import setup
@@ -13,7 +13,7 @@ long_description = '\n\n'.join([
 
 
 setup(
-    name='bika.cement',
+    name='bika.concrete',
     version='1.0.2',
     description="BIKA CEMENT",
     long_description=long_description,
@@ -32,12 +32,12 @@ setup(
     keywords='Python Plone CMS',
     author='Lunga Baliwe',
     author_email='lunga001@gmail.com',
-    url='https://github.com/collective/bika.cement',
+    url='https://github.com/collective/bika.concrete',
     project_urls={
-        'PyPI': 'https://pypi.python.org/pypi/bika.cement',
-        'Source': 'https://github.com/collective/bika.cement',
-        'Tracker': 'https://github.com/collective/bika.cement/issues',
-        # 'Documentation': 'https://bika.cement.readthedocs.io/en/latest/',
+        'PyPI': 'https://pypi.python.org/pypi/bika.concrete',
+        'Source': 'https://github.com/collective/bika.concrete',
+        'Tracker': 'https://github.com/collective/bika.concrete/issues',
+        # 'Documentation': 'https://bika.concrete.readthedocs.io/en/latest/',
     },
     license='GPL version 2',
     packages=find_packages('src', exclude=['ez_setup']),
@@ -69,6 +69,6 @@ setup(
     [z3c.autoinclude.plugin]
     target = plone
     [console_scripts]
-    update_locale = bika.cement.locales.update:update_locale
+    update_locale = bika.concrete.locales.update:update_locale
     """,
 )

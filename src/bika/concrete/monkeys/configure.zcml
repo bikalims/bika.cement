@@ -1,0 +1,39 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:monkey="http://namespaces.plone.org/monkey"
+    i18n_domain="bika.concrete">
+
+  <!-- Mix Design -->
+  <monkey:patch
+    description="Gets Mix Design"
+    class="bika.lims.content.batch.Batch"
+    original="get_mix_design"
+    ignoreOriginal="True"
+    replacement=".batch.get_mix_design" />
+
+  <!-- Sample -->
+  <monkey:patch
+    description="Include Location get_objects_info"
+    class="bika.lims.browser.analysisrequest.add2.AnalysisRequestAddView"
+    original="get_mixmaterial_info"
+    ignoreOriginal="True"
+    replacement=".analysisrequest.get_mixmaterial_info" />
+
+  <!-- Sample -->
+  <monkey:patch
+    description="Include Location get_objects_info"
+    class="bika.lims.browser.analysisrequest.add2.AnalysisRequestAddView"
+    original="get_supplier_queries"
+    ignoreOriginal="True"
+    replacement=".analysisrequest.get_supplier_queries" />
+
+  <monkey:patch
+    description="Get Flush Settings"
+    class="bika.lims.browser.analysisrequest.add2.ajaxAnalysisRequestAddView"
+    original="ajax_get_flush_settings"
+    ignoreOriginal="True"
+    replacement=".analysisrequest.ajax_get_flush_settings"
+    order="1010" />
+
+
+</configure>

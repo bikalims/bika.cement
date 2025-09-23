@@ -1,0 +1,18 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    i18n_domain="bika.concrete">
+
+  <include package=".listingview" />
+  <include package=".controlpanel" />
+  <include package=".batch" />
+
+  <!-- Publish static files -->
+  <plone:static
+      type="plone"
+      name="bika.concrete.static"
+      directory="static"
+      />
+
+</configure>

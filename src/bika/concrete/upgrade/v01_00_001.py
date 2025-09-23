@@ -1,0 +1,75 @@
+# -*- coding: utf-8 -*-
+#
+# This file is part of BIKA CEMENT
+#
+# SENAITE.QUEUE is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation, version 2.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+# details.
+#
+# You should have received a copy of the GNU General Public License along with
+# this program; if not, write to the Free Software Foundation, Inc., 51
+# Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# Copyright 2019-2021 by it's authors.
+# Some rights reserved, see README and LICENSE.
+
+from bika.lims import api
+from bika.concrete import PRODUCT_NAME
+from bika.concrete import PROFILE_ID
+from bika.concrete import logger
+from bika.concrete.setuphandlers import setup_catalogs
+from bika.concrete.setuphandlers import add_location_to_supplier
+from bika.concrete.setuphandlers import setup_id_formatting
+
+from senaite.core.catalog import SETUP_CATALOG
+from senaite.core.upgrade import upgradestep
+
+version = "1.0.2"
+
+
+@upgradestep(PRODUCT_NAME, version)
+def upgrade(tool):
+    portal = tool.aq_inner.aq_parent
+    setup = portal.portal_setup
+    ver_from = "1000"
+
+    logger.info(
+        "Upgrading {0}: {1} -> {2}".format(PRODUCT_NAME, ver_from, version)
+    )
+
+    # -------- ADD YOUR STUFF BELOW --------
+
+    setup.runImportStepFromProfile(PROFILE_ID, "typeinfo")
+
+    logger.info("{0} upgraded to version {1}".format(PRODUCT_NAME, version))
+    return True
+
+
+def reindex_mix_materials(tool):
+    logger.info("Reindexing mix material ...")
+    setup_catalogs(api.get_portal())
+    cat = api.get_tool(SETUP_CATALOG)
+    for brain in cat(portal_type="MixMaterial"):
+        obj = brain.getObject()
+        logger.info("Reindex mix material: %r" % obj)
+        obj.reindexObject()
+    for brain in cat(portal_type="MixMaterialAmount"):
+        obj = brain.getObject()
+        logger.info("Reindex mix material: %r" % obj)
+        obj.reindexObject()
+    logger.info("Reindexing mix materials [DONE]")
+
+
+def add_brands(tool):
+    portal = tool.aq_inner.aq_parent
+    setup = portal.portal_setup
+    # -------- ADD YOUR STUFF BELOW --------
+
+    setup.runImportStepFromProfile(PROFILE_ID, "typeinfo")
+    setup_id_formatting(portal)
+    add_location_to_supplier(portal)

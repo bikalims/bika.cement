@@ -1,4 +1,4 @@
-bika.cement Copyright 2024, Lunga Baliwe
+bika.concrete Copyright 2024, Lunga Baliwe
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License version 2

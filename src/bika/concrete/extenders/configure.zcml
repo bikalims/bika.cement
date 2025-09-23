@@ -1,0 +1,18 @@
+<configure xmlns:browser="http://namespaces.zope.org/browser"
+           xmlns="http://namespaces.zope.org/zope"
+           i18n_domain="bika.concrete">
+
+    <include package="archetypes.schemaextender"/>
+
+    <adapter name='bika.concrete.analysisrequest'
+             provides="archetypes.schemaextender.interfaces.ISchemaExtender"
+             factory=".analysisrequest.AnalysisRequestSchemaExtender"/>
+    <adapter name='bika.concrete.analysisrequest.schemamodifier'
+             provides="archetypes.schemaextender.interfaces.ISchemaModifier"
+             factory=".analysisrequest.AnalysisRequestSchemaModifier" />
+
+    <adapter name="bika.concrete.batch"
+             provides="archetypes.schemaextender.interfaces.ISchemaExtender"
+             factory=".batch.BatchSchemaExtender"/>
+
+</configure>

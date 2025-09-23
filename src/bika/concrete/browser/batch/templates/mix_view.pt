@@ -1,0 +1,157 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="bika.concrete">
+
+<head>< i18n:translate=""
+        tal:content="Mix View"/>
+</head>
+
+
+<body>
+ <metal:content-title fill-slot="content-title">
+   <h1 tal:define="mix_design python:view.get_mix_design() or None" tal:condition="mix_design">
+     <!-- Title -->
+     <img tal:attributes="src string:++resource++senaite.sampleimporter.static/img/sampleimport_big.png"/>
+     <span class="documentFirstHeading" tal:content="python: mix_design.title or ''"></span>
+   </h1>
+ </metal:content-title>
+
+ <metal:content-description fill-slot="content-description">
+ </metal:content-description>
+
+ <div metal:fill-slot="content-core" tal:define="mix_design python:view.get_mix_design()">
+   <div class="col-12">
+        <table class="table table-sm table-bordered">
+          <colgroup>
+            <col style="width:25%"/>
+            <col style="width:25%"/>
+            <col style="width:25%"/>
+            <col style="width:25%"/>
+          </colgroup>
+          <tr>
+            <td class="label bg-light" i18n:translate="">Project</td>
+            <td class="field"><div tal:content="mix_design/project|nothing"/></td>
+            <td class="label bg-light" i18n:translate="">Design</td>
+            <td class="field"><div tal:content="mix_design/title|nothing"/></td>
+          </tr>
+          <!-- Contact Name(s) -->
+          <tr>
+            <td class="label bg-light" i18n:translate="">Date</td>
+            <td class="field"><div tal:content="mix_design/date|nothing"/></td>
+            <td class="label bg-light" i18n:translate="">Type</td>
+            <td class="field"><div tal:content="python:mix_design.get_mix_design_type()"/></td>
+          </tr>
+        </table>
+   </div>
+   <!-- -->
+
+   <div class="col-12" tal:define="concrete python:view.get_mix_design_concrete()">
+       <table class="table table-sm table-bordered">
+         <tr>
+           <td class="label bg-light">Design W/CM</td>
+           <td tal:content="concrete/design|nothing"></td>
+           <td class="label bg-light">Total CM</td>
+           <td>
+             <span tal:content="concrete/total_cm|nothing"/>
+             <span tal:condition="concrete/total_cm|nothing"> lb</span>
+           </td>
+           <td class="label bg-light">Replacement</td>
+           <td>
+             <span tal:content="concrete/replacement|nothing"/>
+             <span tal:condition="concrete/replacement|nothing"> %</span>
+           </td>
+         </tr>
+         <tr>
+           <td class="label bg-light">Theoretical Volume</td>
+           <td>
+             <span tal:content="concrete/theoretical_volume|nothing"/>
+             <span tal:condition="concrete/theoretical_volume|nothing"> cu ft</span>
+           </td>
+           <td class="label bg-light">Batch Volume</td>
+           <td>
+             <span tal:content="concrete/batch_volume|nothing"/>
+             <span tal:condition="concrete/batch_volume|nothing"> cu ft</span>
+           </td>
+           <td class="label bg-light">Paste Content</td>
+           <td>
+             <span tal:content="concrete/paste_content|nothing"/>
+             <span tal:condition="concrete/paste_content|nothing"> %</span>
+           </td>
+         </tr>
+         <tr>
+           <td class="label bg-light">Design Air</td>
+           <td>
+             <span tal:content="concrete/design_air|nothing"/>
+             <span tal:condition="concrete/design_air|nothing"> %</span>
+           </td>
+           <td class="label bg-light">Measured Air</td>
+           <td>
+             <span tal:content="concrete/measured_air|nothing"/>
+             <span tal:condition="concrete/measured_air|nothing"> %</span>
+           </td>
+           <td class="label bg-light">Super Air Meter</td>
+           <td><span tal:content="concrete/super_air_meter|nothing"/></td>
+         </tr>
+         <tr>
+           <td class="label bg-light">Lab Temperature</td>
+           <td>
+             <span tal:content="concrete/lab_temperature|nothing"/>
+             <span tal:condition="concrete/lab_temperature|nothing"> °F</span>
+           </td>
+           <td class="label bg-light">Concrete Temp</td>
+           <td>
+             <span tal:content="concrete/concrete_temp|nothing"/>
+             <span tal:condition="concrete/concrete_temp|nothing"> °F</span>
+           </td>
+         </tr>
+         <tr>
+           <td class="label bg-light">Design Slump</td>
+           <td>
+             <span tal:content="concrete/design_slump|nothing"/>
+             <span tal:condition="concrete/design_slump|nothing"> in </span>
+           </td>
+           <td class="label bg-light">Measured Slump</td>
+           <td>
+             <span tal:content="concrete/measured_slump|nothing"/>
+             <span tal:condition="concrete/measured_slump|nothing"> in </span>
+           </td>
+         </tr>
+       </table>
+   </div>
+   <!-- -->
+
+      <!-- Viewlet manager: sample sections -->
+        <div class="col-12" id="sample-sections">
+          <div tal:replace="structure provider:senaite.samplesections"></div>
+        </div>
+   <div class="col-12" tal:define="concrete python:view.get_mix_design_concrete();
+                                   mix_design python:view.get_mix_design()">
+       <table class="sampleheader-table table table-sm table-bordered">
+         <tr>
+           <td class="label bg-light">Truck Vol</td>
+           <td>
+             <span tal:content="concrete/trucked_volume|nothing"/>
+             <span tal:condition="concrete/trucked_volume|nothing"> cu ft</span>
+           </td>
+           <td class="label bg-light">Truck #</td>
+           <td><span tal:content="concrete/trucked_number|nothing"/></td>
+           <td class="label bg-light">Ticket #</td>
+           <td><span tal:content="concrete/ticket_number|nothing"/></td>
+           <td class="label bg-light">Plant #</td>
+           <td><span tal:content="concrete/plant_number|nothing"/></td>
+         </tr>
+         <tr>
+           <td class="label bg-light" colspan="8">Additional info</td>
+         </tr>
+         <tr>
+           <td class="" colspan="8"><span tal:content="mix_design/additional_info|nothing"/></td>
+         </tr>
+       </table>
+   </div>
+   <!-- -->
+
+ </div>
+
+</body>
+</html>

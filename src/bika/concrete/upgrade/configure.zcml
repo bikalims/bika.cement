@@ -1,0 +1,31 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    i18n_domain="bika.concrete">
+
+    <genericsetup:upgradeStep
+       title="Upgrade to BIKA.CEMENT 1.0.1"
+       description="Add Mix content type"
+       source="1000"
+       destination="1001"
+       handler="bika.concrete.upgrade.v01_00_001.upgrade"
+       profile="bika.concrete:default"/>
+
+    <genericsetup:upgradeStep
+       title="Upgrade to BIKA.CEMENT 1.0.2"
+       description="Reindex Mix Class by sortable_title for all Mix Materials"
+       source="1001"
+       destination="1002"
+       handler="bika.concrete.upgrade.v01_00_001.reindex_mix_materials"
+       profile="bika.concrete:default"/>
+
+    <genericsetup:upgradeStep
+       title="Upgrade to BIKA.CEMENT 1.0.2"
+       description="Add content type Brand and Supplier Locations"
+       source="1002"
+       destination="1.0.2"
+       handler="bika.concrete.upgrade.v01_00_001.add_brands"
+       profile="bika.concrete:default"/>
+
+
+</configure>

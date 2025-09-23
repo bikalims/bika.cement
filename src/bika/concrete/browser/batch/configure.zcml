@@ -1,0 +1,32 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    i18n_domain="bika.concrete">
+
+    <browser:page
+      for="bika.lims.interfaces.IBatch"
+      name="mix"
+      class="bika.concrete.browser.batch.mix.BatchMixView"
+      permission="senaite.core.permissions.ManageAnalysisRequests"
+      layer="bika.concrete.interfaces.IBikaCementLayer"
+    />
+
+  <!-- Table Lab Analyses -->
+  <browser:page
+      for="bika.lims.interfaces.IBatch"
+      name="table_mix_material"
+      class=".mix.MixMaterialTable"
+      permission="senaite.core.permissions.ManageAnalysisRequests"
+      layer="bika.concrete.interfaces.IBikaCementLayer"
+      />
+
+  <!-- Sample section viewlet: lab analyses lisiting -->
+  <browser:viewlet
+      for="bika.lims.interfaces.IBatch"
+      name="bika.concrete.batch.mix_materials"
+      manager="senaite.core.browser.viewlets.interfaces.ISampleSection"
+      class=".mix.MixMaterialViewlet"
+      layer="senaite.core.interfaces.ISenaiteCore"
+      permission="zope2.View" />
+
+</configure>

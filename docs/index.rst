@@ -1,5 +1,5 @@
 ===========
-bika.cement
+bika.concrete
 ===========
 
 User documentation

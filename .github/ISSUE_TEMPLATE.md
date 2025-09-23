@@ -1,4 +1,4 @@
-* bika.cement version:
+* bika.concrete version:
 * Plone Version:
 * Python version:
 * Operating System: Linux
