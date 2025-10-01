@@ -1,22 +1,6 @@
 # -*- coding: utf-8 -*-
-#
-# This file is part of BIKA CONCRETE
-#
-# SENAITE.QUEUE is free software: you can redistribute it and/or modify it
-# under the terms of the GNU General Public License as published by the Free
-# Software Foundation, version 2.
-#
-# This program is distributed in the hope that it will be useful, but WITHOUT
-# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-# FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
-# details.
-#
-# You should have received a copy of the GNU General Public License along with
-# this program; if not, write to the Free Software Foundation, Inc., 51
-# Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#
-# Copyright 2019-2021 by it's authors.
-# Some rights reserved, see README and LICENSE.
+
+import transaction
 
 from bika.lims import api
 from bika.concrete import PRODUCT_NAME
@@ -26,10 +10,12 @@ from bika.concrete.setuphandlers import setup_catalogs
 from bika.concrete.setuphandlers import add_location_to_supplier
 from bika.concrete.setuphandlers import setup_id_formatting
 
-from senaite.core.catalog import SETUP_CATALOG
+from senaite.core.catalog import SETUP_CATALOG, SENAITE_CATALOG
 from senaite.core.upgrade import upgradestep
 
 version = "1.0.2"
+OLD_PACKAGE = 'bika.cement'
+NEW_PACKAGE = 'bika.concrete'
 
 
 @upgradestep(PRODUCT_NAME, version)
@@ -73,3 +59,60 @@ def add_brands(tool):
     setup.runImportStepFromProfile(PROFILE_ID, "typeinfo")
     setup_id_formatting(portal)
     add_location_to_supplier(portal)
+
+
+def migrate_cement_to_concrete(context):
+    """Upgrade step to update ZODB objects from bika.cement to bika.concrete."""
+    catalog = api.get_tool(SENAITE_CATALOG)
+
+    migrated = 0
+    skipped = 0
+    failed = 0
+
+    logger.info("Starting migration of objects from %s to %s",
+                OLD_PACKAGE, NEW_PACKAGE)
+
+    for brain in catalog():
+        obj = None
+        try:
+            obj = brain.getObject()
+            cls = obj.__class__
+            module_name = cls.__module__
+            class_name = cls.__name__
+
+            if module_name.startswith(OLD_PACKAGE):
+                # Attempt to import the new class
+                new_module_name = module_name.replace(OLD_PACKAGE, NEW_PACKAGE, 1)
+                try:
+                    new_module = __import__(new_module_name, fromlist=[class_name])
+                    new_class = getattr(new_module, class_name)
+                except ImportError as e:
+                    failed += 1
+                    logger.warning("FAILED import for %s: %s (%s.%s)",
+                                   brain.getPath(), e, module_name, class_name)
+                    continue
+
+                old_class_path = "{}.{}".format(module_name, class_name)
+                new_class_path = "{}.{}".format(new_module_name, class_name)
+
+                # Change the class of the object
+                obj.__class__ = new_class
+                migrated += 1
+                logger.info("MIGRATED %s: %s → %s",
+                            brain.getPath(), old_class_path, new_class_path)
+            else:
+                import pdb; pdb.set_trace()
+                skipped += 1
+                # Optionally log skipped objects, but keep it light
+                # logger.debug("SKIPPED %s: %s.%s",
+                #             brain.getPath(), module_name, class_name)
+        except Exception as e:
+            failed += 1
+            path = getattr(brain, 'getPath', lambda: '(unknown)')()
+            logger.warning("FAILED migration for %s: %s", path, e)
+
+    transaction.commit()
+    catalog.clearFindAndRebuild()
+
+    logger.info("Migration summary: migrated=%s skipped=%s failed=%s",
+                migrated, skipped, failed)

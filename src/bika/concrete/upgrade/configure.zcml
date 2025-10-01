@@ -27,5 +27,14 @@
        handler="bika.concrete.upgrade.v01_00_001.add_brands"
        profile="bika.concrete:default"/>
 
+    <genericsetup:upgradeStep
+       title="Upgrade to BIKA.CONCRETE 1.0.3"
+       description="Updates object classes from bika.cement to bika.concrete"
+       source="1.0.2"
+       destination="1.0.3"
+       handler="bika.concrete.upgrade.v01_00_001.migrate_cement_to_concrete"
+       profile="bika.concrete:default"/>
+
+
 
 </configure>
