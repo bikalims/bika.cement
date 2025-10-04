@@ -246,12 +246,12 @@
                   <td class="field">
                       <div>
                           <span tal:content="model/Supplier/PhysicalAddress/address|nothing"/>
-                          <span tal:condition="model/Supplier/PhysicalAddress/address">,</span>
+                          <span tal:condition="model/Supplier/PhysicalAddress/address|nothing">,</span>
                           <span tal:content="model/Supplier/PhysicalAddress/city|nothing"/>
                       </div>
                       <div>
                           <span tal:content="model/Supplier/PhysicalAddress/country|nothing"/>
-                          <span tal:condition="model/Supplier/PhysicalAddress/country">,</span>
+                          <span tal:condition="model/Supplier/PhysicalAddress/country|nothing">,</span>
                           <span tal:content="model/Supplier/PhysicalAddress/zip|nothing"/>
                       <div>
                   </td>
@@ -381,9 +381,9 @@
       <td colspan="4" tal:condition="python: col1">
         <table class="table table-sm table-condensed small">
           <colgroup>
-            <col style="width:40%"/>
+            <col style="width:35%"/>
             <col style="width:20%"/>
-            <col style="width:10%">
+            <col style="width:15%">
             <col style="width:20%">
           </colgroup>
           <tal:row repeat="row python:range(len(col1))">
@@ -407,9 +407,9 @@
       <td colspan="4" tal:condition="python: col2">
         <table class="table table-sm table-condensed small">
           <colgroup>
-            <col style="width:40%"/>
+            <col style="width:35%"/>
             <col style="width:20%"/>
-            <col style="width:10%">
+            <col style="width:15%">
             <col style="width:20%">
           </colgroup>
           <tal:row repeat="row python:range(len(col2))">
@@ -421,9 +421,26 @@
             <tr/>
             <tr tal:repeat="ana python: col2[row]['analyses']">
               <td class="" tal:content="ana/title"></td>
-              <td class="" tal:content="structure python:model.get_formatted_result(ana)"></td>
-              <td tal:content="structure python:model.get_formatted_unit(ana)"></td>
-              <td tal:content="structure python:model.get_formatted_specs(ana)"></td>
+              <td class="">
+                  <span tal:content="structure python:model.get_formatted_result(ana)"/>
+                  <span  tal:condition="python:len(view.get_result_variables(ana)) > 0">
+                      <span tal:define="psivalue python:view.get_result_variables(ana)[0]['formatted_value']"
+                            tal:content="string:[${psivalue}]"/>
+                  </span>
+              </td>
+              <td>
+                <span  tal:content="structure python:model.get_formatted_unit(ana)"/>
+                <span  tal:condition="python:len(view.get_result_variables(ana)) > 0">
+                  <span tal:define="psiunit python:view.get_result_variables(ana)[0]['formatted_unit']"
+                    tal:content="string:[${psiunit}]"/>
+                </span>
+              </td>
+              <td>
+                <span tal:content="structure python:model.get_formatted_specs(ana)"/>
+                <span  tal:condition="python:len(view.get_result_variables(ana)) > 0">
+                  <span tal:content="structure python:view.get_converted_specs(ana)"/>
+                </span>
+              </td>
             </tr>
           </tal:row>
         </table>
