@@ -21,7 +21,19 @@
 from bika.lims import api
 from bika.lims import logger
 from senaite.core.catalog import SETUP_CATALOG
-from senaite.core.exportimport.setupdata import WorksheetImporter
+from senaite.core.exportimport.setupdata import WorksheetImporter as WI
+
+
+class WorksheetImporter(WI):
+    def safe_float(self, value):
+        """Convert a spreadsheet value to a float or None safely."""
+        if value in (None, "", " "):
+            return None
+        try:
+            f = float(value)
+        except (ValueError, TypeError):
+            return None
+        return f
 
 
 class Brands(WorksheetImporter):
@@ -121,6 +133,8 @@ class Materials(WorksheetImporter):
             if not title:
                 msg = "Error in in {}. Missing Title field."
                 logger.warning(msg.format(self.sheetname))
+                continue
+
             m_mat = self.get_object(sc, "MixMaterial", title=title)
             if m_mat:
                 continue
@@ -194,11 +208,14 @@ class Materials(WorksheetImporter):
                 logger.warning(msg.format(self.sheetname, b_title))
 
             description = row.get("description", "")
+            specific_gravity = self.safe_float(row.get("Specific_Gravity"))
+            absorption_rate = self.safe_float(row.get("Absorption_Rate"))
+
             api.create(container, "MixMaterial",
                        title=title,
                        description=description,
-                       specific_gravity=row.get("Specific_Gravity", None),
-                       absorption_rate=row.get("Absorption_Rate", None),
+                       specific_gravity=specific_gravity,
+                       absorption_rate=absorption_rate,
                        material_type=[mt.UID()] if mt else [],
                        brand=[brand.UID()] if brand else [],
                        supplier=[supplier.UID()] if supplier else [],

@@ -1,25 +1,34 @@
 # -*- coding: utf-8 -*-
 
 from AccessControl import ClassSecurityInfo
-from bika.concrete.interfaces import IMixMaterial
-from bika.lims.interfaces import IDeactivable
 from plone.autoform import directives
 from plone.dexterity.content import Container
 from plone.supermodel import model
-from senaite.core.catalog import SETUP_CATALOG
-from senaite.core.z3cform.widgets.uidreference import UIDReferenceWidgetFactory
-from bika.lims import api
 from zope.interface import implementer
 from zope import schema
+
+from bika.lims import api
+from bika.lims.interfaces import IDeactivable
+from senaite.core.catalog import SETUP_CATALOG
+from senaite.core.z3cform.widgets.uidreference import UIDReferenceWidgetFactory
 from senaite.core.schema import UIDReferenceField
+
+from bika.concrete.config import _
+from bika.concrete.interfaces import IMixMaterial
 
 
 class IMixMaterialSchema(model.Schema):
     """Marker interface and Dexterity Python Schema for Mix Material"""
 
-    # add basic things here
     title = schema.TextLine(
-        title=u"Title",
+        title=_(
+            u"title_mix_material_title",
+            default=u"Title"
+        ),
+        description=_(
+            u"description_mix_material_title",
+            default=u"Title of the mixmaterial"
+        ),
         required=True,
     )
 

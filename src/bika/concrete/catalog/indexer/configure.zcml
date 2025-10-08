@@ -4,6 +4,7 @@
 
   <!-- MixMaterial Indexer -->
   <adapter name="material_class_sort_key" factory=".mixmaterial.material_class_sort_key"/>
+  <adapter name="sortable_title" factory=".supplierlocation.sortable_title"/>
   <!-- MixMaterialAmount Indexer -->
   <adapter name="material_amount_class_sort_key" factory=".mixmaterialamount.material_amount_class_sort_key"/>
 

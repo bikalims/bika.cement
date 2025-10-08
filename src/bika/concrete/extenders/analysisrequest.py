@@ -50,7 +50,6 @@ curing_method_field = ExtUIDReferenceField(
         render_own_label=True,
         visible={
             'add': 'edit',
-            'secondary': 'disabled',
         },
         catalog_name='senaite_catalog_setup',
         base_query={"is_active": True,
@@ -72,13 +71,19 @@ mix_material_field = ExtUIDReferenceField(
         render_own_label=True,
         visible={
             'add': 'edit',
-            'secondary': 'disabled',
+            "edit": "edit",
+            "header_table": "visible",
         },
         catalog_name='senaite_catalog_setup',
         base_query={"is_active": True,
                     "sort_on": "sortable_title",
                     "sort_order": "ascending"},
         showOn=True,
+        ui_item="title",
+        colModel=[
+            dict(columnName="UID", hidden=True),
+            dict(columnName="title", width="60", label=_("Title")),
+        ],
     ),
 )
 
@@ -145,6 +150,11 @@ supplier_location_field = ExtUIDReferenceField(
                     "sort_on": "sortable_title",
                     "sort_order": "ascending"},
         showOn=True,
+        ui_item="supplier_location_title",
+        colModel=[
+            dict(columnName="UID", hidden=True),
+            dict(columnName="supplier_location_title", width="60", label=_("Title")),
+        ],
     ),
 )
 

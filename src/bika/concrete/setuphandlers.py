@@ -23,6 +23,14 @@ COLUMNS = [
 
 ID_FORMATTING = [
     {
+        "portal_type": "MixMaterial",
+        "form": "MAT{seq:06d}",
+        "prefix": "mixmaterial",
+        "sequence_type": "generated",
+        "counter_type": "",
+        "split_length": 1,
+    },
+    {
         "portal_type": "Brand",
         "form": "BR{seq:06d}",
         "prefix": "brand",

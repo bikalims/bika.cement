@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from plone.indexer import indexer
-
 from bika.concrete.interfaces import IMixMaterial
 from bika.lims import api
 from senaite.core.catalog.utils import sortable_sortkey_title
