@@ -83,6 +83,7 @@ mix_material_field = ExtUIDReferenceField(
         colModel=[
             dict(columnName="UID", hidden=True),
             dict(columnName="title", width="60", label=_("Title")),
+            dict(columnName="description", width="60", label=_("Description")),
         ],
     ),
 )
