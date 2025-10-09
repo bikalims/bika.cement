@@ -381,9 +381,9 @@
       <td colspan="4" tal:condition="python: col1">
         <table class="table table-sm table-condensed small">
           <colgroup>
-            <col style="width:35%"/>
+            <col style="width:40%"/>
             <col style="width:20%"/>
-            <col style="width:15%">
+            <col style="width:10%">
             <col style="width:20%">
           </colgroup>
           <tal:row repeat="row python:range(len(col1))">
@@ -407,9 +407,9 @@
       <td colspan="4" tal:condition="python: col2">
         <table class="table table-sm table-condensed small">
           <colgroup>
-            <col style="width:35%"/>
+            <col style="width:40%"/>
             <col style="width:20%"/>
-            <col style="width:15%">
+            <col style="width:10%">
             <col style="width:20%">
           </colgroup>
           <tal:row repeat="row python:range(len(col2))">
@@ -454,7 +454,7 @@
   </tal:render>
   <tal:render condition="python:True">
     <div class="row section-info no-gutters">
-      <div class="w-100">
+      <div class="w-100" tal:condition="python:view.split_categories_qc(model)[0] or view.split_categories_qc(model)[1]">
   <table class="table table-sm table-condensed small"
        tal:define="col1 python:view.split_categories_qc(model)[0];
                    col2 python:view.split_categories_qc(model)[1];">
@@ -508,7 +508,7 @@
                <td class="no-border"></td>
             <tr/>
             <tr tal:repeat="qc python: col1[row]['analyses']">
-                  <td class="" tal:content="python: qc.getReferenceDefinition().Title() if qc.getReferenceDefinition() else ''"/>
+		  <td class="" tal:content="qc/title"></td>
                   <td class="" tal:content="structure python:model.get_formatted_result(qc)"></td>
                   <td tal:content="structure python:model.get_formatted_unit(qc)"></td>
                   <td tal:content="structure python:model.get_formatted_specs(qc)"></td>
