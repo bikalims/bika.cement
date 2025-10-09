@@ -244,16 +244,12 @@
                 <tr>
                   <td class="label" i18n:translate="">Address</td>
                   <td class="field">
-                      <div>
-                          <span tal:content="model/Supplier/PhysicalAddress/address|nothing"/>
-                          <span tal:condition="model/Supplier/PhysicalAddress/address|nothing">,</span>
-                          <span tal:content="model/Supplier/PhysicalAddress/city|nothing"/>
+                      <div tal:condition="model/Supplier">
+                          <span tal:content="python: view.get_millreport_supplier_address(model.Supplier)[0]"/>
                       </div>
-                      <div>
-                          <span tal:content="model/Supplier/PhysicalAddress/country|nothing"/>
-                          <span tal:condition="model/Supplier/PhysicalAddress/country|nothing">,</span>
-                          <span tal:content="model/Supplier/PhysicalAddress/zip|nothing"/>
-                      <div>
+                      <div tal:condition="model/Supplier">
+                        <span tal:content="python: view.get_millreport_supplier_address(model.Supplier)[1]"/>
+                      </div>
                   </td>
                 </tr>
                 <!-- Physical Address -->
@@ -289,12 +285,10 @@
                   <td class="field">
                   <tal:block tal:condition="python: model.SupplierLocation">
                       <div>
-                          <span tal:content="python: model.SupplierLocation.address[0]['address']" />,
-                          <span tal:content="python: model.SupplierLocation.address[0]['city']" />
+                          <span tal:content="python: view.get_millreport_address(model.SupplierLocation)[0]" />
                       </div>
                       <div>
-                          <span tal:content="python: model.SupplierLocation.address[0]['country']" />,
-                          <span tal:content="python: model.SupplierLocation.address[0]['zip']" />
+                          <span tal:content="python: view.get_millreport_address(model.SupplierLocation)[1]" />
                       <div>
                   </tal:block>
                   </td>
@@ -508,7 +502,7 @@
                <td class="no-border"></td>
             <tr/>
             <tr tal:repeat="qc python: col1[row]['analyses']">
-		  <td class="" tal:content="qc/title"></td>
+                  <td class="" tal:content="qc/title"></td>
                   <td class="" tal:content="structure python:model.get_formatted_result(qc)"></td>
                   <td tal:content="structure python:model.get_formatted_unit(qc)"></td>
                   <td tal:content="structure python:model.get_formatted_specs(qc)"></td>
