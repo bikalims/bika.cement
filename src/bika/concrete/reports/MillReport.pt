@@ -466,7 +466,7 @@
       <tr>
           <td colspan="8" class="text-center" style="background-color:#FF0000">
             <div class="text-center" style="background-color:red; color: white">
-                Test Data on Reference <span tal:content="view.reference_definition_titles([model])"/>
+                Test Data on Reference <span tal:content="python: view.reference_definition_titles([model])"/>.
             </div>
           </td>
       </tr>
@@ -527,7 +527,7 @@
                <td class="no-border"></td>
             <tr/>
             <tr tal:repeat="qc python: col2[row]['analyses']">
-                  <td class="" tal:content="python: qc.getReferenceDefinition().Title() if qc.getReferenceDefinition() else ''"/>
+                  <td class="" tal:content="qc/title"></td>
                   <td class="" tal:content="structure python:model.get_formatted_result(qc)"></td>
                   <td tal:content="structure python:model.get_formatted_unit(qc)"></td>
                   <td tal:content="structure python:model.get_formatted_specs(qc)"></td>
