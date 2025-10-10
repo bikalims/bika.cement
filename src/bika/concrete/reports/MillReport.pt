@@ -466,8 +466,7 @@
       <tr>
           <td colspan="8" class="text-center" style="background-color:#FF0000">
             <div class="text-center" style="background-color:red; color: white">
-                <span tal:content="spec/title|nothing"/>
-                Test Data on Reference
+                Test Data on Reference <span tal:content="view.reference_definition_titles([model])"/>
             </div>
           </td>
       </tr>
