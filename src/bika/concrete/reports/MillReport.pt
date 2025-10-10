@@ -339,16 +339,6 @@
   <table class="table table-sm table-condensed small"
        tal:define="col1 python:view.split_categories(model)[0];
                    col2 python:view.split_categories(model)[1];">
-  <colgroup>
-    <col style="width:20%"/>
-    <col style="width:10%"/>
-    <col style="width:5%">
-    <col style="width:10%">
-    <col style="width:20%"/>
-    <col style="width:10%"/>
-    <col style="width:5%">
-    <col style="width:10%">
-  </colgroup>
   <thead>
       <tr>
           <td colspan="8" class="text-center" style="background-color:#FF0000">
@@ -374,12 +364,6 @@
       <!-- Left column -->
       <td colspan="4" tal:condition="python: col1">
         <table class="table table-sm table-condensed small">
-          <colgroup>
-            <col style="width:40%"/>
-            <col style="width:20%"/>
-            <col style="width:10%">
-            <col style="width:20%">
-          </colgroup>
           <tal:row repeat="row python:range(len(col1))">
             <tr>
                <td class="no-border category font-weight-bold text-nowrap" tal:content="python: col1[row]['title']"></td>
@@ -400,12 +384,6 @@
       <!-- Right column -->
       <td colspan="4" tal:condition="python: col2">
         <table class="table table-sm table-condensed small">
-          <colgroup>
-            <col style="width:40%"/>
-            <col style="width:20%"/>
-            <col style="width:10%">
-            <col style="width:20%">
-          </colgroup>
           <tal:row repeat="row python:range(len(col2))">
             <tr>
                <td class="no-border category font-weight-bold text-nowrap" tal:content="python: col2[row]['title']"></td>
@@ -432,7 +410,7 @@
               <td>
                 <span tal:content="structure python:model.get_formatted_specs(ana)"/>
                 <span  tal:condition="python:len(view.get_result_variables(ana)) > 0 and model.get_formatted_specs(ana) and spec">
-                  <span tal:content="structure python:view.get_converted_specs(ana)"/>
+		   <span tal:content="python: view.get_converted_specs(ana)"></span>
                 </span>
               </td>
             </tr>
@@ -452,21 +430,11 @@
   <table class="table table-sm table-condensed small"
        tal:define="col1 python:view.split_categories_qc(model)[0];
                    col2 python:view.split_categories_qc(model)[1];">
-  <colgroup>
-    <col style="width:20%"/>
-    <col style="width:10%"/>
-    <col style="width:5%">
-    <col style="width:10%">
-    <col style="width:20%"/>
-    <col style="width:10%"/>
-    <col style="width:5%">
-    <col style="width:10%">
-  </colgroup>
   <thead>
       <tr>
           <td colspan="8" class="text-center" style="background-color:#FF0000">
             <div class="text-center" style="background-color:red; color: white">
-                Test Data on Reference <span tal:content="python: view.reference_definition_titles([model])"/>.
+                Test Data on Reference <span tal:content="python: view.reference_definition_titles([model])"/>
             </div>
           </td>
       </tr>
@@ -487,12 +455,6 @@
       <!-- Left column -->
       <td colspan="4" tal:condition="python: col1">
         <table class="table table-sm table-condensed small">
-          <colgroup>
-            <col style="width:40%"/>
-            <col style="width:20%"/>
-            <col style="width:10%">
-            <col style="width:20%">
-          </colgroup>
           <tal:row repeat="row python:range(len(col1))">
             <tr>
                <td class="no-border category font-weight-bold text-nowrap" tal:content="python: col1[row]['title']"></td>
@@ -513,12 +475,6 @@
       <!-- Right column -->
       <td colspan="4" tal:condition="python: col2">
         <table class="table table-sm table-condensed small">
-          <colgroup>
-            <col style="width:40%"/>
-            <col style="width:20%"/>
-            <col style="width:10%">
-            <col style="width:20%">
-          </colgroup>
           <tal:row repeat="row python:range(len(col2))">
             <tr>
                <td class="no-border category font-weight-bold text-nowrap" tal:content="python: col2[row]['title']"></td>
