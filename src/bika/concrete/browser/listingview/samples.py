@@ -45,13 +45,37 @@ class SamplesListingViewAdapter(object):
                 },
             )
         ]
+        sample_name = [
+            (
+                "SampleName",
+                {
+                    "toggle": False,
+                    "sortable": True,
+                    "title": _("Sample Name"),
+                },
+            )
+        ]
+        material = [
+            (
+                "MixMaterial",
+                {
+                    "toggle": False,
+                    "sortable": True,
+                    "title": _("Material"),
+                },
+            )
+        ]
 
         self.listing.columns.update(cast_date)
         self.listing.columns.update(curing_method)
+        self.listing.columns.update(sample_name)
+        self.listing.columns.update(material)
 
         for i in range(len(self.listing.review_states)):
             self.listing.review_states[i]["columns"].append("CastDate")
             self.listing.review_states[i]["columns"].append("CuringMethod")
+            self.listing.review_states[i]["columns"].append("SampleName")
+            self.listing.review_states[i]["columns"].append("MixMaterial")
 
     def folder_item(self, obj, item, index):
         if not is_installed():
@@ -69,5 +93,18 @@ class SamplesListingViewAdapter(object):
             )
             item["CuringMethod"] = curing_method_title
             item["replace"]["CuringMethod"] = curing_method_link
+
+        sample_name = obj.Schema()["SampleName"].getAccessor(obj)()
+        if sample_name:
+            item["SampleName"] = sample_name
+        mix_material = obj.Schema()["MixMaterial"].getAccessor(obj)()
+        if mix_material:
+            mix_material_title = mix_material.title
+            mix_material_url = mix_material.absolute_url()
+            mix_material_link = get_link(
+                mix_material_url, mix_material_title
+            )
+            item["MixMaterial"] = mix_material_title
+            item["replace"]["MixMaterial"] = mix_material_link
 
         return item
