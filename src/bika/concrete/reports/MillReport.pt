@@ -128,7 +128,18 @@
         <div class="col-6 text-left">
           <!-- Header Left -->
           <h1>Material Certification Report</h1>
-          <h1 name='coa_num' tal:content="python: coa_num"/>
+          <table class="table table-sm table-condensed">
+            <colgroup>
+              <col style="width:48%"/>
+              <col style="width:52%"/>
+            </colgroup>
+            <tr>
+              <td class="label" i18n:translate=""><h2><strong>Sample ID</strong></h2></td>
+              <td class="field">
+                  <h2 tal:content="model/getId|nothing"/>
+              </td>
+            </tr>
+          </table>
         </div>
         <div class="col-6 text-right">
             <!-- Header Right -->
@@ -154,14 +165,18 @@
             <td style="border:none;" class="align-top pr-2">
               <!-- Left Table -->
               <table class="table table-sm table-condensed">
-                <!-- Client Name(s) -->
                 <tr>
-                  <td class="label" i18n:translate="">Brand</td>
+                  <td class="label" i18n:translate="">Report ID</td>
                   <td class="field">
-                      <div tal:content="model/MixMaterial/brand/title|nothing"/>
+                      <div name='coa_num' tal:content="python: coa_num"/>
                   </td>
                 </tr>
-                <!-- Contact Name(s) -->
+                <tr>
+                  <td class="label" i18n:translate="">Manufacturer</td>
+                  <td class="field">
+                      <div tal:content="model/MixMaterial/manufacturer/title|nothing"/>
+                  </td>
+                </tr>
                 <tr>
                   <td class="label" i18n:translate="">Material</td>
                   <td class="field">
