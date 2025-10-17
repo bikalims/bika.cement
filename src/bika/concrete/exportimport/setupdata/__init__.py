@@ -151,20 +151,6 @@ class Materials(WorksheetImporter):
                 msg = "Error in {}. Material Class '{}' is wrong."
                 logger.warning(msg.format(self.sheetname, mt_title))
 
-            # Brand
-            b_title = row.get("Brand_title", None)
-            if not b_title:
-                msg = "Error in {}. Material Class field missing."
-                logger.warning(msg.format(self.sheetname))
-                brand = []
-
-            else:
-                brand = self.get_object(sc, "Brand", title=b_title)
-
-            if not brand:
-                msg = "Error in {}. Brand '{}' is wrong."
-                logger.warning(msg.format(self.sheetname, b_title))
-
             # Manufacturer
             m_title = row.get("Manufacturer_title", None)
             if not m_title:
@@ -177,7 +163,7 @@ class Materials(WorksheetImporter):
 
             if not manuf:
                 msg = "Error in {}. Manufacturer '{}' is wrong."
-                logger.warning(msg.format(self.sheetname, b_title))
+                logger.warning(msg.format(self.sheetname, m_title))
 
             # Supplier
             s_title = row.get("Supplier_title", None)
@@ -191,7 +177,7 @@ class Materials(WorksheetImporter):
 
             if not supplier:
                 msg = "Error in {}. Supplier '{}' is wrong."
-                logger.warning(msg.format(self.sheetname, b_title))
+                logger.warning(msg.format(self.sheetname, s_title))
 
             # Manufacturer
             m_title = row.get("Manufacturer_title", None)
@@ -205,7 +191,7 @@ class Materials(WorksheetImporter):
 
             if not manuf:
                 msg = "Error in {}. Manufacturer '{}' is wrong."
-                logger.warning(msg.format(self.sheetname, b_title))
+                logger.warning(msg.format(self.sheetname, m_title))
 
             description = row.get("description", "")
             specific_gravity = self.safe_float(row.get("Specific_Gravity"))
@@ -217,7 +203,6 @@ class Materials(WorksheetImporter):
                        specific_gravity=specific_gravity,
                        absorption_rate=absorption_rate,
                        material_type=[mt.UID()] if mt else [],
-                       brand=[brand.UID()] if brand else [],
                        supplier=[supplier.UID()] if supplier else [],
                        manufacturer=[manuf.UID()] if manuf else [],
                        )
